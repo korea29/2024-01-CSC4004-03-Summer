@@ -1,0 +1,107 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  margin-top: 50px;
+}
+
+.top-bar {
+  position: absolute;
+  width: 100%;
+  height: 35px; /* Top bar의 높이 조정 */
+  left: 0;
+  top: 0;
+  background: rgba(244, 224, 200, 0.31);
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.top-bar .ako-logo {
+  width: 45px; /* AKO 로고 이미지의 너비 조정 */
+  margin-left: 10px;
+}
+
+.top-bar-text {
+  margin-left: 10px; /* 로고와 문자열 사이의 간격을 조정합니다. */
+  font-family: 'SeoulHangang CL', sans-serif;
+}
+
+.profile-container {
+  position: relative;
+  width: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 7%;
+}
+
+.profile-container {
+  position: absolute;
+  width: 150px; /* 원의 지름에 추가 여백을 줍니다. */
+  left: 50%; /* 이미지를 화면의 가로 중앙에 위치하도록 설정 */
+  transform: translateX(-50%); /* 가로 중앙 정렬을 위해 사용 */
+  top: 7%; /* 이미지를 화면의 상단에 위치하도록 설정 */
+}
+
+.profile-image {
+  width: 100%; /* 원 안에 이미지가 꽉 차도록 설정 */
+  height: 100%; /* 원 안에 이미지가 꽉 차도록 설정 */
+  object-fit: cover; /* 이미지가 원 안에 맞추어지도록 설정 */
+  border-radius: 50%; /* 이미지를 원 모양으로 만들기 위해 설정 */
+}
+
+.profile-image-container {
+  position: relative;
+  width: 150px; /* 원의 지름에 추가 여백을 줍니다. */
+  height: 150px; /* 원의 지름에 추가 여백을 줍니다. */
+  border-radius: 50%; /* 원 모양을 만들기 위해 설정 */
+  overflow: hidden; /* 원 밖으로 넘치는 이미지를 잘라냅니다. */
+  margin-bottom: 10px; /* 메시지와의 간격을 조절합니다. */
+  background-color: rgba(197, 197, 197, 0.5);
+}
+
+.profile-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #757575;
+  padding: -5px 10px;
+  font-size: 12px;
+  border-radius: 15px; 
+  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정합니다. */
+}
+
+.required-text {
+  color: #757575;
+  margin-top:200px;
+  margin-bottom: 10px;
+  margin-left: -230px; /* 왼쪽 여백을 조정하여 폼 입력란과 맞추어 왼쪽 정렬합니다. */
+  font-size: 12px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.form-input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.submit-button {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f4e7da;
+  color: #757575;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.submit-button:hover {
+  background-color: #f3d8be;
+}
