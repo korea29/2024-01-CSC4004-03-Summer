@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import HeaderComponent from "./components/HeaderComponent";
 import PieChartComponent from "./components/PieChartComponent";
-import curriculum from "./components/curriculum";
+import Curriculum from "./components/Curriculum";
 
 import "../css/CreditScreen.css";
 import {
@@ -18,6 +18,7 @@ import { Layout, Menu, Button, FloatButton, Popover } from "antd";
 
 const { Sider } = Layout;
 
+//학점 조회 차트 더미 데이터
 const chartData = [
   {
     title: "졸업까지",
@@ -42,6 +43,59 @@ const chartData = [
     value: 5,
     totalValue: 20,
     color: "#B3C278",
+  },
+];
+
+// 필수 과목 이수 체계도 더미 데이터
+const curriculumDummyData = [
+  {
+    grade: 1,
+    semester: 1,
+    sbj: "계산적 사고법",
+    prev: null,
+    major: true,
+  },
+  {
+    grade: 1,
+    semester: 2,
+    sbj: "어드벤처 디자인",
+    prev: null,
+    major: true,
+  },
+  {
+    grade: 1,
+    semester: 2,
+    sbj: "이산수학",
+    prev: null,
+    major: false,
+  },
+  {
+    grade: 2,
+    semester: 1,
+    sbj: "자료구조와 실습",
+    prev: "프로그래밍 기초",
+    major: true,
+  },
+  {
+    grade: 2,
+    semester: 1,
+    sbj: "컴퓨터 구성",
+    prev: "이산수학",
+    major: false,
+  },
+  {
+    grade: 2,
+    semester: 2,
+    sbj: "시스템소프트웨어와 실습",
+    prev: "자료구조와 실습",
+    major: true,
+  },
+  {
+    grade: 3,
+    semester: 1,
+    sbj: "공개SW프로젝트",
+    prev: "자료구조와 실습",
+    major: true,
   },
 ];
 
@@ -102,7 +156,20 @@ const CreditScreen = () => {
           }}
         />
         <div className="item-container">
-          <div id="part-1" className="chart-wrap">
+          <h2
+            id="part-1"
+            className="curriculum-title"
+            style={{
+              marginBottom: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            이수 학점 조회
+          </h2>
+          <div className="chart-wrap">
             {chartData.map((dataItem, index) => (
               <div key={index} className="chart-section">
                 <p className="chart-title">{dataItem.title}</p>
@@ -114,8 +181,22 @@ const CreditScreen = () => {
             ))}
           </div>
           <div id="part-2" className="curriculum-wrap">
-            <h className="curriculum-title">(전공명) 필수 과목 이수체계도</h>
-            <div className="curriculum-section"></div>
+            <h2
+              className="curriculum-title"
+              style={{
+                marginBottom: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                marginTop: "25px",
+              }}
+            >
+              (전공명) 필수 과목 이수체계도
+            </h2>
+            <div className="curriculum-section">
+              <Curriculum data={curriculumDummyData}></Curriculum>
+            </div>
           </div>
         </div>
       </div>

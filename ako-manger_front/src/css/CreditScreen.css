@@ -1,43 +1,30 @@
-/* CreditScreen.css */
 
 .CreditScreen-container {
     margin-top: 40px;
     display: flex;
     justify-content: center;
-    /* Center the chart container horizontally */
 }
+
 .item-container {
     display: flex;
-    /* Use flexbox layout */
     flex-direction: column;
-    /* Align items vertically */
-}
-.chart-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    /* Space out the chart sections evenly */
-    /* Adjust as needed */
+    margin-top: "50px";
+    
 }
 
-/* CreditScreen.css */
 
 .chart-wrap {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    /* Space out the chart sections evenly */
     max-width: 1200px;
-    /* Adjust as needed */
+    margin-bottom: "100px";
 }
 
 .chart-section {
     width: calc(50% - 20px);
-    /* Adjust as needed */
     margin-bottom: 40px;
-    /* Fixed margin size between rows */
     text-align: center;
-    /* Center content */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,8 +34,6 @@
 .chart-title {
     margin-bottom: 15px;
     font-size: 23px;
-    
-    /* Add space between title and chart */
 }
 
 .chart-content {
@@ -67,6 +52,11 @@
 .custom-menu .ant-menu-item-selected {
     background-color: rgba(228, 133, 15, 0.7);
     color: white;
-    /* Change text color to white */
+}
+
+.curriculum-wrap{
+    display: flex;
+    flex-direction: column;
+    min-height: 800px;
 }
 
