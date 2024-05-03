@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.wrap {
+    margin: 0 auto;
+    flex-direction: column; 
+}
+
+.chatting-container {
+    display: flex;
+    flex-grow: 1;
+    /* Fill up remaining space */
+}
+
+.chatting-log {
+    width: 20%;
+    background-color: rgba(217, 217, 217, 0.5);
+    flex-grow: 1;
+}
+
+.log {
+    margin-top: 10px;
+}
+
+.chatting-screen {
+    margin-top: 20px;
+    width: 80%;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.chatwrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.keywordcontainer {
+    padding: 10px;
+}
+
+.inputcontainer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.inputcontainer img {
+    margin-right: 10px;
+}
+
+.inputcontainer input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    outline: none;
+}
+.inputcontainer{
+align-items: flex-end;
+border: #606367;
+}
+
+
+
+/* Add styles for LeftBubble component and other components as needed */

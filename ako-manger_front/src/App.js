@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       {/* 아래 괄호에 보고 싶은 페이지 이름으로 바꾸면 그 페이지를 볼 수 있습니다. */}
-      <Home></Home>
+      <CreditScreen></CreditScreen>
     </div>
   );
 }
