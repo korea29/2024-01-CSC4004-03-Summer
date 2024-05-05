@@ -43,26 +43,38 @@
 }
 
 .inputcontainer {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    padding: 10px;
+    background-color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    /* Ensure it's above other content */
 }
 
 .inputcontainer img {
-    margin-right: 10px;
+    width: 24px;
+    margin-right: 8px;
 }
 
 .inputcontainer input {
     flex: 1;
-    padding: 8px;
-    border-radius: 5px;
+    border: none;
     outline: none;
-}
-.inputcontainer{
-align-items: flex-end;
-border: #606367;
+    padding: 8px 0;
 }
 
+.inputcontainer button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bold;
+}
 
 
 /* Add styles for LeftBubble component and other components as needed */
