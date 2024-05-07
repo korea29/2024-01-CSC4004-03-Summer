@@ -1,13 +1,13 @@
-package com.csc.acomanager;
+package com.dgu_csc.akomanager_back;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AcoManagerApplication {
+public class AkoManagerBackApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AcoManagerApplication.class, args);
+		SpringApplication.run(AkoManagerBackApplication.class, args);
 	}
 
 }

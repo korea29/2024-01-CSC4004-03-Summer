@@ -1,10 +1,10 @@
-package com.csc.acomanager;
+package com.dgu_csc.akomanager_back;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AcoManagerApplicationTests {
+class AkoManagerBackApplicationTests {
 
 	@Test
 	void contextLoads() {
