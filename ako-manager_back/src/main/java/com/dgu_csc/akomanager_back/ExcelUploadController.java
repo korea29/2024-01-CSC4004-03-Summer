@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/excel")
 public class ExcelUploadController {
-    private final List<String[][]> excels = new ArrayList<String[][]>();
+    private final List<String[][]> excels = new ArrayList<String[][]>(); // 액셀 파일 저장 위치
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
