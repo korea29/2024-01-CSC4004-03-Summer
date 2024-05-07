@@ -6,7 +6,7 @@ const ChatLog = () => {
   return (
     <div style={styles.chatLogContainer}>
       <div style={styles.chatLog}>
-        <div style={styles.log}>채팅 기록 2</div>
+        <div style={styles.log}>채팅 기록</div>
         {/* 예시로 몇 가지 채팅 기록을 추가했습니다. */}
       </div>
     </div>

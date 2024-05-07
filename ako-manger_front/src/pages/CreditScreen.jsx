@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import HeaderComponent from "./components/HeaderComponent";
 import PieChartComponent from "./components/PieChartComponent";
-import Curriculum from "./components/Curriculum";
+import Curriculum from "./components/curriculum";
 
 import "../css/CreditScreen.css";
 import {

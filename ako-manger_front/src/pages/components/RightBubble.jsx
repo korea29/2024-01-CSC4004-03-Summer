@@ -12,11 +12,11 @@ const RightBubble = ({ data }) => {
         style={styles.PhoneAko}
       />
       <div style={styles.userInfo}>
-        <p style={styles.userName}>사용자</p>
+        <p style={styles.userName}>사용자ID</p>
       </div>
       <div style={styles.bubbleContainer}>
         <div style={styles.bubbleWrapper}>
-          <p style={styles.chattingContents}>안녕하세요!</p>
+          <p style={styles.chattingContents}>안녕! 질문, 상담 등</p>
         </div>
         <img
           src={rightBubbleTriangle}
