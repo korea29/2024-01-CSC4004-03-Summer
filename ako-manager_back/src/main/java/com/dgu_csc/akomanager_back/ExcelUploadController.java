@@ -12,8 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/excel")
 public class ExcelUploadController {
-    private final List<String[][]> excels = new ArrayList<String[][]>(); // 액셀 파일 저장 위치
-
+    private final List<String[][]> excels = new ArrayList<String[][]>(); // 각 액셀 파일을 2차원 스트링 형태로 저장
+    
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
