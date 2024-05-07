@@ -5,11 +5,12 @@ import helpicon from "../../Images/help_outline.png";
 import settingsicon from "../../Images/settings.png";
 import appsicon from "../../Images/apps.png";
 import startchat from "../../Images/startchat.png";
-import chaticon from "../assets/chat.png";
+import chaticon from "../assets/chat.png"; 
 
 const HeaderComponent = () => {
   return (
     <div className="header" style={styles.header}>
+      {/* 테스트 */}
       <div className="logo" style={styles.logo}>
         {/* <img className="MenuLogo" src={MenuLogo} alt="MenuLogo" /> */}
         <img
