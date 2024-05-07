@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/LoginScreen.css';
 import Ako_sit from '../pages/assets/ako-sit.png';
 
+// https://goddaehee.tistory.com/305
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
