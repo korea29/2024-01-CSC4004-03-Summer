@@ -21,7 +21,9 @@ const LeftBubble = ({ data }) => {
           alt="Bubble Triangle"
         />
         <div style={styles.bubbleWrapper}>
-          <p style={styles.chattingContents}>뭐라고 물어보지</p>
+          <p style={styles.chattingContents}>
+            반가위, 안녕? 잘 지냈어? 답변 등
+          </p>
         </div>
       </div>
     </div>

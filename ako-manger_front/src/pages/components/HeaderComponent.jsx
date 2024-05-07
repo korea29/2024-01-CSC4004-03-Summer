@@ -5,6 +5,7 @@ import helpicon from "../../Images/help_outline.png";
 import settingsicon from "../../Images/settings.png";
 import appsicon from "../../Images/apps.png";
 import startchat from "../../Images/startchat.png";
+import chaticon from "../assets/chat.png";
 
 const HeaderComponent = () => {
   return (
@@ -20,7 +21,19 @@ const HeaderComponent = () => {
         <span style={styles.logoText}>A-Ko mentor</span>
       </div>
       {/* 나중에 움직이는 애니메이션 있는 버튼으로 바꾸기 */}
-      <img src={startchat} style={styles.startchat} />
+      {/* <img src={startchat} style={styles.startchat} /> */}
+      <button
+        style={{
+          backgroundColor: "#A08D7D",
+          color: "#333",
+          border: "none",
+          borderRadius: "20px",
+          padding: "10px 20px",
+          cursor: "pointer",
+        }}
+      >
+        start chat ✏️
+      </button>
       <div className="setting" style={styles.setting}>
         <img src={helpicon} alt="helpicon" style={styles.settingIcon} />
 

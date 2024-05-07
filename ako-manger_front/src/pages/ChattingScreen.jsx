@@ -1,20 +1,30 @@
-import React, { useState } from "react";
-import { Button, ConfigProvider, Space, Popover, Row, Col } from "antd";
+import React, { useState, useEffect } from "react";
+import { ConfigProvider, Space, Popover, Row, Col } from "antd";
 
 import LeftBubble from "./components/LeftBubble";
 import RightBubble from "./components/RightBubble";
 import HeaderComponent from "./components/HeaderComponent";
 import ChatLog from "./components/ChatLog";
+import KeywordComponent from "./components/KeywordComponent";
 
 import "../css/ChattingScreen.css";
 import defaultAkoImage from "../Images/기본형아코얼굴_(designed by 박세리,원혜림).png";
 import listeningAkoImage from "../Images/듣는아코_(designed by 박세리).png";
 import phoneAkoImage from "../Images/핸드폰쥔아코_(designed by 박세리).png";
 import searchlogo from "../Images/search.png";
+import sendButtonImage from "./assets/send.png"; // Replace this with your image file
 
 const ChattingScreen = () => {
   const [inputValue, setInputValue] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [placeholderWidth, setPlaceholderWidth] = useState("auto");
+
+  useEffect(() => {
+    // Calculate the width of the placeholder text
+    const input = document.getElementById("inputField");
+    const placeholderWidth = input.offsetWidth + "px";
+    setPlaceholderWidth(placeholderWidth);
+  }, [inputValue]);
 
   // 최대 보여질 채팅 수
   const maxChatCount = 10;
@@ -36,6 +46,8 @@ const ChattingScreen = () => {
       <HeaderComponent />
       <div className="chatting-container">
         <div className="chatting-log">
+          <ChatLog></ChatLog>
+          <ChatLog></ChatLog>
           <ChatLog></ChatLog>
         </div>
         <div className="chatting-screen">
@@ -59,51 +71,27 @@ const ChattingScreen = () => {
               <LeftBubble />
               <RightBubble />
             </div>
-            <div className="inputcontainer">
-              <img src={searchlogo} alt="searchlogo" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-              <button>Send</button>
-              <ConfigProvider
-                theme={{
-                  token: {
-                    // 전공 버튼 컬러
-                    colorPrimary: "#867060",
-                    borderRadius: 10,
-                    paddingInline: "auto",
-                    // 교양 버튼 컬러
-                    colorBgContainer: "#B3C278",
-                  },
-                }}
-              >
-                <Popover
-                  content={
-                    <div>
-                      <p>왜 현재 1위 인가</p>
-                    </div>
-                  }
-                  title="몇 위 인지"
-                  trigger="click"
-                  color="#F2E2DE"
-                  arrow={{ pointAtCenter: true }}
-                >
-                  <Button
-                    defaultHoverColor="#000" // 호버 시 텍스트 색상을 검은색(#000)으로 변경
-                    paddingInline={20} // 가로 안쪽 여백을 20px로 변경
-                    paddingBlock={10} // 세로 안쪽 여백을 10px로 변경
-                    fontWeight={500} // 폰트 굵기를 500으로 변경
-                  >
-                    1위 키워드
-                  </Button>
-                </Popover>
-              </ConfigProvider>
-            </div>
-            <div className="keywordcontainer">
-              {/* 샵 키워드 컴포넌트로 분리*/}
+            <div className="container">
+              <div className="content">
+                <div className="inputcontainer">
+                  <KeywordComponent />
+                  <img src={searchlogo} alt="searchlogo" />
+                  <input
+                    id="inputField"
+                    type="text"
+                    placeholder="안녕, 오랜만이야."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    style={{ width: placeholderWidth }} // Dynamically adjust width
+                  />
+                  <img
+                    src={sendButtonImage}
+                    alt="Send"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => console.log("Send button clicked")}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
