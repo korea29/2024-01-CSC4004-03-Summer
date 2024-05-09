@@ -1,7 +1,8 @@
-package com.dgu_csc.akomanager_back;
+package com.dgu_csc.akomanager_back.Repository;
 
 import com.dgu_csc.akomanager_back.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 }
+

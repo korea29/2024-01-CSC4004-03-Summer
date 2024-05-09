@@ -1,46 +1,37 @@
 package com.dgu_csc.akomanager_back;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "Subject", schema = "summer")
 public class Subject {
-    private final String courseNumber; // 학수 번호
-    private String yearOfOffering; // 개설 학년
-    private String semesterOfOffering; // 개설 학기
-    private String curriculum; // 교과 과정
-    private String lectureType; // 이수 구분
-    private String lectureName; // 교과목명
-    private int credit; // 학점
+    @Id
+    @Column(name = "`학수번호`", nullable = false, length = 8)
+    private String 학수번호;
 
-    public Subject(String courseNumber, String yearOfOffering, String semesterOfOffering, String curriculum, String lectureType, String lectureName, int credit) {
-        this.courseNumber = courseNumber;
-        this.yearOfOffering = yearOfOffering;
-        this.semesterOfOffering = semesterOfOffering;
-        this.curriculum = curriculum;
-        this.lectureType = lectureType;
-        this.lectureName = lectureName;
-        this.credit = credit;
-    }
+    @Column(name = "`개설학년`", nullable = false, length = 8)
+    private String 개설학년;
 
-    public String getCourseNumber() {
-        return courseNumber;
-    }
+    @Column(name = "`개설학기`", nullable = false, length = 8)
+    private String 개설학기;
 
-    public String getYearOfOffering() {
-        return yearOfOffering;
-    }
+    @Column(name = "`교과과정`", nullable = false, length = 10)
+    private String 교과과정;
 
-    public String getSemesterOfOffering() {
-        return semesterOfOffering;
-    }
-    public String getCurriculum() {
-        return curriculum;
-    }
-    public String getLectureType() {
-        return lectureType;
-    }
+    @Column(name = "`이수구분`", nullable = false, length = 10)
+    private String 이수구분;
 
-    public String getLectureName() {
-        return lectureName;
-    }
-    public int getCredit() {
-        return credit;
-    }
+    @Column(name = "`교과목명`", nullable = false, length = 100)
+    private String 교과목명;
+
+    @Column(name = "`학점`", nullable = false)
+    private Integer 학점;
+
 }

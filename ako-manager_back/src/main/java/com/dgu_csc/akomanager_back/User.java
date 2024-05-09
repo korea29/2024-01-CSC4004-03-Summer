@@ -1,112 +1,45 @@
 package com.dgu_csc.akomanager_back;
 
-import org.springframework.web.multipart.MultipartFile;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.time.LocalDate;
 
-
+@Getter
+@Setter
 @Entity
+@Table(name = "Users", schema = "summer")
 public class User {
-    // User 객체 정보
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long studentID; // 학번 [PK]
-    private String university; // 대학교
-    private String name; // 이름
-    private String date; // 생년월일
-    private String college; // 단과대학
-    private String major; // 주전공
-    private String minor; // 부전공
-    private String id; // 아이디
-    private String password; // 비밀번호
+    @Column(name = "`학번`", nullable = false, length = 10)
+    private String 학번;
 
-    // 객체 초기화
-    public User(Long studentID, String university, String name, String date , String college, String major, String minor, String id, String password) {
-        this.studentID = studentID;
-        this.university = university;
-        this.name = name;
-        this.date = date;
-        this.college = college;
-        this.major = major;
-        this.minor = minor;
-        this.id = id;
-        this.password = password;
-    }
+    @Column(name = "`대학교`", nullable = false, length = 30)
+    private String 대학교;
 
-    // 학번 설정 [PK]
-    public Long getStudentID() {
-        return this.studentID;
-    }
-    public void setStudentID(Long studentID) {
-        this.studentID = studentID;
-    }
+    @Column(name = "`이름`", nullable = false, length = 20)
+    private String 이름;
 
-    // 대학교 설정
-    public String getUniversity() {
-        return this.university;
-    }
-    public void setUniversity(String university) {
-        this.university = university;
-    }
+    @Column(name = "`생년월일`", nullable = false)
+    private LocalDate 생년월일;
 
-    // 이름 설정
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "`단과대학`", nullable = false, length = 40)
+    private String 단과대학;
 
-    // 생년월일 설정
-    public String getDate() {
-        return this.date;
-    }
-    public void setDate(String date) {
-        this.date = date;
-    }
+    @Column(name = "`주전공`", nullable = false, length = 100)
+    private String 주전공;
 
-    // 단과대학 설정
-    public String getCollege() {
-        return this.college;
-    }
-    public void setCollege(String college) {
-        this.college = college;
-    }
+    @Column(name = "`부전공`", length = 100)
+    private String 부전공;
 
-    // 주전공 설정
-    public String getMajor() {
-        return this.major;
-    }
-    public void setMajor(String major) {
-        this.major = major;
-    }
+    @Column(name = "`아이디`", nullable = false, length = 10)
+    private String 아이디;
 
-    // 부전공 설정
-    public String getMinor() {
-        return this.minor;
-    }
-    public void setMinor(String minor) {
-        this.minor = minor;
-    }
+    @Column(name = "`비밀번호`", nullable = false, length = 10)
+    private String 비밀번호;
 
-    // 아이디 설정
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    // 비밀번호 설정
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
