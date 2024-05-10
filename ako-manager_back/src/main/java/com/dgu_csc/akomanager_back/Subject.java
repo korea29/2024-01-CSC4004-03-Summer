@@ -1,5 +1,8 @@
 package com.dgu_csc.akomanager_back;
 
+import lombok.Data;
+
+@Data
 public class Subject {
     private final String courseNumber; // 학수 번호
     private String yearOfOffering; // 개설 학년
@@ -17,30 +20,5 @@ public class Subject {
         this.lectureType = lectureType;
         this.lectureName = lectureName;
         this.credit = credit;
-    }
-
-    public String getCourseNumber() {
-        return courseNumber;
-    }
-
-    public String getYearOfOffering() {
-        return yearOfOffering;
-    }
-
-    public String getSemesterOfOffering() {
-        return semesterOfOffering;
-    }
-    public String getCurriculum() {
-        return curriculum;
-    }
-    public String getLectureType() {
-        return lectureType;
-    }
-
-    public String getLectureName() {
-        return lectureName;
-    }
-    public int getCredit() {
-        return credit;
     }
 }
