@@ -1,7 +1,9 @@
 package com.dgu_csc.akomanager_back;
 
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+@Data
 public class User {
     private final String id; // 아이디
     private String password; // 비밀번호
@@ -17,63 +19,5 @@ public class User {
     public User(String id, String password) {
         this.id = id;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getUniversity() {
-        return university;
-    }
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-    public String getStudentID() {
-        return studentID;
-    }
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
-    }
-    public String getCollege() {
-        return college;
-    }
-    public void setCollege(String college) {
-        this.college = college;
-    }
-    public String getMajor() {
-        return major;
-    }
-    public void setMajor(String major) {
-        this.major = major;
-    }
-    public String getDoubleMajor() {
-        return doubleMajor;
-    }
-    public void setDoubleMajor(String doubleMajor) {
-        this.doubleMajor = doubleMajor;
-    }
-    public String getMinor() {
-        return minor;
-    }
-    public void setMinor(String minor) {
-        this.minor = minor;
-    }
-    public MultipartFile getProfileImage() {
-        return profileImage;
-    }
-    public void setProfileImage(MultipartFile profileImage) {
-        this.profileImage = profileImage;
     }
 }
