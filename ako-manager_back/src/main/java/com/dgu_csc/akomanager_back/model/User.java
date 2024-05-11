@@ -1,21 +1,19 @@
-package com.dgu_csc.akomanager_back;
+package com.dgu_csc.akomanager_back.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "Users", schema = "summer")
+//@Builder
+//@AllArgsConstructor
+//@Getter
+//@Setter
+//@Table(name = "Users", schema = "summer")
 public class User {
     @Id
-    @Column(name = "`학번`", nullable = false, length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String 학번;
 
     @Column(name = "`대학교`", nullable = false, length = 30)
@@ -42,4 +40,11 @@ public class User {
     @Column(name = "`비밀번호`", nullable = false, length = 10)
     private String 비밀번호;
 
+    public User(String 학번, String 대학교, String 이름, LocalDate 생년월일, String 단과대학) {
+        this.학번 = 학번;
+        this.대학교 = 대학교;
+        this.이름 = 이름;
+        this.생년월일 = 생년월일;
+        this.단과대학 = 단과대학;
+    }
 }

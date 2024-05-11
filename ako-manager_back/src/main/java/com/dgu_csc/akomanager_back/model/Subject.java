@@ -1,4 +1,4 @@
-package com.dgu_csc.akomanager_back;
+package com.dgu_csc.akomanager_back.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
