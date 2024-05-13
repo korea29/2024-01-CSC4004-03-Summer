@@ -6,6 +6,7 @@ import Ako_sit from '../pages/assets/ako-sit.png';
 const Home = () => {
   return (
     <div className="home-container">
+      {/* 테스트 */}
       <h1 className="home-title">Hello, A-Ko!</h1>
       <img className="home-image" src={Ako_sit} alt="Home" />
       <div className="home-chat">
