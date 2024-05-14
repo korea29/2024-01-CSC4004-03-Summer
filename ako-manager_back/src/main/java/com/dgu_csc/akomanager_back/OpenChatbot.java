@@ -11,7 +11,7 @@ public class OpenChatbot {
 
             String [] command = {"python3", pythonScriptPath};
 
-            System.out.println("Start chat");
+            System.out.println("아코 멘토에게 물어보고 싶은 것을 물어보세요");
             ProcessBuilder pb = new ProcessBuilder(command);
 
             while (true) {
@@ -22,16 +22,18 @@ public class OpenChatbot {
                 Scanner scanner = new Scanner(System.in);
                 String UserInput ;
 
-                System.out.print("질문할 내용을 입력 : ");
+                System.out.print("OOO : ");
                 UserInput = scanner.nextLine();
 
                 writer.println(UserInput);
                 writer.flush();
 
-                if (UserInput.equals("대화종료")) {break;}
+                if (UserInput.equals("대화종료")) {
+                    System.out.println("또 만날 기회를 기다리고 있을게요! ❤️");
+                    break;}
 
                 String line ;
-                System.out.println("아코 멘토 : " );
+                System.out.printf("아코 멘토 : " );
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
