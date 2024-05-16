@@ -1,27 +1,24 @@
 package com.dgu_csc.akomanager_back.controller;
 
-import com.dgu_csc.akomanager_back.model.user;
-import com.dgu_csc.akomanager_back.service.Userservice;
-
-import jakarta.transaction.Transactional;
+import com.dgu_csc.akomanager_back.model.subject;
+import com.dgu_csc.akomanager_back.service.Subjectservice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/User")
-public class Usercontroller {
+@RequestMapping("/subject")
+public class Subjectcontroller {
 
     @Autowired
-    private final Userservice userservice;
+    private final Subjectservice subjectservice;
 
     @PostMapping("/add")
-    public void add(@RequestBody user user) {
-        userservice.saveUser(user);
+    public void add(@RequestBody subject subject) {
+        subjectservice.saveSubject(subject);
     }
 
     @GetMapping("/test")
@@ -31,8 +28,8 @@ public class Usercontroller {
     }
 
     @GetMapping("/getAll")
-    public List<user> List() {
-        return userservice.getAllUsers();
+    public List<subject> List() {
+        return subjectservice.getAllsubject();
     }
 
 }
