@@ -10,4 +10,5 @@ class AkoManagerBackApplicationTests {
 	void contextLoads() {
 	}
 
+
 }
