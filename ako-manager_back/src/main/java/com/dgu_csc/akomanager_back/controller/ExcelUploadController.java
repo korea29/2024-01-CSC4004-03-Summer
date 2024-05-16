@@ -1,4 +1,4 @@
-package com.dgu_csc.akomanager_back;
+package com.dgu_csc.akomanager_back.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
