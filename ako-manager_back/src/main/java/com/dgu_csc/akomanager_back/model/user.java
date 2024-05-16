@@ -7,7 +7,6 @@
     import lombok.Setter;
 
     import java.time.LocalDate;
-    import java.time.LocalDateTime;
 
     @NoArgsConstructor
     @Getter
@@ -18,31 +17,40 @@
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        // 학번
         @Column(name = "student_id", nullable = false, length = 10)
         private String studentId;
 
+        // 대학교
         @Column(name = "`university`", nullable = false, length = 30)
         private String university;
 
+        // 이름
         @Column(name = "`name`", nullable = false, length = 20)
         private String name;
 
+        // 생년월일
         @Column(name = "`date_of_birth`")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         private LocalDate date_of_birth;
 
+        // 단과대학
         @Column(name = "`college`", nullable = false, length = 40)
         private String college;
 
+        // 전공
         @Column(name = "`major`", nullable = false, length = 100)
         private String major;
 
-        @Column(name = "`minor`", nullable = true , length = 100)
+        // 부전공
+        @Column(name = "`minor`" , length = 100)
         private String minor;
 
+        // 닉네임
         @Column(name = "`username`", nullable = false, length = 10)
         private String username;
 
+        // 비밀번호
         @Column(name = "`password`", nullable = false, length = 10)
         private String password;
 
