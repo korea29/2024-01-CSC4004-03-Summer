@@ -1,4 +1,18 @@
 import sys
+import logging
+
+
+def CRT_log(string) :
+    log = logging.getLogger()
+    log.setLevel(logging.INFO)
+
+    formatter = logging.Formatter('%(asctime)s - [%(levelname)8s] %(message)s')
+    if log.hasHandlers() : log.handlers.clear()
+    file_handler = logging.FileHandler('chatlog.log')
+    file_handler.setFormatter(formatter)
+    log.addHandler(file_handler)
+
+    log.info(string)
 
 
 chat_rules = [['안녕', '반가워'], ['이름', '뭐야'], ['소개'], ['졸업', '남은', '학점'], ['졸업', '기준', '어떻게'], ['이수', '체계도'], ['지금까지', '내역', '수강한'], ['추천', '시간표'], ['고마워', '굿', '땡큐', '감사'], ['선이수', '먼저', '그 전']]
@@ -24,6 +38,8 @@ def chat(request):
             best_response = chat_response[idx]
     return best_response
 
-
+# while True :
 req = sys.stdin.readline().strip()
-print(chat(req))
+#if (req == "대화종료") :  break
+#    print(chat(req))
+CRT_log(req)
