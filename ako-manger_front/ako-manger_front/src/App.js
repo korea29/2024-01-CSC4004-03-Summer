@@ -9,6 +9,18 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import HeaderComponent from './pages/components/HeaderComponent';
 import SignUp_first from './pages/SignUp_first';
 
+import axios from 'axios';
+ console.log('User added:')
+
+const addUser = async (userData) => {
+  try {
+    const response = await axios.post('http://localhost:8080/user/add', userData);
+    console.log('User added:', response.data);
+  } catch (error) {
+    console.error('Error adding user:', error);
+  }
+};
+
 function App() {
   return (
     // <div className="App">

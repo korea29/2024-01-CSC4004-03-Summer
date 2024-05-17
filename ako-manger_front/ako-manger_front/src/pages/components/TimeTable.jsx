@@ -7,11 +7,11 @@ const TimeTable = () => {
     textAlign: "center",
     border: "1.2px solid #DBC9BB",
     height: "14px",
-    width: "200px", // width 수정
+    width: "200px",
   };
   const halfHourCellStyle = {
     ...tableCellStyle,
-    borderTop: "none", // 윗 부분 테두리 없애기
+    borderTop: "none",
   };
   const mergedCellStyles = {
     ...tableCellStyle,
@@ -24,28 +24,36 @@ const TimeTable = () => {
   const lectureCellStyle = {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start", // 왼쪽 정렬
-    alignItems: "flex-start", // 왼쪽 정렬
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     padding: "5px",
     fontSize: "10px",
   };
   const lectureNameStyle = {
-    fontSize: "9px", // 강의명의 글자 크기
+    fontSize: "9px",
+    color: "#867060",
+  };
+  const lectureRoomStyle = {
+    fontSize: "7px",
     color: "#867060",
   };
 
-  const lectureRoomStyle = {
-    fontSize: "7px", // 강의실 정보의 글자 크기
-    color: "#867060",
+  // Google Maps URL 만들기 함수
+  const getGoogleMapsUrl = (building) => {
+    const address = encodeURIComponent(`동국대학교 ${building}`);
+    return `https://www.google.com/maps/search/?api=1&query=${address}`;
   };
+
   const lectureData = [
-    // 강의 데이터
     {
       num: "1",
       day: "월요일",
       time: "11:00~12:30",
       name: "기초프로그래밍",
       room: "401-6119(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "2",
@@ -53,6 +61,9 @@ const TimeTable = () => {
       time: "14:00~15:30",
       name: "데이터 베이스",
       room: "401-6114(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "3",
@@ -60,6 +71,9 @@ const TimeTable = () => {
       time: "15:30~17:00",
       name: "컴퓨터 그래픽스",
       room: "407-203(정보문화관 P)",
+      building: "정보문화관 P",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "4",
@@ -67,6 +81,9 @@ const TimeTable = () => {
       time: "12:00~13:30",
       name: "운영체제",
       room: "401-4142(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "5",
@@ -74,6 +91,9 @@ const TimeTable = () => {
       time: "15:00~17:00",
       name: "공개 SW 프로젝트",
       room: "401-4137(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "2",
@@ -81,6 +101,9 @@ const TimeTable = () => {
       time: "12:00~13:30",
       name: "데이터 베이스",
       room: "401-6114(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "3",
@@ -88,6 +111,9 @@ const TimeTable = () => {
       time: "14:00~15:30",
       name: "컴퓨터 그래픽스",
       room: "407-203(정보문화관 P)",
+      building: "정보문화관 P",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "1",
@@ -95,6 +121,9 @@ const TimeTable = () => {
       time: "11:30~13:00",
       name: "기초프로그래밍",
       room: "401-6119(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "4",
@@ -102,6 +131,9 @@ const TimeTable = () => {
       time: "13:30~15:00",
       name: "운영체제",
       room: "401-4142(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
     {
       num: "5",
@@ -109,6 +141,9 @@ const TimeTable = () => {
       time: "15:00~17:00",
       name: "공개 SW 프로젝트",
       room: "401-4137(신공학관)",
+      building: "신공학관",
+      lat: "37.5580918",
+      lon: "126.9982178",
     },
   ];
 
@@ -149,18 +184,24 @@ const TimeTable = () => {
     // 강의가 끝나는 마지막 시간
     let endSlot = Math.floor((endHour - 9) * 2) + (endMinute === 0 ? 0 : 1);
 
-    const count = endSlot - startSlot;
-
-    // 중복된 시간대를 체크하기 위한 배열
-    let duplicateCheck = [];
     for (let slot = startSlot; slot < endSlot; slot++) {
       schedule[slot][dayIndex] = (
         <div>
           <div style={lectureNameStyle}>{lecture.name}</div>
-          <div style={lectureRoomStyle}>{lecture.room}</div>
+          <div style={lectureRoomStyle}>
+            {lecture.room}
+            <div>
+              <a
+                href={getGoogleMapsUrl(lecture.building)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                어떻게 가요?
+              </a>
+            </div>
+          </div>
         </div>
       );
-      duplicateCheck.push(schedule[slot][dayIndex]);
     }
   }
 

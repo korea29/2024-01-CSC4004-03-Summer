@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+
+//프론트 연결 (수빈)
+@CrossOrigin(origins = "http://localhost:3000")
+
 @RequestMapping("/users")
 public class UserController {
     private final List<User> users = new ArrayList<User>();
