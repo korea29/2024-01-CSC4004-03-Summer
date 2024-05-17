@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: "SeoulHangangM";
+  src: url('./font/SeoulHangangM.ttf');
+}
+/* https://enne.tistory.com/6  폰트 적용*/
+/* https://velog.io/@sojeong0302/React-%ED%8F%B0%ED%8A%B8-%EC%A0%81%EC%9A%A9  구글 폰트 적용 방법*/
+body{
+  font-family: "SeoulHangangM";
+}
