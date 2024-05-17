@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AkoManagerBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AkoManagerBackApplication.class, args);
+		System.out.println("test in main");
 	}
 
 }
