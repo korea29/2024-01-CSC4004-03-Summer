@@ -29,7 +29,7 @@ const SignUp_first = () => {
     }
 
     try {
-      const response = await fetch("/users", {
+      const response = await fetch("/users/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
