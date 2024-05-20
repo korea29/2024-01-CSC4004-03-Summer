@@ -66,7 +66,7 @@ const HeaderComponent = () => {
     },
     startChatButton: {
       backgroundColor: "#A08D7D",
-      color: "#333",
+      color: "#fff",
       border: "none",
       borderRadius: "20px",
       padding: "10px 20px",
