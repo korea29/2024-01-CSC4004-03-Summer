@@ -55,7 +55,6 @@ public class Usercontroller {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     // 유저 정보 삭제
     @DeleteMapping("/{studentId}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable String studentId, @RequestBody PasswordRequest request) {
