@@ -1,11 +1,11 @@
 package com.dgu_csc.akomanager_back.service;
 
-import com.dgu_csc.akomanager_back.model.subject;
 import com.dgu_csc.akomanager_back.repository.SubjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.Subject;
 import java.util.List;
 
 
@@ -17,7 +17,7 @@ public class SubjectserviceImpl implements Subjectservice{
 
     @Override
     @Transactional
-    public subject saveSubject(subject subject) {
+    public subject saveSubject(Subject subject) {
         return subjectRepository.save(subject);
     }
 
