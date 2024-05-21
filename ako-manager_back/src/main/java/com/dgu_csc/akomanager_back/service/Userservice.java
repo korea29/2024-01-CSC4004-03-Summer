@@ -1,10 +1,10 @@
 package com.dgu_csc.akomanager_back.service;
 
-import com.dgu_csc.akomanager_back.model.user;
+import com.dgu_csc.akomanager_back.model.User;
 
 import java.util.List;
 
 public interface Userservice {
-    public user saveUser(user user);
-    public List<user> getAllUsers();
+    public User saveUser(User user);
+    public List<User> getAllUsers();
 }
