@@ -8,6 +8,7 @@ class AkoManagerBackApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("test in test");
 	}
 
 

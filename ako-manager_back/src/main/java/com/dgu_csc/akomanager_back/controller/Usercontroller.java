@@ -1,13 +1,19 @@
 package com.dgu_csc.akomanager_back.controller;
 
+
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
+
+
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.Userservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
+
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,13 +46,15 @@ public class Usercontroller {
     }
 
 
+
     // 유저 정보 검색후 반환
     @PostMapping("/{studentId}/get")
     public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
         Optional<User> user = userservice.search(studentId, request.getPassword());
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
+
 
     @PutMapping("/{studentId}/update")
     public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
