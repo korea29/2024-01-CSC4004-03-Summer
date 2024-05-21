@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,4 +25,10 @@ public class UserserviceImpl implements Userservice{
     public List<user> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public Optional<user> search(String key) {
+        return userRepository.findBystudentId(key);
+    }
+
 }

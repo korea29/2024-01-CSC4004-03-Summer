@@ -3,13 +3,13 @@ package com.dgu_csc.akomanager_back.controller;
 import com.dgu_csc.akomanager_back.model.user;
 import com.dgu_csc.akomanager_back.service.Userservice;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,4 +35,10 @@ public class Usercontroller {
         return userservice.getAllUsers();
     }
 
+    // 검색 기능
+    @GetMapping("/{studentId}")
+    public ResponseEntity<user> getInfo(@PathVariable String studentId){
+        Optional<user> user = userservice.search(studentId);
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
