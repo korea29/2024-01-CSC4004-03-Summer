@@ -1,6 +1,6 @@
 package com.dgu_csc.akomanager_back.controller;
 
-import com.dgu_csc.akomanager_back.model.subject;
+import com.dgu_csc.akomanager_back.model.Subject;
 import com.dgu_csc.akomanager_back.service.Subjectservice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class Subjectcontroller {
     private final Subjectservice subjectservice;
 
     @PostMapping("/add")
-    public void add(@RequestBody subject subject) {
+    public void add(@RequestBody Subject subject) {
         subjectservice.saveSubject(subject);
     }
 
@@ -28,7 +28,7 @@ public class Subjectcontroller {
     }
 
     @GetMapping("/getAll")
-    public List<subject> List() {
+    public List<Subject> List() {
         return subjectservice.getAllsubject();
     }
 

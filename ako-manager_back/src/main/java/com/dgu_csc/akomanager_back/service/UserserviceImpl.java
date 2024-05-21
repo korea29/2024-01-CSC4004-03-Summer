@@ -1,6 +1,6 @@
 package com.dgu_csc.akomanager_back.service;
 
-import com.dgu_csc.akomanager_back.model.user;
+import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class UserserviceImpl implements Userservice{
 
     @Override
     @Transactional
-    public user saveUser(user user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public List<user> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 }

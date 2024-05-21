@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.dgu_csc.akomanager_back.model.Subject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -105,34 +106,31 @@ public class ExcelUploadController {
 
                         switch (c) {
                             case 1: { // 개설 학년
-                                String[] numbers = value.split(",");
-                                ArrayList<String> schoolYears = new ArrayList<>();
-                                Collections.addAll(schoolYears, numbers);
-                                newSubject.setYearOfOffering(schoolYears);
+                                newSubject.setEstablishedGrade(value);
                                 break;
                             }
                             case 2: { // 개설 학기
-                                newSubject.setSemesterOfOffering(value);
+                                newSubject.setOpenSemester(value);
                                 break;
                             }
                             case 3: { // 교과과정
-                                newSubject.setCurriculum(value);
+                                newSubject.setCourseOfStudy(value);
                                 break;
                             }
                             case 5: { // 이수구분
-                                newSubject.setLectureType(value);
+                                newSubject.setClassificationOfCompletion(value);
                                 break;
                             }
                             case 6: { // 학수번호
-                                newSubject.setCourseNumber(value);
+                                newSubject.setSubjectNum(value);
                                 break;
                             }
                             case 7: { // 교과목국문명
-                                newSubject.setLectureName(value);
+                                newSubject.setSubjectName(value);
                                 break;
                             }
                             case 9: { // 학점
-                                newSubject.setCredit(value);
+                                newSubject.setGrade(Integer.parseInt(value));
                                 break;
                             }
                             default:
