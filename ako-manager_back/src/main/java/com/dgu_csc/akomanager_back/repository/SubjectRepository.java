@@ -13,5 +13,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     Optional<Subject> findBysubjectNumContaining(String subjectNum);
     // 과목명을 매개변수로 Subject 객체 반환
     Optional<Subject> findBysubjectNameContaining(String subjectName);
+
 }
 

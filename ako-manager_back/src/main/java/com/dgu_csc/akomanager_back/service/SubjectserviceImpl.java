@@ -49,7 +49,7 @@ public class SubjectserviceImpl implements Subjectservice{
         return subjectRepository.findBysubjectNameContaining(subjectName);
     }
 
-    // PUT : [/Subject/{subjectNum}/update] url의 studentId와 body의 password 정보로 유저 정보 수정
+    // PUT : [/Subject/{subjectNum}/update] url의 subjectNum와 body의 Subject 정보로 업데이트
     @Override
     public Optional<Subject> updateSubject(String subjectNum, Subject updateSubject) {
         return subjectRepository.findBysubjectNameContaining(subjectNum)
@@ -69,9 +69,9 @@ public class SubjectserviceImpl implements Subjectservice{
     // DELETE : [/User/{subjectNum}/delete] url의 studentId와 body의 마스터 비밀번호로 과목 정보 삭제
     @Override
     public boolean deleteSubject(String subjectNum, String password) {
-        if(password.equals(MASTER_PASSWORD))
+        if(password.equals(MASTER_PASSWORD)) {
             return true;
-        else
+        } else
             return false;
     }
 }
