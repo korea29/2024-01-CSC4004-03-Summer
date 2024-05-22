@@ -1,13 +1,19 @@
 package com.dgu_csc.akomanager_back.controller;
 
+
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
+
+
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.Userservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
+
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,13 +50,17 @@ public class Usercontroller {
     }
 
 
+
     // 유저 정보 검색후 반환 / POST : url에 아이디, body에 비밀번호 요청
+
     @PostMapping("/{studentId}/get")
     public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
+
             Optional<User> user = userservice.searchUser(studentId, request.getPassword());
             return user.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력
     @PutMapping("/{studentId}/update")

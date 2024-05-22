@@ -1,4 +1,51 @@
-//package com.dgu_csc.akomanager_back.controller;
+
+package com.dgu_csc.akomanager_back.controller;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/excel")
+public class ExcelUploadController {
+
+    @PostMapping("/upload")
+    public String[][] uploadExcelFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
+
+        List<List<String>> records = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                List<String> rowData = new ArrayList<>();
+                for (Cell cell : row) {
+                    rowData.add(cell.toString());
+                }
+                records.add(rowData);
+            }
+        }
+
+        String[][] data = new String[records.size()][];
+        for (int i = 0; i < records.size(); i++) {
+            List<String> row = records.get(i);
+            data[i] = row.toArray(new String[0]);
+        }
+
+        // data에 string형 2차원 배열로 데이터가 저장됩니다.
+        // data를 이용해서 entity 만드시면 될 거 같아요!
+        return data;
+    }
+
+}
+
+
 //
 //import com.dgu_csc.akomanager_back.model.Subject;
 //

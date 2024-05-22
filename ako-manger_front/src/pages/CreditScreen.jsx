@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { TinyColor } from "@ctrl/tinycolor";
 import { Layout, Menu, Button, FloatButton, Popover } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
 
@@ -100,6 +101,11 @@ const curriculumDummyData = [
 ];
 
 const CreditScreen = () => {
+  const navigate = useNavigate(); // 다음 시간표 추천 네이게이션
+  const gotoTimeTable = () => {
+    navigate("/timetable");
+  };
+
   // 왼쪽 네비게이션 관련 함수-1
   const handleMenuClick = (e) => {
     const sectionId = `part-${e.key}`;
@@ -117,6 +123,7 @@ const CreditScreen = () => {
         description="✏️ 다음 학기 시간표 추천해 줄게요"
         shape="square"
         className="custom-float-button"
+        onClick= {gotoTimeTable} // 시간표 창 열기
         //onClick => 클릭시 시간표 보여주기(time table 라이브러리 사용)
         style={{
           right: 50,
