@@ -29,19 +29,11 @@
 }
 
 .profile-container {
-  position: relative;
-  width: 150px;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 7%;
-}
-
-.profile-container {
   position: absolute;
   width: 150px; /* 원의 지름에 추가 여백을 줍니다. */
   left: 50%; /* 이미지를 화면의 가로 중앙에 위치하도록 설정 */
   transform: translateX(-50%); /* 가로 중앙 정렬을 위해 사용 */
-  top: 7%; /* 이미지를 화면의 상단에 위치하도록 설정 */
+  top: 10%; /* 이미지를 화면의 상단에 위치하도록 설정 */
 }
 
 .profile-image {
@@ -72,11 +64,29 @@
   white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정합니다. */
 }
 
+.upload-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 200px; /* Increase padding to increase size */
+  border-radius: 50%; /* Set border-radius to 50% for circular shape */
+  font-size: 16px;
+  pointer-events: none; /* This ensures that the overlay text doesn't block mouse events on the image */
+  transition: opacity 0.3s;
+}
+.profile-image-container:hover .upload-text-overlay {
+  opacity: 1;
+}
+
+
 .required-text {
   color: #757575;
-  margin-top:200px;
+  margin-top:170px; /* 프로필 설정과 간격 조정 */
   margin-bottom: 10px;
-  margin-left: -230px; /* 왼쪽 여백을 조정하여 폼 입력란과 맞추어 왼쪽 정렬합니다. */
+  margin-left: -260px; /* 왼쪽 여백을 조정하여 폼 입력란과 맞추어 왼쪽 정렬합니다. */
   font-size: 12px;
 }
 
@@ -91,8 +101,15 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  width: 300px;
 }
-
+.select-input {  /* 소속단과대학선택 폼 */
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 324px; /* 모든 입력 칸의 너비를 300px로 설정 */
+}
 .submit-button {
   margin-top: 15px;
   padding: 10px;
@@ -100,6 +117,7 @@
   color: #757575;
   border: none;
   border-radius: 10px;
+  width: 330px;
   cursor: pointer;
 }
 .submit-button:hover {

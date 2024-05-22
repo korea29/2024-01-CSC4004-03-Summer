@@ -63,6 +63,7 @@ public class UserserviceImpl implements Userservice{
 
     // DELETE : [/User/{studentId}/delete] url의 studentId와 body의 유저 개인 비밀번호나 마스터 비밀번호로 유저 정보 삭제
     public boolean deleteUser(String studentId, String password) {
+
         if(password.equals(MASTER_PASSWORD))
             return true;
         else
@@ -72,5 +73,6 @@ public class UserserviceImpl implements Userservice{
                         userRepository.delete(user);
                         return true;
                     }).orElse(false);
+
     }
 }

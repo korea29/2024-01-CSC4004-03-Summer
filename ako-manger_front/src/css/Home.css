@@ -7,13 +7,14 @@
   background-color: #ffffff;
 }
 .home-title {
-  font-family: 'SeoulHangang CL', sans-serif;
-  font-size: 4rem;
+  font-family: 'SeoulHangangM ', sans-serif;
+  font-size: 3.5rem;
   margin-bottom: 2rem;
+  color: #867060;
 }
 
 .home-image {
-  width: 300px;
+  width: 270px;
   height: auto;
   margin-bottom: 2rem;
 }
@@ -82,6 +83,7 @@
   justify-content: center;
   align-items: center;
   border: none; /* 테두리 제거 */
+  cursor: pointer;
 }
 .home-option-icon:hover{
   background-color: rgba(220, 170, 17, 0.5);

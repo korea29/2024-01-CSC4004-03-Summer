@@ -2,7 +2,7 @@ import React from "react";
 import PhoneAko from "../../Images/핸드폰쥔아코_(designed by 박세리).png";
 import rightBubbleTriangle from "../../Images/right.png"; // Use right arrow for right bubble
 
-const RightBubble = ({ data }) => {
+const RightBubble = ({ message }) => {
   return (
     <div style={styles.chatWrapper}>
       <img
@@ -16,7 +16,7 @@ const RightBubble = ({ data }) => {
       </div>
       <div style={styles.bubbleContainer}>
         <div style={styles.bubbleWrapper}>
-          <p style={styles.chattingContents}>안녕! 질문, 상담 등</p>
+          <p style={styles.chattingContents}>{message}</p>
         </div>
         <img
           src={rightBubbleTriangle}
@@ -31,7 +31,7 @@ const RightBubble = ({ data }) => {
 const styles = {
   chatWrapper: {
     display: "flex",
-    marginBottom: 16,
+    marginBottom: 30,
     flexDirection: "row-reverse", // Align components to the right
   },
   userInfo: {
