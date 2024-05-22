@@ -19,24 +19,24 @@ import java.util.Optional;
 public class Usercontroller {
 
     @Autowired
-    private final Userservice userservice;
+    private final Userservice userService;
 
-    // 이미 있는 유저인지 판단하고 유저 저장
+    // POST :  [/User/add] 과목 추가 (학번 중복 확인)
     @PostMapping("/add")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         try {
-            userservice.saveUser(user);
+            userService.saveUser(user);
             return ResponseEntity.ok("User added successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(409).body(e.getMessage());
         }
     }
 
-    // 모든 유저 정보 반환
+    // POST : [/User/getAll] / 마스터 비밀번호를 body로 포함해서 요청하면 정보 반환
     @PostMapping("/getAll")
     public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest request) {
         try {
-            List<User> Users = userservice.getAllUsers(request.getPassword());
+            List<User> Users = userService.getAllUsers(request.getPassword());
             return ResponseEntity.ok(Users);
         } catch (SecurityException e) {
             return ResponseEntity.status(403).build();
@@ -44,10 +44,10 @@ public class Usercontroller {
     }
 
 
-    // 유저 정보 검색후 반환 / POST : url에 아이디, body에 비밀번호 요청
+    // POST : [/User/{studentId}/get] url의 studentId와 body의 유저 개인의 password 정보로 유저 정보 반환
     @PostMapping("/{studentId}/get")
     public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
-            Optional<User> user = userservice.searchUser(studentId, request.getPassword());
+            Optional<User> user = userService.searchUser(studentId, request.getPassword());
             return user.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -55,7 +55,7 @@ public class Usercontroller {
     // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력
     @PutMapping("/{studentId}/update")
     public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
-        Optional<User> user = userservice.updateUser(studentId, request.getPassword(), request.getUpdatedUser());
+        Optional<User> user = userService.updateUser(studentId, request.getPassword(), request.getUpdatedUser());
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -63,7 +63,7 @@ public class Usercontroller {
     // 유저 정보 삭제
     @DeleteMapping("/{studentId}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable String studentId, @RequestBody PasswordRequest request) {
-        boolean isDeleted = userservice.deleteUser(studentId, request.getPassword());
+        boolean isDeleted = userService.deleteUser(studentId, request.getPassword());
         if (isDeleted) {
             System.out.println("delete complete!");
             return ResponseEntity.noContent().build();

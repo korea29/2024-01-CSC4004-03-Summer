@@ -17,7 +17,7 @@ public class SubjectserviceImpl implements Subjectservice{
     private final SubjectRepository subjectRepository;
     private static final String MASTER_PASSWORD = "SUMMER";
 
-    // POST :  [/Subject/add] 과목 추가
+    // POST :  [/Subject/add] 과목 추가 (학수번호 중복 확인)
     @Override
     @Transactional
     public void saveSubject(Subject subject) {
