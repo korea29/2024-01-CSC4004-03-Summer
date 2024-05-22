@@ -12,17 +12,17 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectserviceImpl implements Subjectservice{
+public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
     private static final String MASTER_PASSWORD = "SUMMER";
 
-    // POST :  [/Subject/add] 과목 추가
+    // POST :  [/Subject/add] 과목 추가 (학수번호 중복 확인)
     @Override
     @Transactional
     public void saveSubject(Subject subject) {
-        if(subjectRepository.findBysubjectNumContaining(subject.getSubjectNum()).isPresent()) {
-            throw new IllegalArgumentException("동일한 학수번호가 존재하는 과목이 존재합니다.");
+        if (!subjectRepository.findBysubjectNumContaining(subject.getSubjectNum()).isEmpty()) {
+            throw new IllegalArgumentException("Subject with subjectNum already exists");
         }
         subjectRepository.save(subject);
     }
@@ -39,39 +39,44 @@ public class SubjectserviceImpl implements Subjectservice{
 
     // GET : [/Subject/{subjectNum}/get] url의 subjectNum으로 과목 정보 반환 (학수번호 일부만 검색 해도 나오게 구현)
     @Override
-    public Optional<Subject> searchSubjectbysubjectNum(String subjectNum) {
+    public List<Subject> searchSubjectbysubjectNum(String subjectNum) {
         return subjectRepository.findBysubjectNumContaining(subjectNum);
     }
 
     // GET : [/Subject/{subjectName}/get] url의 subjectName으로 과목 정보 반환 (과목명 일부만 검색 해도 나오게 구현)
     @Override
-    public Optional<Subject> searchSubjectbysubjectName(String subjectName) {
+    public List<Subject> searchSubjectbysubjectName(String subjectName) {
         return subjectRepository.findBysubjectNameContaining(subjectName);
     }
 
-    // PUT : [/Subject/{subjectNum}/update] url의 studentId와 body의 password 정보로 유저 정보 수정
-    @Override
+    // PUT : [/Subject/{subjectNum}/update] url의 subjectNum와 body의 Subject 정보로 업데이트
     public Optional<Subject> updateSubject(String subjectNum, Subject updateSubject) {
-        return subjectRepository.findBysubjectNameContaining(subjectNum)
-                .filter(subject -> subject.getSubjectNum().equals(subjectNum))
-                .map(subject -> {
-                    subject.setSubjectNum(updateSubject.getSubjectNum());
-                    subject.setSubjectName(updateSubject.getSubjectName());
-                    subject.setEstablishedGrade(updateSubject.getEstablishedGrade());
-                    subject.setOpenSemester(updateSubject.getOpenSemester());
-                    subject.setGrade(updateSubject.getGrade());
-                    subject.setCourseOfStudy(updateSubject.getCourseOfStudy());
-                    subject.setClassificationOfCompletion(updateSubject.getClassificationOfCompletion());
-                    return subjectRepository.save(subject);
-                });
+        List<Subject> subjects = subjectRepository.findBysubjectNumContaining(subjectNum);
+        if (subjects.size() != 1) {
+            return Optional.empty(); // Return empty if there are no matches or multiple matches
+        }
+        Subject subject = subjects.get(0);
+        if (!subject.getSubjectNum().equals(subjectNum)) {
+            return Optional.empty(); // Return empty if the subjectNum does not match
+        }
+
+        subject.setSubjectNum(updateSubject.getSubjectNum());
+        subject.setSubjectName(updateSubject.getSubjectName());
+        subject.setEstablishedGrade(updateSubject.getEstablishedGrade());
+        subject.setOpenSemester(updateSubject.getOpenSemester());
+        subject.setGrade(updateSubject.getGrade());
+        subject.setCourseOfStudy(updateSubject.getCourseOfStudy());
+        subject.setClassificationOfCompletion(updateSubject.getClassificationOfCompletion());
+
+        return Optional.of(subjectRepository.save(subject));
     }
 
     // DELETE : [/User/{subjectNum}/delete] url의 studentId와 body의 마스터 비밀번호로 과목 정보 삭제
     @Override
     public boolean deleteSubject(String subjectNum, String password) {
-        if(password.equals(MASTER_PASSWORD))
+        if(password.equals(MASTER_PASSWORD)) {
             return true;
-        else
+        } else
             return false;
     }
 }
