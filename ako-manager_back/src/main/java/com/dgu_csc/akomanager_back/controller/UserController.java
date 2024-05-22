@@ -3,7 +3,7 @@ package com.dgu_csc.akomanager_back.controller;
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
 import com.dgu_csc.akomanager_back.model.User;
-import com.dgu_csc.akomanager_back.service.Userservice;
+import com.dgu_csc.akomanager_back.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/User")
-public class Usercontroller {
+public class UserController {
 
     @Autowired
-    private final Userservice userService;
+    private final UserService userService;
 
     // POST :  [/User/add] 과목 추가 (학번 중복 확인)
     @PostMapping("/add")

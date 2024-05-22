@@ -1,10 +1,8 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
-import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
 import com.dgu_csc.akomanager_back.model.Subject;
-import com.dgu_csc.akomanager_back.model.User;
-import com.dgu_csc.akomanager_back.service.Subjectservice;
+import com.dgu_csc.akomanager_back.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +14,12 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/Subject")
-public class Subjectcontroller {
+public class SubjectController {
 
     @Autowired
-    private final Subjectservice subjectService;
+    private final SubjectService subjectService;
 
     // POST :  [/Subject/add] 과목 추가 (학수번호 중복 확인)
-    // TODO: 엑셀 컨트롤러와 연결 필요 (파싱된 문자열 판단해서 테이블에 삽입)
     @PostMapping("/add")
     public ResponseEntity<String> addSubject(@RequestBody Subject subject) {
         try {
@@ -35,19 +32,25 @@ public class Subjectcontroller {
 
     // TODO: 같은 포맷의 api 요청이 있을 때 구별법 분류
     // GET : [/Subject/{subjectNum}/get] url의 subjectNum으로 과목 정보 반환 (학수번호 일부만 검색 해도 나오게 구현)
-    @GetMapping("/{subjectNum}/getByNum")
-    public ResponseEntity<Subject> getSubjectbySubjectNum(@PathVariable String subjectNum) {
-        Optional<Subject> subject = subjectService.searchSubjectbysubjectNum(subjectNum);
-        return subject.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/getByNum/{subjectNum}")
+    public ResponseEntity<List<Subject>> getSubjectbySubjectNum(@PathVariable String subjectNum) {
+        List<Subject> subjects = subjectService.searchSubjectbysubjectNum(subjectNum);
+        if (subjects.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(subjects);
+        }
     }
 
     // GET : [/Subject/{subjectName}/get] url의 subjectName으로 과목 정보 반환 (과목명 일부만 검색 해도 나오게 구현)
-    @GetMapping("/{subjectName}/getByName")
-    public ResponseEntity<Subject> getSubjectbySubjectName(@PathVariable String subjectName) {
-        Optional<Subject> subject = subjectService.searchSubjectbysubjectName(subjectName);
-        return subject.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/getByName/{subjectName}")
+    public ResponseEntity<List<Subject>> getSubjectbySubjectName(@PathVariable String subjectName) {
+        List<Subject> subjects = subjectService.searchSubjectbysubjectName(subjectName);
+        if (subjects.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(subjects);
+        }
     }
 
     // GET : [/Subject/getAll] / user와 다르게 별도의 마스터 비밀 번호 필요 없다.

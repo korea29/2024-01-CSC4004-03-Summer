@@ -1,8 +1,11 @@
-
 package com.dgu_csc.akomanager_back.controller;
 
+import com.dgu_csc.akomanager_back.model.Subject;
+import com.dgu_csc.akomanager_back.service.SubjectService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,36 +17,78 @@ import java.util.List;
 @RequestMapping("/excel")
 public class ExcelUploadController {
 
+    @Autowired
+    private SubjectService subjectService;
+
     @PostMapping("/upload")
-    public String[][] uploadExcelFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Uploaded file is empty");
         }
 
-        List<List<String>> records = new ArrayList<>();
+        List<Subject> subjects = new ArrayList<>();
         try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
-                List<String> rowData = new ArrayList<>();
-                for (Cell cell : row) {
-                    rowData.add(cell.toString());
+                if (row.getRowNum() == 0) { // Skip header row
+                    continue;
                 }
-                records.add(rowData);
+                Subject subject = new Subject();
+                for (Cell cell : row) {
+                    // 엑셀 열을 기준으로 집어넣을 항목
+                    switch (cell.getColumnIndex()) {
+                        case 0:
+                            break;
+                        case 1:
+                            // 개설 학년
+                            subject.setEstablishedGrade(cell.toString());
+                            break;
+                        case 2:
+                            // 개설 학기
+                            subject.setOpenSemester(cell.toString());
+                            break;
+                        case 3:
+                            // 교과 과정
+                            subject.setCourseOfStudy(cell.toString());
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            // 이수 구분
+                            subject.setClassificationOfCompletion(cell.toString());
+                            break;
+                        case 6:
+                            // 학수 번호
+                            subject.setSubjectNum(cell.toString());
+                            break;
+                        case 7:
+                            // 과목명
+                            subject.setSubjectName(cell.toString());
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            // 학점
+                            subject.setGrade(Integer.parseInt(cell.toString()));
+                            break;
+                    }
+                }
+                subjects.add(subject);
             }
         }
 
-        String[][] data = new String[records.size()][];
-        for (int i = 0; i < records.size(); i++) {
-            List<String> row = records.get(i);
-            data[i] = row.toArray(new String[0]);
+        for (Subject subject : subjects) {
+            try {
+                subjectService.saveSubject(subject);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(409).body(e.getMessage());
+            }
         }
 
-        // data에 string형 2차원 배열로 데이터가 저장됩니다.
-        // data를 이용해서 entity 만드시면 될 거 같아요!
-        return data;
+        return ResponseEntity.ok("Subjects added successfully");
     }
-
 }
+
 
 
 //
