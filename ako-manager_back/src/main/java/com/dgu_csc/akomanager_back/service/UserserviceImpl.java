@@ -15,9 +15,10 @@ public class UserserviceImpl implements Userservice{
 
     private final UserRepository userRepository;
 
-    // "/getAll" 을 위한 master 비밀번호
+    // POST : [/User/getAll] 을 위한 master 비밀번호
     private static final String MASTER_PASSWORD = "SUMMER";
 
+    // POST : [/User/add]
     @Override
     @Transactional
     public void saveUser(User user) {
@@ -27,7 +28,7 @@ public class UserserviceImpl implements Userservice{
         userRepository.save(user);
     }
 
-    // get : 전체 유저 반환 (master 전용)
+    // POST : [/User/getAll] => 전체 유저 반환 (master 전용)
     public List<User> getAllUsers(String masterPassword) {
         if (MASTER_PASSWORD.equals(masterPassword)) {
             return userRepository.findAll();
@@ -36,14 +37,13 @@ public class UserserviceImpl implements Userservice{
         }
     }
 
-    // get : studentId와 해당 password로 유저 정보 반환
+    // POST : [/User/{studentId}/get] url의 studentId와 body의 password 정보로 유저 정보 반환
     @Override
-
-    public Optional<User> search(String studentId, String password) {
+    public Optional<User> searchUser(String studentId, String password) {
         return userRepository.findBystudentId(studentId).filter(user -> user.getPassword().equals(password));
     }
 
-    // put : studentId와 해당 password로 유저 정보 수정
+    // PUT : [/User/{studentId}/update] url의 studentId와 body의 password 정보로 유저 정보 수정
     @Override
     public Optional<User> updateUser(String studentId, String password, User updatedUser) {
         return userRepository.findBystudentId(studentId)
@@ -61,15 +61,18 @@ public class UserserviceImpl implements Userservice{
                 });
     }
 
-    // 비밀번호 판단
+    // DELETE : [/User/{studentId}/delete] url의 studentId와 body의 유저 개인 비밀번호나 마스터 비밀번호로 유저 정보 삭제
     public boolean deleteUser(String studentId, String password) {
-        return userRepository.findBystudentId(studentId)
-                .filter(user -> user.getPassword().equals(password))
-                .map(user -> {
-                    userRepository.delete(user);
-                    return true;
-                }).orElse(false);
 
+        if(password.equals(MASTER_PASSWORD))
+            return true;
+        else
+            return userRepository.findBystudentId(studentId)
+                    .filter(user -> user.getPassword().equals(password))
+                    .map(user -> {
+                        userRepository.delete(user);
+                        return true;
+                    }).orElse(false);
 
     }
 }

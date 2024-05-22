@@ -55,13 +55,14 @@ public class Usercontroller {
 
     @PostMapping("/{studentId}/get")
     public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
-        Optional<User> user = userservice.search(studentId, request.getPassword());
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+            Optional<User> user = userservice.searchUser(studentId, request.getPassword());
+            return user.map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 
-
-    // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보 입력
+    // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력
     @PutMapping("/{studentId}/update")
     public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
         Optional<User> user = userservice.updateUser(studentId, request.getPassword(), request.getUpdatedUser());
