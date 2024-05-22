@@ -21,12 +21,16 @@ public class Usercontroller {
     @Autowired
     private final Userservice userservice;
 
-    // 유저 추가
+    // 이미 있는 유저인지 판단하고 유저 저장
     @PostMapping("/add")
-    public void add(@RequestBody User user) {
-        userservice.saveUser(user);
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        try {
+            userservice.saveUser(user);
+            return ResponseEntity.ok("User added successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
     }
-
 
     // 모든 유저 정보 반환
     @PostMapping("/getAll")
@@ -40,7 +44,7 @@ public class Usercontroller {
     }
 
 
-    // 유저 정보 검색후 반환
+    // 유저 정보 검색후 반환 / POST : url에 아이디, body에 비밀번호 요청
     @PostMapping("/{studentId}/get")
     public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
         Optional<User> user = userservice.search(studentId, request.getPassword());
@@ -48,6 +52,7 @@ public class Usercontroller {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보 입력
     @PutMapping("/{studentId}/update")
     public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
         Optional<User> user = userservice.updateUser(studentId, request.getPassword(), request.getUpdatedUser());

@@ -20,8 +20,11 @@ public class UserserviceImpl implements Userservice{
 
     @Override
     @Transactional
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public void saveUser(User user) {
+        if (userRepository.findBystudentId(user.getStudentId()).isPresent()) {
+            throw new IllegalArgumentException("동일한 학번이 존재하는 유저가 존재합니다.");
+        }
+        userRepository.save(user);
     }
 
     // get : 전체 유저 반환 (master 전용)

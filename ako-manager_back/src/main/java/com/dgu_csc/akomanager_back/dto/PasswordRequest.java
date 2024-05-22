@@ -1,14 +1,10 @@
 package com.dgu_csc.akomanager_back.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PasswordRequest {
     private String password;
-
-    // Getters and Setters
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
