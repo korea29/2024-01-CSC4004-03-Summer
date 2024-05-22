@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// 전체 과목에 대한 정보를 저장 하는 테이블
 @NoArgsConstructor
 @Getter
 @Setter

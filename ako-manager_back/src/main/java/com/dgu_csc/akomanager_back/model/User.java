@@ -8,6 +8,7 @@
 
     import java.time.LocalDate;
 
+    // 유저 개인 정보를 저장 하는 테이블
     @NoArgsConstructor
     @Getter
     @Setter
