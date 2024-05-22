@@ -38,6 +38,7 @@ public class UserserviceImpl implements Userservice{
 
     // get : studentId와 해당 password로 유저 정보 반환
     @Override
+
     public Optional<User> search(String studentId, String password) {
         return userRepository.findBystudentId(studentId).filter(user -> user.getPassword().equals(password));
     }
@@ -68,5 +69,7 @@ public class UserserviceImpl implements Userservice{
                     userRepository.delete(user);
                     return true;
                 }).orElse(false);
+
+
     }
 }

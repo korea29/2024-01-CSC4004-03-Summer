@@ -11,6 +11,7 @@
   font-family: 'SeoulHangang CL', sans-serif;
   font-size: 4rem;
   margin-bottom: -0.5rem;
+  color: #867060;
 }
 
 .login-form {
@@ -23,7 +24,7 @@
 .login-input {
   padding: 0.5rem;
   font-size: 1rem;
-  border: 2px solid #f4e7da;
+  border: 1px solid #f4e7da;
   border-radius: 10px;
 }
 .login-button {
