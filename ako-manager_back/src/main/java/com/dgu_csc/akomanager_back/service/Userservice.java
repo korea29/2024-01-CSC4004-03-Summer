@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Userservice {
-    public User saveUser(User user);
 
+    public void saveUser(User user);
     public List<User> getAllUsers(String massterPassword);
     public Optional<User> search(String studentId, String password);
     public Optional<User> updateUser(String studentId, String password, User updatedUser);
