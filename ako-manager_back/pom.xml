@@ -71,9 +71,14 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.dgu_csc</groupId>
+            <artifactId>ako-manager_back</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<defaultGoal>install</defaultGoal>
