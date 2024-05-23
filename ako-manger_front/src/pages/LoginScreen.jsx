@@ -45,37 +45,39 @@ const LoginScreen = () => {
   return (
     <div className="login-container">
       <HeaderComponent />
-      <h1 className="login-title">Hello, A-Ko!</h1>
-      <img className="home-image" src={Ako_sit} alt="LoginScreen" />
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input
-          className="login-input"
-          type="text"
-          placeholder="아이디"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          className="login-input"
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="login-button" type="submit">
-          로그인
-        </button>
-        <div className="login-options">
-          <span className="login-option" onClick={gotoSign}>
-            회원가입
-          </span>
-          <span className="login-option">아이디찾기</span>
-          <span className="login-option">비밀번호 찾기</span>
-        </div>
-        <button className="login-button-kakao" type="submit">
-          카카오 로그인
-        </button>
-      </form>
+      <div className="login-wrap">
+        <h1 className="login-title">Hello, A-Ko!</h1>
+        <img className="home-image" src={Ako_sit} alt="LoginScreen" />
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            className="login-input"
+            type="text"
+            placeholder="아이디"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            className="login-input"
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="login-button" type="submit">
+            로그인
+          </button>
+          <div className="login-options">
+            <span className="login-option" onClick={gotoSign}>
+              회원가입
+            </span>
+            <span className="login-option">아이디찾기</span>
+            <span className="login-option">비밀번호 찾기</span>
+          </div>
+          <button className="login-button-kakao" type="submit">
+            카카오 로그인
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
