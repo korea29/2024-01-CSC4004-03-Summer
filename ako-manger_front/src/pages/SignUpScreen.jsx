@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const SignUpScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userId, password } = location.state || {};
+  const { userId: username, password } = location.state || {};
 
   const [isSubmitted, setIsSubmitted] = useState(false); // 정보 입력 성공 오버레이
   const [showUploadText, setShowUploadText] = useState(false);
@@ -25,14 +25,15 @@ const SignUpScreen = () => {
 
   const [formData, setFormData] = useState({
     university: "",
-    studentId: userId || "",
+    studentId: "", // 학번
     name: "",
     major: "",
     college: "",
-    secondMajor: "",
-    birth: "",
+    minor: "",
+    date_of_birth: "",
     profileImage: null,
     excelFile: null,
+    username:username || "", // 아이디-닉네임?
     password: password || "",
   });
 
@@ -84,7 +85,7 @@ const SignUpScreen = () => {
     const value = e.target.value;
     if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
       // 영문자 및 한글 형식 또는 빈 문자열인 경우에만 입력을 허용
-      setFormData({ ...formData, secondMajor: value });
+      setFormData({ ...formData, minor: value });
     }
   };
 
@@ -94,7 +95,7 @@ const SignUpScreen = () => {
 
     // 숫자와 하이픈만 허용하는 정규식을 사용하여 입력 값을 검사합니다.
     if (/^[\d-]*$/.test(value)) {
-      setFormData({ ...formData, birth: value });
+      setFormData({ ...formData, date_of_birth: value });
     }
   };
 
@@ -125,7 +126,7 @@ const SignUpScreen = () => {
         },
         body: JSON.stringify(formData),
       });
-
+      console.log({formData});
       if (response.ok) {
         setIsSubmitted(true);
         setTimeout(() => {
@@ -252,7 +253,7 @@ const SignUpScreen = () => {
           type="text"
           name="secondMajor"
           placeholder="부전공"
-          value={formData.secondMajor}
+          value={formData.minor}
           onChange={handleSecondMajorChange}
         />
         <input
@@ -260,7 +261,7 @@ const SignUpScreen = () => {
           type="text"
           name="birth"
           placeholder="생년월일(YYYY-MM-DD)"
-          value={formData.birth}
+          value={formData.date_of_birth}
           onChange={handleStudentBirthChange}
         />
         <div className="file-upload-container">
