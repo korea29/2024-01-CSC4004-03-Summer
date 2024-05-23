@@ -1,16 +1,22 @@
 .signup-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* 부모 요소에 꽉 차도록 변경 */
-    height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
+ align-items: center;
+ justify-content: center;
+ height: auto;
   }
   
+  .signup-wrap {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+  }
   .logo {
     width: 200px;
     height: 200px;
     margin-bottom: 30px;
+  }
+
+  .home-image{
+    margin-bottom: 50px;
   }
   
   .signup-form {
