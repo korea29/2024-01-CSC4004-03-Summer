@@ -13,5 +13,4 @@ public class AkoManagerBackApplication {
 		SpringApplication.run(AkoManagerBackApplication.class, args);
 		System.out.println("test in main");
 	}
-
 }
