@@ -12,4 +12,6 @@ public interface SubjectService {
     public List<Subject> searchSubjectbysubjectName(String subjectNum);
     public Optional<Subject> updateSubject(String subjectNum, Subject updateSubject);
     public boolean deleteSubject(String subjectNum, String password);
+
+    Optional<Subject> findBySubjectNum(String subjectnum);
 }

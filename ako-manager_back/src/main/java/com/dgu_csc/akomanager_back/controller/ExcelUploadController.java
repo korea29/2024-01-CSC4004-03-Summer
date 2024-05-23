@@ -1,7 +1,11 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.model.Subject;
+import com.dgu_csc.akomanager_back.model.SubjectFinished;
+import com.dgu_csc.akomanager_back.model.User;
+import com.dgu_csc.akomanager_back.service.SubjectFinishedService;
 import com.dgu_csc.akomanager_back.service.SubjectService;
+import com.dgu_csc.akomanager_back.service.UserService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/excel")
@@ -19,9 +24,13 @@ public class ExcelUploadController {
 
     @Autowired
     private SubjectService subjectService;
+    @Autowired
+    private SubjectFinishedService subjectFinishedService;
+    @Autowired
+    private UserService userService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/uploadS")
+    public ResponseEntity<String> uploadExcelFileSubject(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Uploaded file is empty");
         }
@@ -87,7 +96,70 @@ public class ExcelUploadController {
 
         return ResponseEntity.ok("Subjects added successfully");
     }
+
+    @PostMapping("/uploadSubjectFinished")
+    public ResponseEntity<String> uploadExcelFileSubjectFinished(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
+
+        List<SubjectFinished> subjectFinishedList = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) { // Skip header row
+                    continue;
+                }
+                SubjectFinished subjectFinished = new SubjectFinished();
+                for (Cell cell : row) {
+                    switch (cell.getColumnIndex()) {
+                        case 0:
+                            // 학번
+//                            Optional<User> userOpt = userService.findByStudentId(cell.toString());
+//                            if (userOpt.isPresent()) {
+//                                subjectFinished.setSfStudentid(userOpt.get());
+//                            } else {
+//                                throw new IllegalArgumentException("User not found: " + cell.toString());
+//                            }
+//                            break;
+                        case 5:
+                            // 학수 번호
+                            Optional<Subject> subjectOpt = subjectService.findBySubjectNum(cell.toString());
+                            if (subjectOpt.isPresent()) {
+                                subjectFinished.setSfSubjectnum(subjectOpt.get());
+                            } else {
+                                throw new IllegalArgumentException("Subject not found: " + cell.toString());
+                            }
+                            break;
+                        case 9:
+                            // 학점
+                            subjectFinished.setScore(cell.toString());
+                            break;
+                        case 3:
+                            // 재수강 여부
+                            subjectFinished.setReClass(Boolean.parseBoolean(cell.toString()));
+                            break;
+
+                    }
+                }
+                subjectFinishedList.add(subjectFinished);
+            }
+        }
+
+        for (SubjectFinished subjectFinished : subjectFinishedList) {
+            try {
+                subjectFinishedService.saveSubjectFinished(subjectFinished);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(409).body(e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok("SubjectFinished records added successfully");
+    }
+
 }
+
+
 
 
 

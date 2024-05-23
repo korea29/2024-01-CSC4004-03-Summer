@@ -9,9 +9,9 @@ public interface SubjectFinishedService {
     // DB 저장
     public void saveSubjectFinished(SubjectFinished subjectFinished);
     // 모든 DB 내용 출력
-    public List<SubjectFinished> getAllSubjectFinished();
+    public List<SubjectFinished> getAllSubjectFinished(String masterPassword);
     // 유저 아이디 매개 변수로 검색해 해당 유저의 수강한 과목들 출력
-    public List<SubjectFinished> searchByStudentId(String studentId);
+    public List<SubjectFinished> searchByStudentId(String studentId, String password);
     // 총 들은 학점 계산
     public String getTotalScore();
     // 총 들은 전공 학점 계산

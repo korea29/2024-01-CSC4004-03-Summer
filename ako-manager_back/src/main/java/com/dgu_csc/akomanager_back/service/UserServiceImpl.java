@@ -75,4 +75,9 @@ public class UserServiceImpl implements UserService {
                     }).orElse(false);
 
     }
+
+    @Override
+    public Optional<User> findByStudentId(String studentid) {
+        return userRepository.findBystudentId(studentid);
+    }
 }

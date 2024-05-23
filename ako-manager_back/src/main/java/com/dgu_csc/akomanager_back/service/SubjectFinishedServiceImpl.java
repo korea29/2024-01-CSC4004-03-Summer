@@ -1,19 +1,24 @@
 package com.dgu_csc.akomanager_back.service;
 
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
+import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.repository.SubjectFinishedRepository;
+import com.dgu_csc.akomanager_back.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SubjectFinishedServiceImpl implements SubjectFinishedService{
 
     private final SubjectFinishedRepository subjectFinishedRepository;
-
+    private static final String MASTER_PASSWORD = "SUMMER";
+    private final UserServiceImpl userServiceImpl;
+    private final UserRepository userRepository;
 
 
     // POST :  [/SubjectFinished/add] 들은 과목 추가 (학수번호 중복 확인)
@@ -26,15 +31,29 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
         subjectFinishedRepository.save(subjectFinished);
     }
 
-
+    // GET : [/SubjectFinished/getAll] DB 전체 내용 출력
     @Override
-    public List<SubjectFinished> getAllSubjectFinished() {
-        return List.of();
+    public List<SubjectFinished> getAllSubjectFinished(String masterPassword) {
+        if(MASTER_PASSWORD.equals(masterPassword)) {
+            return subjectFinishedRepository.findAll();
+        } else {
+            throw new SecurityException("마스터 비밀번호 오류");
+        }
     }
 
-    @Override
-    public List<SubjectFinished> searchByStudentId(String studentId) {
-        return List.of();
+    // POST : [/SubjectFinished/{studentId}/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
+    public List<SubjectFinished> searchByStudentId(String studentId, String password) {
+        Optional<User> userOpt = userRepository.findBystudentId(studentId);
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        User user = userOpt.get();
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return subjectFinishedRepository.findBySfStudentid(user);
     }
 
     @Override
