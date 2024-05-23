@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Ako_sit from "../pages/assets/ako-sit.png";
 import "../css/SignUp_first.css";
 import { useNavigate } from "react-router-dom";
-// import HeaderComponent from'../pages/components/HeaderComponent';
+import HeaderComponent from'../pages/components/HeaderComponent';
 
 const SignUp_first = () => {
   const navigate = useNavigate();
@@ -53,18 +53,19 @@ const SignUp_first = () => {
 
   return (
     <div className="signup-container">
-      {/* <HeaderComponent/> */}
+      <HeaderComponent/>
       <img className="home-image" src={Ako_sit} alt="LoginScreen" />
       {isSignUpSuccess && (
         <div className="signup-success-overlay">
-          <div className="signup-success-message">
-            <p>회원가입 성공! 추가 정보를 입력하러 가시겠습니까?</p>
-            <button className="add-info-button" onClick={gotoLoginScreen}>
-              No
-            </button>
-            <button className="add-info-button" onClick={gotoSignUpScreen}>
-              Yes!
-            </button>
+        <div className="signup-success-message">
+          <p>회원가입 성공!</p>
+          <p>추가 정보를 입력하러 가시겠습니까?</p>
+          <button className="add-info-button" onClick={gotoLoginScreen}>
+            No
+          </button>
+          <button className="add-info-button" onClick={gotoSignUpScreen}>
+            Yes!
+          </button>
           </div>
         </div>
       )}

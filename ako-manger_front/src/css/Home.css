@@ -58,6 +58,7 @@
   border-radius: 70px;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  border: none; 
 }
 
 .home-options {
@@ -94,4 +95,24 @@
   color: #867060;
   text-align: center;
   margin-top: 0.5rem;
+}
+/* 로그인 / 회원가입 */
+.auth-buttons { 
+  position: absolute;
+  top: 14px;
+  left: 7px;
+} 
+
+.auth-button {
+  background-color: transparent;
+  color: #867060; /* 글자색 지정 */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.signup-button {
+  margin-left: 0; /* 왼쪽 마진을 0으로 설정하여 두 버튼이 나란히 위치하도록 함 */
 }
