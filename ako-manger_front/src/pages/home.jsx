@@ -7,7 +7,7 @@ import "./components/TimeTableModal.css";
 const Home = () => {
   const navigate = useNavigate();
 
-  // 입력 값 상태 관리
+  // 입력 값 상태 관리-건들지 않기
   const [inputValue, setInputValue] = useState("");
 
   const gotoChat = () => {
@@ -20,6 +20,12 @@ const Home = () => {
 
   const gotoChange = () => {
     navigate("/signup");
+  };
+  const gotoLogin = () => {
+    navigate("/login");
+  };
+  const gotoSignUp = () => {
+    navigate("/signup_first");
   };
 
   // 모달 상태 관리
@@ -36,6 +42,10 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 className="home-title">Hello, A-Ko!</h1>
+      <div className="auth-buttons">
+      <button className="auth-button" onClick={gotoLogin}>로그인 /</button>
+      <button className="auth-button" onClick={gotoSignUp}>회원가입</button>
+    </div>
       <img className="home-image" src={Ako_sit} alt="Home" />
       <div className="home-chat">
         <input
@@ -43,7 +53,7 @@ const Home = () => {
           placeholder="안녕, 오랜만이야. 요즘 학교 생활은 어때?"
           className="home-chat-input"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}// 건들지 않기
         />
         <button className="home-chat-button" onClick={gotoChat}>
           start chat
@@ -73,25 +83,7 @@ const Home = () => {
       {modalVisible && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close-button"
-              onClick={closeModal}
-              style={{
-                borderRadius: "50%",
-                backgroundColor: "#F4E7DA",
-                border: "1.5px solid #B7A08E",
-                width: "40px",
-                height: "40px",
-                cursor: "pointer",
-              }}
-            >
-              X
-            </button>
-            <iframe
-              src="/timetable"
-              title="TimeTable"
-              className="modal-iframe"
-            ></iframe>
+          <iframe src="/timetable" title="TimeTable" className="modal-iframe"></iframe>
           </div>
         </div>
       )}
