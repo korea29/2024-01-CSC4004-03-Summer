@@ -1,6 +1,7 @@
 package com.dgu_csc.akomanager_back;
 
 
+
 import java.io.*;
 import java.util.Scanner;
 import java.time.*;
@@ -28,7 +29,7 @@ public class OpenChatbot {
 
             String[] command = {"python3", pythonScriptPath};
 
-            FileWriter ChatLogWriter = new FileWriter(ChatLog, true);
+            FileWriter ChatLogWriter = new FileWriter(ChatLog, true);  // 챗봇 로그 기록을 위하여 추가한 FileWriter
 
 
             System.out.println("아코 멘토에게 물어보고 싶은 것을 물어보세요");
@@ -67,7 +68,7 @@ public class OpenChatbot {
 
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
-                    ChatLogWriter.write(line);
+                    ChatLogWriter.write(line);              // 줄대로 읽게 할 거라 이렇게 씀
                 }
                 ChatLogWriter.write("\n");
                 ChatLogWriter.flush();
