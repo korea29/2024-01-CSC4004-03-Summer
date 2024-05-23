@@ -44,6 +44,7 @@ const LoginScreen = () => {
 
   return (
     <div className="login-container">
+      <HeaderComponent />
       <h1 className="login-title">Hello, A-Ko!</h1>
       <img className="home-image" src={Ako_sit} alt="LoginScreen" />
       <form className="login-form" onSubmit={handleSubmit}>

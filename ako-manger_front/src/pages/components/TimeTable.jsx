@@ -195,6 +195,7 @@ const TimeTable = () => {
                 href={getGoogleMapsUrl(lecture.building)}
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ color: '#2B43C3' }}
               >
                 어떻게 가요?
               </a>
@@ -210,6 +211,7 @@ const TimeTable = () => {
       <h1 style={{ color: "#867060", textAlign: "center" }}>
         2024-yy학기 시간표
       </h1>
+      <h1 style={{ color :"#757575",fontSize:"9px",textAlign: "center",marginTop:"10px", fontWeight: "lighter"}}>창을 닫으려면 아무 곳이나 누르시오</h1>
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}
       >
@@ -220,6 +222,7 @@ const TimeTable = () => {
             height: "700px",
             backgroundColor: "#fff",
             boxShadow: "0 0 20px rgba(0, 0, 0, 0.15)",
+            marginTop:"-10px",
           }}
         >
           <thead style={{ backgroundColor: "#F4E7DA", color: "#867060" }}>

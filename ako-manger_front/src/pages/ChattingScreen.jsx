@@ -54,6 +54,7 @@ const ChattingScreen = () => {
       setChatSessions([...chatSessions, chatHistory]);
       setChatHistory([]);
     }
+
   };
 
   const selectChatSession = (index) => {

@@ -3,15 +3,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height:auto;
   background-color: #ffffff;
 }
 
 .login-title {
   font-family: 'SeoulHangang CL', sans-serif;
   font-size: 4rem;
-  margin-bottom: -0.5rem;
+  margin-bottom: -0.3rem;
   color: #867060;
+  padding-top: 15px; /* 위로 여백을 추가해 간격 조정 */
 }
 
 .login-form {
@@ -30,8 +31,8 @@
 .login-button {
   padding: 0.5rem;
   font-size: 1rem;
-  background-color: #f4e7da;
-  color: #000000;
+  background-color: #F9F0E7;
+  color: #757575;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -44,10 +45,11 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .login-button:hover {
-  background-color: #f3d8be;
+  background-color: #F4E8DD;
 }
 .login-button-kakao:hover {
   background-color: #ecdb42;
@@ -57,16 +59,16 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0rem;
 }
 
 .login-option {
   font-family: 'SeoulHangang', sans-serif;
   font-size: 1rem;
-  color: #b9b9b9;
+  color: #757575;
   cursor: pointer;
 }
 
 .login-option:hover {
-  color: #757575;
+  color: #474646;
 }
