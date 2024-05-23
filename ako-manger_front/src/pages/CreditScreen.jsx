@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { TinyColor } from "@ctrl/tinycolor";
 import { Layout, Menu, Button, FloatButton, Popover } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
 
@@ -100,6 +101,11 @@ const curriculumDummyData = [
 ];
 
 const CreditScreen = () => {
+  const navigate = useNavigate(); // 다음 시간표 추천 네이게이션
+  const gotoTimeTable = () => {
+    navigate("/timetable");
+  };
+
   // 왼쪽 네비게이션 관련 함수-1
   const handleMenuClick = (e) => {
     const sectionId = `part-${e.key}`;
@@ -111,13 +117,26 @@ const CreditScreen = () => {
   // 왼쪽 네비게이션 관련 함수-2
   const [collapsed, setCollapsed] = useState(false);
 
+  // 모달 상태 관리 - TimeTable
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // 모달 열기 함수
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+// 모달 닫기 함수
+const closeModal = () => {
+  setModalVisible(false);
+};
+
   return (
     <div>
       <FloatButton
         description="✏️ 다음 학기 시간표 추천해 줄게요"
         shape="square"
         className="custom-float-button"
-        //onClick => 클릭시 시간표 보여주기(time table 라이브러리 사용)
+        onClick= {openModal} // 시간표 창 모달로 열기
         style={{
           right: 50,
           fontSize: 100,
@@ -200,6 +219,14 @@ const CreditScreen = () => {
           </div>
         </div>
       </div>
+      {modalVisible && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* <button className="modal-close-button" onClick={closeModal} style={{borderRadius: '50%', backgroundColor: '#F4E7DA', border: '1.5px solid #B7A08E', width: '40px', height: '40x', cursor: 'pointer'}}>X</button> */}
+            <iframe src="/timetable" title="TimeTable" className="modal-iframe"></iframe>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
