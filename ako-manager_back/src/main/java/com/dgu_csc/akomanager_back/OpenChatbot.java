@@ -15,7 +15,7 @@ public class OpenChatbot {
             int i;
             File ChatLog = new File (DefaultPath + "resources/MyLog3.txt");
             if ((ChatLog.exists()) && (ChatLog.canRead())) {
-                // Mylog3.txt가 존재하는 경우 모든 번호들을 앞으로 한 개씩 당김 -> 원래 1번이었던 애는 삭제됨
+                // Mylog3.txt가 존재하는 경우 모든 번호들을 앞으로 한 개씩 당김 -> 원래 1번이었던 애는 삭제됨  ! 3번이 가장 최신 내용입니다.
                 for ( i = 2 ; i < 4 ; i++) {
                     File upper = new File(DefaultPath + "resources/MyLog" + i + ".txt");
                     File lower = new File(DefaultPath + "resources/MyLog" + (i-1) + ".txt");
