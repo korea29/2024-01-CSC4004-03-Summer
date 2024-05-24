@@ -26,6 +26,7 @@ const HeaderComponent = () => {
       alignItems: "center",
       padding: "10px 20px",
       height: "60px",
+      width: "100%",
       backgroundColor: "rgba(244, 224, 200, 0.3)",
     },
     logo: {
