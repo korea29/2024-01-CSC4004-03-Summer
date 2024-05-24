@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/SubjectFinished")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SubjectFinishedController {
 
     @Autowired

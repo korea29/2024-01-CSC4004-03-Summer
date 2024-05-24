@@ -56,13 +56,20 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
         return subjectFinishedRepository.findBySfStudentid(user);
     }
 
+    // TODO : 이수한 총 학점 수
     @Override
     public String getTotalScore() {
         return "";
     }
 
+    // TODO : 이수한 총 전공 학점 수
     @Override
     public String getMajorTotalScore() {
         return "";
     }
+
+    // TODO : 총 성적 평균
+
+    // TODO : 총 전공 평균
+
 }

@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/Subject")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SubjectController {
 
     @Autowired

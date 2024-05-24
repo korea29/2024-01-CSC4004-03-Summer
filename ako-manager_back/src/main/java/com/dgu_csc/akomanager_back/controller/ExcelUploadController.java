@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/excel")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ExcelUploadController {
 
     @Autowired
@@ -97,6 +98,7 @@ public class ExcelUploadController {
         return ResponseEntity.ok("Subjects added successfully");
     }
 
+    // TODO : 성적 자료 타입 실수로 변경, 정우님 함수 사용
     @PostMapping("/uploadSubjectFinished")
     public ResponseEntity<String> uploadExcelFileSubjectFinished(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
