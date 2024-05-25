@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface SubjectFinishedRepository extends JpaRepository<SubjectFinished, Long> {
+    // 사용자가 들은 과목의 정보를 찾아서 반환
     List<SubjectFinished> findBySfStudentid(User user);
+    // 과목에 대한 정보 반환
     List<SubjectFinished> findBySfSubjectnum(Subject subject);
 }

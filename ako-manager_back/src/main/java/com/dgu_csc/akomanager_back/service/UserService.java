@@ -12,6 +12,5 @@ public interface UserService {
     public Optional<User> searchUser(String studentId, String password);
     public Optional<User> updateUser(String studentId, String password, User updatedUser);
     public boolean deleteUser(String studentId, String password);
-
     Optional<User> findByStudentId(String string);
 }

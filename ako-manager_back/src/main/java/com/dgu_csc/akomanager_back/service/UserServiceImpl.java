@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
-        if (userRepository.findBystudentId(user.getStudentId()).isPresent()) {
+        if (userRepository.findByStudentId(user.getStudentId()).isPresent()) {
             throw new IllegalArgumentException("동일한 학번이 존재하는 유저가 존재합니다.");
         }
         userRepository.save(user);
@@ -40,13 +40,13 @@ public class UserServiceImpl implements UserService {
     // POST : [/User/{studentId}/get] url의 studentId와 body의 password 정보로 유저 정보 반환
     @Override
     public Optional<User> searchUser(String studentId, String password) {
-        return userRepository.findBystudentId(studentId).filter(user -> user.getPassword().equals(password));
+        return userRepository.findByStudentId(studentId).filter(user -> user.getPassword().equals(password));
     }
 
     // PUT : [/User/{studentId}/update] url의 studentId와 body의 password 정보로 유저 정보 수정
     @Override
     public Optional<User> updateUser(String studentId, String password, User updatedUser) {
-        return userRepository.findBystudentId(studentId)
+        return userRepository.findByStudentId(studentId)
                 .filter(user -> user.getPassword().equals(password))
                 .map(user -> {
                     user.setUniversity(updatedUser.getUniversity());
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         if(password.equals(MASTER_PASSWORD))
             return true;
         else
-            return userRepository.findBystudentId(studentId)
+            return userRepository.findByStudentId(studentId)
                     .filter(user -> user.getPassword().equals(password))
                     .map(user -> {
                         userRepository.delete(user);
@@ -78,6 +78,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByStudentId(String studentid) {
-        return userRepository.findBystudentId(studentid);
+        return userRepository.findByStudentId(studentid);
     }
 }

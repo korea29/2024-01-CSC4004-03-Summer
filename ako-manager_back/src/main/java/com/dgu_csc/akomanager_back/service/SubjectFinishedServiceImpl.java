@@ -43,7 +43,7 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
 
     // POST : [/SubjectFinished/{studentId}/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
     public List<SubjectFinished> searchByStudentId(String studentId, String password) {
-        Optional<User> userOpt = userRepository.findBystudentId(studentId);
+        Optional<User> userOpt = userRepository.findByStudentId(studentId);
         if (userOpt.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }
