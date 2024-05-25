@@ -9,10 +9,9 @@ const SignUpScreen = () => {
   const location = useLocation();
   const { userId: username, password } = location.state || {};
 
-  const [isSubmitted, setIsSubmitted] = useState(false); // 정보 입력 성공 오버레이
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showUploadText, setShowUploadText] = useState(false);
-  const [selectedFileName, setSelectedFileName] =
-    useState("수강과목 첨부(.xls)*"); // 선택된 파일명
+  const [selectedFileName, setSelectedFileName] = useState("수강과목 첨부(.xls)*");
   const [messageVisible, setMessageVisible] = useState(false);
 
   const handleMouseEnter = () => {
@@ -24,76 +23,67 @@ const SignUpScreen = () => {
   };
 
   const [formData, setFormData] = useState({
-    university: "",
-    studentId: "", // 학번
-    name: "",
-    major: "",
-    college: "",
-    minor: "",
-    date_of_birth: "",
+    university: "", // 대학교
+    studentId: username || "", // 학번 = 아이디
+    name: "", // 이름
+    major: "", // 전공
+    college: "", // 단과대학
+    minor: "", // 부전공
+    date_of_birth: "", // 생년월일
     profileImage: null,
     excelFile: null,
-    username:username || "", // 아이디-닉네임?
-    password: password || "",
+    username: username || "", // 아이디 = 학번
+    password: password || "", // 비밀번호
   });
 
-  const inputFileRef = useRef(null); // 엑셀
-  const inputFileRef_2 = useRef(null); // 프로필
+  const inputFileRef = useRef(null);
+  const inputFileRef_2 = useRef(null);
 
   const handleFileInputChange = (e) => {
-    // 프로필
-    setFormData({ ...formData, profileImage: e.target.files[0] }); // 사진 업로드
+    setFormData({ ...formData, profileImage: e.target.files[0] });
   };
+
   const handleExcelInputChange = (e) => {
-    // 엑셀 파일
     const selectedFile = e.target.files[0];
     setFormData({ ...formData, excelFile: e.target.files[0] });
-    setSelectedFileName(selectedFile.name); // 선택된 파일명 설정
+    setSelectedFileName(selectedFile.name);
   };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
+
   const handleStudentIdChange = (e) => {
-    // 학번
     const value = e.target.value;
     if (/^\d*$/.test(value) || value === "") {
-      // 숫자 형식 또는 빈 문자열인 경우에만 입력을 허용
       setFormData({ ...formData, studentId: value });
     }
   };
 
   const handleNameChange = (e) => {
-    // 이름
     const value = e.target.value;
     if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
-      // 영문자 및 한글 형식 또는 빈 문자열인 경우에만 입력을 허용
       setFormData({ ...formData, name: value });
     }
   };
 
   const handleMajorChange = (e) => {
-    // 전공
     const value = e.target.value;
     if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
-      // 영문자 및 한글 형식 또는 빈 문자열인 경우에만 입력을 허용
       setFormData({ ...formData, major: value });
     }
   };
 
   const handleSecondMajorChange = (e) => {
-    //부전공
     const value = e.target.value;
     if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
-      // 영문자 및 한글 형식 또는 빈 문자열인 경우에만 입력을 허용
       setFormData({ ...formData, minor: value });
     }
   };
 
   const handleStudentBirthChange = (e) => {
-    // 생년월일
     const value = e.target.value;
-
-    // 숫자와 하이픈만 허용하는 정규식을 사용하여 입력 값을 검사합니다.
     if (/^[\d-]*$/.test(value)) {
       setFormData({ ...formData, date_of_birth: value });
     }
@@ -104,48 +94,59 @@ const SignUpScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 필수 입력 사항이 모두 입력되었는지 확인
-    if (
-      !formData.university ||
-      !formData.studentId ||
-      !formData.name ||
-      !formData.major ||
-      !formData.college
-    ) {
-      // 생년월일 필수로 수정하면 추가해주기
+    if (!formData.university || !formData.studentId || !formData.name || !formData.major || !formData.college || !formData.date_of_birth ) {
       alert(`모든 필수 입력란을 작성해주세요.`);
       return;
     }
 
     try {
-      // POST 요청을 보낼 서버의 엔드포인트 설정
-      const response = await fetch("http://localhost:8080/User/add", {
+      const response = await fetch("/User/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      console.log({formData});
+
       if (response.ok) {
         setIsSubmitted(true);
         setTimeout(() => {
           navigate("/");
-        }, 2000); // 2초 후에 홈 화면으로 이동
+        }, 2000);
       } else {
-        // 서버로부터 오류 응답을 받은 경우 처리
         const errorData = await response.json();
         alert(`정보 입력 중 오류가 발생했습니다`);
       }
     } catch (error) {
-      // 네트워크 오류 등으로 인한 요청 실패 시 처리
       alert(`정보 입력 중 오류가 발생했습니다`);
     }
+    console.log({ formData });
   };
+
+  const nameInputRef = useRef(null);
+  const majorInputRef = useRef(null);
+  const minorInputRef = useRef(null);
+
+  useEffect(() => {
+    if (nameInputRef.current) {
+      nameInputRef.current.value = formData.name;
+    }
+  }, [formData.name]);
+
+  useEffect(() => {
+    if (majorInputRef.current) {
+      majorInputRef.current.value = formData.major;
+    }
+  }, [formData.major]);
+
+  useEffect(() => {
+    if (minorInputRef.current) {
+      minorInputRef.current.value = formData.minor;
+    }
+  }, [formData.minor]);
 
   return (
     <div className="signup-container">
-      {/* <HeaderComponent /> */}
       <div className="profile-container">
         <div
           className="profile-image-container"
@@ -153,23 +154,14 @@ const SignUpScreen = () => {
           onMouseLeave={() => setShowUploadText(false)}
           onClick={() => inputFileRef_2.current.click()}
         >
-          {showUploadText && (
-            <div className="upload-text-overlay">사진업로드하기</div>
-          )}
+          {showUploadText && <div className="upload-text-overlay">사진업로드하기</div>}
           {formData.profileImage ? (
-            <img
-              src={URL.createObjectURL(formData.profileImage)}
-              alt="Profile"
-              className="profile-image"
-            />
+            <img src={URL.createObjectURL(formData.profileImage)} alt="Profile" className="profile-image" />
           ) : (
             <img src={profileImage} alt="Profile" className="profile-image" />
           )}
         </div>
-        <div
-          className="profile-text"
-          onClick={() => inputFileRef_2.current.click()}
-        >
+        <div className="profile-text" onClick={() => inputFileRef_2.current.click()}>
           Profile
         </div>
         <input
@@ -217,8 +209,8 @@ const SignUpScreen = () => {
           type="text"
           name="name"
           placeholder="이름*"
-          value={formData.name}
-          onChange={handleNameChange}
+          ref={nameInputRef}
+          onChange={(e) => handleChange(e)}
         />
         <select
           className="select-input"
@@ -245,28 +237,26 @@ const SignUpScreen = () => {
           type="text"
           name="major"
           placeholder="전공*"
-          value={formData.major}
-          onChange={handleMajorChange}
+          ref={majorInputRef}
+          onChange={(e) => handleChange(e)}
         />
         <input
           className="form-input"
           type="text"
           name="secondMajor"
           placeholder="부전공"
-          value={formData.minor}
-          onChange={handleSecondMajorChange}
+          ref={minorInputRef}
+          onChange={(e) => handleChange(e)}
         />
         <input
           className="form-input"
           type="text"
           name="birth"
-          placeholder="생년월일(YYYY-MM-DD)"
+          placeholder="생년월일(YYYY-MM-DD)*"
           value={formData.date_of_birth}
           onChange={handleStudentBirthChange}
         />
         <div className="file-upload-container">
-          {" "}
-          {/* 수강과목 첨부 */}
           {selectedFileName && (
             <div className="file-upload-message">
               {selectedFileName}
@@ -308,8 +298,7 @@ const SignUpScreen = () => {
                 }}
               >
                 {" "}
-                'mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xls
-                다운로드
+                'mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xls 다운로드
               </p>
             )}
           </div>
