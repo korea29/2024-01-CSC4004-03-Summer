@@ -21,7 +21,7 @@ public class SubjectNow {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sn_studentid", nullable = false, referencedColumnName = "student_id")
-    private User snStudentid;
+    private Users snStudentid;
 
     @Column(name = "grade", nullable = false)
     private Integer grade;

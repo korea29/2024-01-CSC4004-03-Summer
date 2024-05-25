@@ -1,8 +1,6 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.model.Subject;
-import com.dgu_csc.akomanager_back.model.SubjectFinished;
-import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.SubjectFinishedService;
 import com.dgu_csc.akomanager_back.service.SubjectService;
 import com.dgu_csc.akomanager_back.service.UserService;

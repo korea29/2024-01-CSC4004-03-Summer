@@ -28,7 +28,7 @@ public class SubjectFinished {
     // User 정보
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sf_studentid", nullable = false, referencedColumnName = "student_id")
-    private User sfStudentid;
+    private Users sfStudentid;
 
 
     // Subject 정보

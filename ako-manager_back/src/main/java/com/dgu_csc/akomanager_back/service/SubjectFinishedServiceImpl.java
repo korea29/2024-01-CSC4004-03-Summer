@@ -1,7 +1,7 @@
 package com.dgu_csc.akomanager_back.service;
 
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
-import com.dgu_csc.akomanager_back.model.User;
+import com.dgu_csc.akomanager_back.model.Users;
 import com.dgu_csc.akomanager_back.repository.SubjectFinishedRepository;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -43,17 +43,17 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
 
     // POST : [/SubjectFinished/{studentId}/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
     public List<SubjectFinished> searchByStudentId(String studentId, String password) {
-        Optional<User> userOpt = userRepository.findByStudentId(studentId);
+        Optional<Users> userOpt = userRepository.findByStudentId(studentId);
         if (userOpt.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }
 
-        User user = userOpt.get();
-        if (!user.getPassword().equals(password)) {
+        Users users = userOpt.get();
+        if (!users.getPassword().equals(password)) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        return subjectFinishedRepository.findBySfStudentid(user);
+        return subjectFinishedRepository.findBySfStudentid(users);
     }
 
     // TODO : 이수한 총 학점 수

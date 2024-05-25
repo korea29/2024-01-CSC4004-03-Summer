@@ -1,7 +1,6 @@
 package com.dgu_csc.akomanager_back.service;
 
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
-import com.dgu_csc.akomanager_back.model.User;
 
 import java.util.List;
 

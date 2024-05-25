@@ -1,6 +1,6 @@
 package com.dgu_csc.akomanager_back.service;
 
-import com.dgu_csc.akomanager_back.model.User;
+import com.dgu_csc.akomanager_back.model.Users;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +21,15 @@ public class UserServiceImpl implements UserService {
     // POST : [/User/add]
     @Override
     @Transactional
-    public void saveUser(User user) {
-        if (userRepository.findByStudentId(user.getStudentId()).isPresent()) {
+    public void saveUser(Users users) {
+        if (userRepository.findByStudentId(users.getStudentId()).isPresent()) {
             throw new IllegalArgumentException("동일한 학번이 존재하는 유저가 존재합니다.");
         }
-        userRepository.save(user);
+        userRepository.save(users);
     }
 
     // POST : [/User/getAll] => 전체 유저 반환 (master 전용)
-    public List<User> getAllUsers(String masterPassword) {
+    public List<Users> getAllUsers(String masterPassword) {
         if (MASTER_PASSWORD.equals(masterPassword)) {
             return userRepository.findAll();
         } else {
@@ -39,24 +39,24 @@ public class UserServiceImpl implements UserService {
 
     // POST : [/User/{studentId}/get] url의 studentId와 body의 password 정보로 유저 정보 반환
     @Override
-    public Optional<User> searchUser(String studentId, String password) {
+    public Optional<Users> searchUser(String studentId, String password) {
         return userRepository.findByStudentId(studentId).filter(user -> user.getPassword().equals(password));
     }
 
     // PUT : [/User/{studentId}/update] url의 studentId와 body의 password 정보로 유저 정보 수정
     @Override
-    public Optional<User> updateUser(String studentId, String password, User updatedUser) {
+    public Optional<Users> updateUser(String studentId, String password, Users updatedUsers) {
         return userRepository.findByStudentId(studentId)
                 .filter(user -> user.getPassword().equals(password))
                 .map(user -> {
-                    user.setUniversity(updatedUser.getUniversity());
-                    user.setName(updatedUser.getName());
-                    user.setDate_of_birth(updatedUser.getDate_of_birth());
-                    user.setCollege(updatedUser.getCollege());
-                    user.setMajor(updatedUser.getMajor());
-                    user.setMinor(updatedUser.getMinor());
-                    user.setUsername(updatedUser.getUsername());
-                    user.setPassword(updatedUser.getPassword());
+                    user.setUniversity(updatedUsers.getUniversity());
+                    user.setName(updatedUsers.getName());
+                    user.setDate_of_birth(updatedUsers.getDate_of_birth());
+                    user.setCollege(updatedUsers.getCollege());
+                    user.setMajor(updatedUsers.getMajor());
+                    user.setMinor(updatedUsers.getMinor());
+                    user.setUsername(updatedUsers.getUsername());
+                    user.setPassword(updatedUsers.getPassword());
                     return userRepository.save(user);
                 });
     }
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByStudentId(String studentid) {
+    public Optional<Users> findByStudentId(String studentid) {
         return userRepository.findByStudentId(studentid);
     }
 }

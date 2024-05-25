@@ -1,4 +1,4 @@
-package com.dgu_csc.akomanager_back.customfilter;
+package com.dgu_csc.akomanager_back.config;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class CustomCorsFilter implements Filter {
+public class CorsConfig implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
