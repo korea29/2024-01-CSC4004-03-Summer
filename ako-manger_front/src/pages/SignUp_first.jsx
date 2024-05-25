@@ -54,7 +54,7 @@ const SignUp_first = () => {
           <form onSubmit={handleSubmit} className="signup-form">
             <input
               type="text"
-              placeholder="아이디"
+              placeholder="학번"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               className="input-field"
