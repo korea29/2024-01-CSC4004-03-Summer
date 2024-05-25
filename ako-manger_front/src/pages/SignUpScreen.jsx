@@ -33,7 +33,7 @@ const SignUpScreen = () => {
     profileImage: null,
     excelFile: null,
     username: username || "", // 아이디 = 학번
-    password: password || "",
+    password: password || "", // 비밀번호
   });
 
   const inputFileRef = useRef(null);
