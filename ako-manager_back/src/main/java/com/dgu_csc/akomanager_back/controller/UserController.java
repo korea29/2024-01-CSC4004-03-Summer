@@ -7,6 +7,7 @@ import com.dgu_csc.akomanager_back.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.filter.OrderedFormContentFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +17,19 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/User")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
     private final UserService userService;
+    @Autowired
+    private OrderedFormContentFilter formContentFilter;
 
-    // POST :  [/User/add] 과목 추가 (학번 중복 확인)
+    // POST :  [/User/add] 유저 추가 (학번 중복 확인)
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody User user) {
+    public ResponseEntity<String> addUser(@RequestBody User users) {
         try {
-            userService.saveUser(user);
+            userService.saveUser(users);
             return ResponseEntity.ok("User added successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(409).body(e.getMessage());
@@ -55,7 +59,7 @@ public class UserController {
     // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력
     @PutMapping("/{studentId}/update")
     public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
-        Optional<User> user = userService.updateUser(studentId, request.getPassword(), request.getUpdatedUser());
+        Optional<User> user = userService.updateUser(studentId, request.getPassword(), request.getUpdatedUsers());
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -71,4 +75,5 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

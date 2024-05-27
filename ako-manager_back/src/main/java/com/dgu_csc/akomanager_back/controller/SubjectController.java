@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/Subject")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SubjectController {
 
     @Autowired
@@ -55,7 +56,7 @@ public class SubjectController {
 
     // GET : [/Subject/getAll] / user와 다르게 별도의 마스터 비밀 번호 필요 없다.
     @GetMapping("/getAll")
-    public List<Subject> List() {
+    public List<Subject> allSubjectList() {
         return subjectService.getAllsubject();
     }
 

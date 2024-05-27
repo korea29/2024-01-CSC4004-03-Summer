@@ -8,11 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
     // 학번을 매개변수로 객체 반환
-
-    Optional<User> findBystudentId(String studentId);
-
-
+    Optional<User> findByStudentId(String studentId);
+//    Users findByStudentId(String studentId);
 }
 
