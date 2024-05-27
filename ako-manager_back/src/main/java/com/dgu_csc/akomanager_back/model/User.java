@@ -58,7 +58,7 @@
 
         // 권한
         @ColumnDefault("0")
-        @Column(name = "`role`", nullable = false)
+        @Column(name = "`role`")
         private String role;
 
     }

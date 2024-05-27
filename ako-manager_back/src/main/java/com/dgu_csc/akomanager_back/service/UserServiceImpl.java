@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // POST : [/User/add]
+    // POST : [/User/add] : 유저 추가 회원 가입
     @Override
     @Transactional
     public void saveUser(User users) {
@@ -62,28 +62,34 @@ public class UserServiceImpl implements UserService {
                     user.setMajor(updatedUsers.getMajor());
                     user.setMinor(updatedUsers.getMinor());
                     user.setUsername(updatedUsers.getUsername());
-                    user.setPassword(updatedUsers.getPassword());
+                    // 암호화
+                    user.setPassword(bCryptPasswordEncoder.encode(updatedUsers.getPassword()));
                     return userRepository.save(user);
                 });
     }
 
     // DELETE : [/User/{studentId}/delete] url의 studentId와 body의 유저 개인 비밀번호나 마스터 비밀번호로 유저 정보 삭제
     public boolean deleteUser(String studentId, String password) {
-
-        if(password.equals(MASTER_PASSWORD))
-            return true;
-        else
+        if (password.equals(MASTER_PASSWORD)) {
             return userRepository.findByStudentId(studentId)
-                    .filter(user -> user.getPassword().equals(password))
                     .map(user -> {
                         userRepository.delete(user);
                         return true;
                     }).orElse(false);
-
+        } else {
+            return userRepository.findByStudentId(studentId)
+                    .filter(user -> bCryptPasswordEncoder.matches(password, user.getPassword()))
+                    .map(user -> {
+                        userRepository.delete(user);
+                        return true;
+                    }).orElse(false);
+        }
     }
 
     @Override
     public Optional<User> findByStudentId(String studentid) {
         return userRepository.findByStudentId(studentid);
     }
+
+
 }
