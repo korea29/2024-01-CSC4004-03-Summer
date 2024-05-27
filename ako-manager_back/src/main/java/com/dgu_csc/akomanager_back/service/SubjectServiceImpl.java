@@ -84,4 +84,9 @@ public class SubjectServiceImpl implements SubjectService {
     public Optional<Subject> findBySubjectNum(String subjectnum) {
         return subjectRepository.findBysubjectNum(subjectnum);
     }
+
+    @Override
+    public Optional<Subject> findBySubjectName(String subjectname) {
+        return subjectRepository.findBysubjectName(subjectname);
+    }
 }
