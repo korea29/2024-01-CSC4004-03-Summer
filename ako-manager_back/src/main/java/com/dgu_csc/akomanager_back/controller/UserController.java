@@ -2,9 +2,11 @@ package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
+import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.filter.OrderedFormContentFilter;
@@ -17,13 +19,23 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/User")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
     private final UserService userService;
     @Autowired
     private OrderedFormContentFilter formContentFilter;
+    @Autowired
+    private JWTUtil jwtUtil;
+
+//    private String extractToken(HttpServletRequest request) {
+//        String header = request.getHeader("Authorization");
+//        if (header != null && header.startsWith("Bearer ")) {
+//            return header.substring(7);
+//        }
+//        return null;
+//    }
+
 
     // POST :  [/User/add] 유저 추가 (학번 중복 확인)
     @PostMapping("/add")
@@ -36,14 +48,30 @@ public class UserController {
         }
     }
 
-    // POST : [/User/getAll] / 마스터 비밀번호를 body로 포함해서 요청하면 정보 반환
+    // POST : [/User/getAll] / 마스터 비밀번호를 body로 포함해서 요청하고, 권한 (role=11) 확인될 시, 정보 반환
     @PostMapping("/getAll")
-    public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest request) {
-        try {
-            List<User> Users = userService.getAllUsers(request.getPassword());
-            return ResponseEntity.ok(Users);
-        } catch (SecurityException e) {
+    public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest request, HttpServletRequest request1) {
+        String authorization= request1.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> masteruser = userService.findByStudentId(studentId);
+        if( masteruser.isEmpty() ) {
+            System.out.println("마스터 유저에 저장 안됨");
             return ResponseEntity.status(403).build();
+        }
+        else {
+            try {
+                if(masteruser.get().getRole().equals("11")){
+                    List<User> Users = userService.getAllUsers(request.getPassword());
+                    return ResponseEntity.ok(Users);
+                }
+                else {
+                    System.out.println("role 값 다름");
+                    return ResponseEntity.status(403).build();
+                }
+            } catch (SecurityException e) {
+                return ResponseEntity.status(403).build();
+            }
         }
     }
 
@@ -68,6 +96,7 @@ public class UserController {
     @DeleteMapping("/{studentId}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable String studentId, @RequestBody PasswordRequest request) {
         boolean isDeleted = userService.deleteUser(studentId, request.getPassword());
+        System.out.println(isDeleted);
         if (isDeleted) {
             System.out.println("delete complete!");
             return ResponseEntity.noContent().build();

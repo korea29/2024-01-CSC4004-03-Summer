@@ -1,6 +1,9 @@
 package com.dgu_csc.akomanager_back.controller;
 
+import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.Subject;
+import com.dgu_csc.akomanager_back.model.SubjectFinished;
+import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.SubjectFinishedService;
 import com.dgu_csc.akomanager_back.service.SubjectService;
 import com.dgu_csc.akomanager_back.service.UserService;
@@ -17,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/excel")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ExcelUploadController {
 
     @Autowired
@@ -26,6 +28,8 @@ public class ExcelUploadController {
     private SubjectFinishedService subjectFinishedService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JWTUtil jwtUtil;
 
 
     @PostMapping("/uploadS")
@@ -95,5 +99,68 @@ public class ExcelUploadController {
 
         return ResponseEntity.ok("Subjects added successfully");
     }
+
+    // 이수가 끝난 과목에 대한 엑셀 파일 업로드
+    @PostMapping("/uploadF")
+    public ResponseEntity<String> uploadExcelFileSubjectFinished(@RequestParam("file") MultipartFile file,
+                                                                 @RequestHeader("Authorization") String authHeader) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
+
+        String token = authHeader.substring(7); // Remove "Bearer " prefix
+        String studentId = jwtUtil.getUsername(token);
+        User user = userService.findByStudentId(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + studentId));
+
+        List<SubjectFinished> subjectFinishedList = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) { // Skip header row
+                    continue;
+                }
+                SubjectFinished subjectFinished = new SubjectFinished();
+                subjectFinished.setSfStudentid(user); // Set the User object
+
+                for (Cell cell : row) {
+                    switch (cell.getColumnIndex()) {
+                        case 1:
+                            subjectFinished.setFinishedY(cell.toString());
+                            break;
+                        case 2:
+                            subjectFinished.setFinishedS(cell.toString());
+                            break;
+                        case 7:
+                            subjectFinished.setSfSubjectname(cell.toString());
+                            break;
+                        case 9:
+                            subjectFinished.setGrade(cell.toString());
+                            break;
+                        case 10:
+                            // 학점(성적) 설정
+                            subjectFinished.setScore(cell.toString());
+                            break;
+                        case 12:
+                            // 재수강 여부 설정
+                            subjectFinished.setReClass(Boolean.parseBoolean(cell.toString()));
+                            break;
+                    }
+                }
+                subjectFinishedList.add(subjectFinished);
+            }
+        }
+
+        for (SubjectFinished sf : subjectFinishedList) {
+            try {
+                subjectFinishedService.saveSubjectFinished(sf);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(409).body(e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok("SubjectFinished records added successfully");
+    }
+
 
 }

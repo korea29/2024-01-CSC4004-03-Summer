@@ -14,4 +14,6 @@ public interface SubjectService {
     public boolean deleteSubject(String subjectNum, String password);
 
     Optional<Subject> findBySubjectNum(String subjectnum);
+
+    Optional<Subject> findBySubjectName(String subjectname);
 }
