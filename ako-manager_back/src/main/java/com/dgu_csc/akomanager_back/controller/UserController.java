@@ -2,7 +2,7 @@ package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
-import com.dgu_csc.akomanager_back.model.Users;
+import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class UserController {
     @Autowired
     private OrderedFormContentFilter formContentFilter;
 
-    // POST :  [/User/add] 과목 추가 (학번 중복 확인)
+    // POST :  [/User/add] 유저 추가 (학번 중복 확인)
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody Users users) {
+    public ResponseEntity<String> addUser(@RequestBody User users) {
         try {
             userService.saveUser(users);
             return ResponseEntity.ok("User added successfully");
@@ -38,9 +38,9 @@ public class UserController {
 
     // POST : [/User/getAll] / 마스터 비밀번호를 body로 포함해서 요청하면 정보 반환
     @PostMapping("/getAll")
-    public ResponseEntity<List<Users>> getAllUsers(@RequestBody PasswordRequest request) {
+    public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest request) {
         try {
-            List<Users> Users = userService.getAllUsers(request.getPassword());
+            List<User> Users = userService.getAllUsers(request.getPassword());
             return ResponseEntity.ok(Users);
         } catch (SecurityException e) {
             return ResponseEntity.status(403).build();
@@ -50,16 +50,16 @@ public class UserController {
 
     // POST : [/User/{studentId}/get] url의 studentId와 body의 유저 개인의 password 정보로 유저 정보 반환
     @PostMapping("/{studentId}/get")
-    public ResponseEntity<Users> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
-            Optional<Users> user = userService.searchUser(studentId, request.getPassword());
+    public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
+            Optional<User> user = userService.searchUser(studentId, request.getPassword());
             return user.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력
     @PutMapping("/{studentId}/update")
-    public ResponseEntity<Users> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
-        Optional<Users> user = userService.updateUser(studentId, request.getPassword(), request.getUpdatedUsers());
+    public ResponseEntity<User> updateUser(@PathVariable String studentId, @RequestBody UpdateUserRequest request) {
+        Optional<User> user = userService.updateUser(studentId, request.getPassword(), request.getUpdatedUsers());
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
