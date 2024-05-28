@@ -22,6 +22,7 @@ public class ChatbotController {
     @Setter
     public static class ChatRequest {private String Username, UserInput ;}
 
+    // POST : /chat/ask (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
     public String askChatbot(ChatRequest chatRequest) throws Exception{
         String username = chatRequest.getUsername();
