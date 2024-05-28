@@ -1,10 +1,8 @@
 package com.dgu_csc.akomanager_back.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,19 +11,21 @@ import java.time.*;
 
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping( "/chat")
 public class ChatbotController {
 
     private final String DefaultPath = System.getProperty("user.dir") + "/ako-manager_back/src/main/";
     private final String ChatbotLogFormat = LocalDate.now() + " " + LocalTime.now() + "\t";
     private static final Logger logger = LoggerFactory.getLogger(ChatbotController.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(ChatbotController.class, args);
-    }
+    @Getter
+    @Setter
+    public static class ChatRequest {private String Username, UserInput ;}
 
     @PostMapping("/ask")
-    public String askChatbot(@RequestParam String username, @RequestParam String userInput) {
+    public String askChatbot(ChatRequest chatRequest) throws Exception{
+        String username = chatRequest.getUsername();
+        String userInput = chatRequest.getUserInput();
         String response;
         try {
             updateLogs();
@@ -60,11 +60,10 @@ public class ChatbotController {
                 response = responseBuilder.toString().trim();
                 chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             }
-
             chatLogWriter.close();
+            return response;
         } catch (IOException e) {
             response = "Error processing chat: " + e.getMessage();
-            e.printStackTrace();
         }
 
         return response;
@@ -76,7 +75,8 @@ public class ChatbotController {
                 File upper = new File(DefaultPath + "resources/MyLog" + i + ".txt");
                 File lower = new File(DefaultPath + "resources/MyLog" + (i - 1) + ".txt");
                 if (upper.exists()) {
-                    upper.renameTo(lower);
+                    boolean success = upper.renameTo(lower);
+                    if (!success) {System.out.println("Cannot move data to previous log"); }
                 }
             }
         } catch (Exception e) {
@@ -84,3 +84,5 @@ public class ChatbotController {
         }
     }
 }
+
+
