@@ -11,6 +11,5 @@ import org.springframework.web.bind.annotation.CrossOrigin; //프론트 연결�
 public class AkoManagerBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AkoManagerBackApplication.class, args);
-		System.out.println("test in main");
 	}
 }

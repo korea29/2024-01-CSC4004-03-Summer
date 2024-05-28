@@ -5,6 +5,7 @@
     import lombok.Getter;
     import lombok.NoArgsConstructor;
     import lombok.Setter;
+    import org.hibernate.annotations.ColumnDefault;
 
     import java.time.LocalDate;
 
@@ -54,5 +55,10 @@
         // 비밀번호
         @Column(name = "`password`", nullable = false, length = 10)
         private String password;
+
+        // 권한
+        @ColumnDefault("0")
+        @Column(name = "`role`")
+        private String role;
 
     }
