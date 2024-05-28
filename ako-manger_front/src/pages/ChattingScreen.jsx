@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Button, List } from "antd";
-import axios from "axios";
-
 import LeftBubble from "./components/LeftBubble";
 import RightBubble from "./components/RightBubble";
 import HeaderComponent from "./components/HeaderComponent";
-import ChatLog from "./components/ChatLog";
 import KeywordComponent from "./components/KeywordComponent";
-
 import "../css/ChattingScreen.css";
 import searchlogo from "../Images/search.png";
 import sendButtonImage from "./assets/send.png";
-import AddChat from "../Images/AddChat.png";
 import { TbBubblePlus } from "react-icons/tb";
+import axios from "axios";
 
 const ChattingScreen = () => {
   const location = useLocation();
@@ -29,6 +25,22 @@ const ChattingScreen = () => {
     }
   }, [initialMessage]);
 
+  const fetchData = async () => {
+    try {
+      // 로그인 요청
+      const response = await axios.post("http://localhost:8080/login", {
+        studentId: "1122", // 사용자가 입력한 학번
+        password: "1122", // 사용자가 입력한 비밀번호
+      });
+
+      // 응답 처리
+      console.log("로그인 완료:", response.data);
+    } catch (error) {
+      // 오류 처리
+      console.error("로그인 오류:", error);
+    }
+  };
+
   const addNewChat = async (chat) => {
     const updatedChatHistory = [...chatHistory, { user: chat }];
     setChatHistory(updatedChatHistory);
@@ -36,8 +48,12 @@ const ChattingScreen = () => {
     setInputValue("");
 
     try {
-      const response = await axios.post("/api/chat", { message: chat });
-      const reply = response.data.reply;
+      const response = await axios.post("http://localhost:8080/chat/ask", {
+        Username: "User",
+        UserInput: chat,
+      });
+
+      const reply = response.data;
 
       setChatHistory((prevChatHistory) => {
         const newChatHistory = [...prevChatHistory, { bot: reply }];
@@ -45,16 +61,19 @@ const ChattingScreen = () => {
       });
     } catch (error) {
       console.error("Error fetching chat reply:", error);
+      if (error.response && error.response.status === 403) {
+        alert("접근 권한이 없습니다. 다시 시도해 주세요.");
+      } else {
+        alert("서버와의 통신 중 오류가 발생했습니다.");
+      }
     }
   };
 
   const startNewChat = () => {
-    // 현재 채팅 세션에 새로운 채팅 기록을 추가
     if (chatHistory.length > 0) {
       setChatSessions([...chatSessions, chatHistory]);
       setChatHistory([]);
     }
-
   };
 
   const selectChatSession = (index) => {
