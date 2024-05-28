@@ -1,6 +1,7 @@
 package com.dgu_csc.akomanager_back.service;
 
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
+import com.dgu_csc.akomanager_back.model.User;
 
 import java.util.List;
 
@@ -12,7 +13,8 @@ public interface SubjectFinishedService {
     // 유저 아이디 매개 변수로 검색해 해당 유저의 수강한 과목들 출력
     public List<SubjectFinished> searchByStudentId(String studentId, String password);
     // 총 들은 학점 계산
-    public String getTotalScore();
+    public int getTotalScore(String studentId);
     // 총 들은 전공 학점 계산
     public String getMajorTotalScore();
+
 }

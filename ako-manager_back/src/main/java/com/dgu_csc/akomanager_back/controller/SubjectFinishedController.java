@@ -28,5 +28,9 @@ public class SubjectFinishedController {
         }
     }
 
+    @GetMapping("/{studentId}/totalGrage")
+    public int getTotalGrade(@PathVariable String studentId) {
+        return subjectFinishedService.getTotalScore(studentId);
+    }
 
 }
