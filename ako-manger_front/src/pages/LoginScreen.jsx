@@ -4,30 +4,31 @@ import Ako_sit from "../pages/assets/ako-sit.png";
 import { useNavigate } from "react-router-dom";
 import HeaderComponent from "./components/HeaderComponent";
 
-// https://goddaehee.tistory.com/305 페이지 연결
-
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // 더미 데이터를 사용하여 사용자 인증을 시뮬레이션합니다.
-      const response = await fetch("/users", {
+      const formData = new FormData();
+      formData.append("username", username || "");
+      formData.append("password", password || "");
+
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+        body: formData,
       });
 
       if (response.ok) {
-        // 로그인 성공 시 로직을 여기에 작성합니다.
+        // const data = await response.json();
+        // const token = data.token; // 서버에서 반환된 토큰
+        // document.cookie = `token=${token};path=/`; // 쿠키에 토큰 저장
         console.log("로그인 성공!");
+        navigate("/");
       } else {
-        // 로그인 실패 시 로직을 여기에 작성합니다.
         console.error("로그인 실패");
         alert("아이디 또는 비밀번호가 올바르지 않습니다.");
       }
@@ -36,7 +37,6 @@ const LoginScreen = () => {
       alert("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-  const navigate = useNavigate();
 
   const gotoSign = () => {
     navigate("/signup_first");
