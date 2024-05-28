@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateUserRequest {
-    private User updatedUser;
+    private User updatedUsers;
     private String password;
 }

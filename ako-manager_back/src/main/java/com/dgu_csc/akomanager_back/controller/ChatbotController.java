@@ -70,6 +70,7 @@ public class ChatbotController {
         return response;
     }
 
+    // 로그에 3개의 대화 내용만 보이게 하는 기능
     private void updateLogs() {
         try {
             for (int i = 2; i < 4; i++) {
