@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
@@ -90,3 +89,4 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findBysubjectName(subjectname);
     }
 }
+
