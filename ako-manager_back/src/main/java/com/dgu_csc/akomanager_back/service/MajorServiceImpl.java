@@ -1,9 +1,12 @@
 package com.dgu_csc.akomanager_back.service;
 
+import com.dgu_csc.akomanager_back.dto.MajorDto;
 import com.dgu_csc.akomanager_back.model.Major;
 import com.dgu_csc.akomanager_back.repository.MajorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,33 @@ public class MajorServiceImpl implements MajorService{
                 majorRepository.save(major);
             }
         }
+
     }
+
+    @Override
+    public Integer getTotalScore(MajorDto majorDto) {
+        Optional<Major> major = majorRepository.findByMajorNameAndYear(majorDto.getMajorName(), majorDto.getYear());
+        return major.get().getTotalScore();
+    }
+
+    @Override
+    public Integer getTotalMajorScore(MajorDto majorDto) {
+        Optional<Major> major = majorRepository.findByMajorNameAndYear(majorDto.getMajorName(), majorDto.getYear());
+        return major.get().getTotalMajorScore();
+    }
+
+    @Override
+    public Integer getTotalCommonScore(MajorDto majorDto) {
+        Optional<Major> major = majorRepository.findByMajorNameAndYear(majorDto.getMajorName(), majorDto.getYear());
+        return major.get().getTotalCommonScore();
+    }
+
+    @Override
+    public Integer getTotalDesignatedScore(MajorDto majorDto) {
+        Optional<Major> major = majorRepository.findByMajorNameAndYear(majorDto.getMajorName(), majorDto.getYear());
+        return major.get().getTotalDesignatedScore();
+    }
+
 
 
 }
