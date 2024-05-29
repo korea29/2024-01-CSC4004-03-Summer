@@ -43,6 +43,7 @@ public class SubjectFinished {
     @Column(name = "finishedS", length = 5)
     private String finishedS;
 
+    // 학점 (ex. 3학점)
     @Column(name = "grade", nullable = false, length = 3)
     private String grade;
 

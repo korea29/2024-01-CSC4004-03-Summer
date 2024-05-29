@@ -26,9 +26,9 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
     @Override
     @Transactional
     public void saveSubjectFinished(SubjectFinished subjectFinished) {
-        if(!subjectFinishedRepository.findBySfSubjectname(subjectFinished.getSfSubjectname()).isEmpty()) {
-            throw new IllegalArgumentException("SubjectFinished with subjectNum already exists");
-        }
+//        if(!subjectFinishedRepository.findBySfSubjectname(subjectFinished.getSfSubjectname()).isEmpty()) {
+//            throw new IllegalArgumentException("SubjectFinished with subjectNum already exists");
+//        }
         subjectFinishedRepository.save(subjectFinished);
     }
 
