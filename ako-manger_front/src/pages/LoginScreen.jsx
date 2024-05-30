@@ -26,6 +26,10 @@ const LoginScreen = () => {
         // const data = await response.json();
         // const token = data.token; // 서버에서 반환된 토큰
         // document.cookie = `token=${token};path=/`; // 쿠키에 토큰 저장
+        
+        // 로그인 성공 시 사용자 학번을 로컬 스토리지에 저장 
+        // 로그인 후에 홈화면에서 로그인/회원가입 버튼이 학번으로 바뀌게 설정
+        localStorage.setItem("username", username);
         console.log("로그인 성공!");
         navigate("/");
       } else {

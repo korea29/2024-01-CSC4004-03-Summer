@@ -11,16 +11,16 @@ const SignUpScreen = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showUploadText, setShowUploadText] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState("수강과목 첨부(.xls)*");
-  const [messageVisible, setMessageVisible] = useState(false);
+  // const [selectedFileName, setSelectedFileName] = useState("수강과목 첨부(.xls)*");
+  // const [messageVisible, setMessageVisible] = useState(false);
 
-  const handleMouseEnter = () => {
-    setMessageVisible(true);
-  };
+  // const handleMouseEnter = () => {
+  //   setMessageVisible(true);
+  // };
 
-  const handleMouseLeave = () => {
-    setMessageVisible(false);
-  };
+  // const handleMouseLeave = () => {
+  //   setMessageVisible(false);
+  // };
 
   const [formData, setFormData] = useState({
     university: "", // 대학교
@@ -31,23 +31,23 @@ const SignUpScreen = () => {
     minor: "", // 부전공
     date_of_birth: "", // 생년월일
     profileImage: null,
-    excelFile: null,
+    // excelFile: null,
     username: username || "", // 아이디 = 학번
     password: password || "", // 비밀번호
   });
 
-  const inputFileRef = useRef(null);
+  // const inputFileRef = useRef(null); 엑셀 업로드
   const inputFileRef_2 = useRef(null);
 
   const handleFileInputChange = (e) => {
     setFormData({ ...formData, profileImage: e.target.files[0] });
   };
 
-  const handleExcelInputChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFormData({ ...formData, excelFile: e.target.files[0] });
-    setSelectedFileName(selectedFile.name);
-  };
+  // const handleExcelInputChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   setFormData({ ...formData, excelFile: e.target.files[0] });
+  //   setSelectedFileName(selectedFile.name);
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -256,7 +256,7 @@ const SignUpScreen = () => {
           value={formData.date_of_birth}
           onChange={handleStudentBirthChange}
         />
-        <div className="file-upload-container">
+        {/* <div className="file-upload-container">
           {selectedFileName && (
             <div className="file-upload-message">
               {selectedFileName}
@@ -302,7 +302,7 @@ const SignUpScreen = () => {
               </p>
             )}
           </div>
-        </div>
+        </div> */}
         <button className="submit-button" type="submit">
           입력하기
         </button>
