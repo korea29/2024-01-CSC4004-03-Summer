@@ -28,19 +28,19 @@ public class Major {
     private String majornum;
 
     // 졸업 기준 총 학점
-    @Column(name = "totalScore", nullable = false)
+    @Column(name = "total_score", nullable = false)
     private Integer totalScore;
 
     // 졸업 기준 총 전공 학점
-    @Column(name = "totalMajorScore", nullable = false)
+    @Column(name = "total_major_score", nullable = false)
     private Integer totalMajorScore;
 
     // 졸업 기준 총 일반 교양 학점
-    @Column(name = "totalCommonScore")
+    @Column(name = "total_common_score")
     private Integer totalCommonScore;
 
     // 졸업 기준 지정 교양 학점
-    @Column(name = "totalDesignatedScore")
+    @Column(name = "total_designated_score")
     private Integer totalDesignatedScore;
 
 }
