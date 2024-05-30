@@ -56,25 +56,53 @@ public class MajorController {
     // POST : [/Major/getTotalScore]
     @PostMapping("/getTotalScore")
     public Integer getTotalScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        return majorService.getTotalScore(majorDto);
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName()))
+            return majorService.getTotalScore(majorDto);
+        else {
+            System.out.println("can;t found!");
+            return 0;
+        }
     }
 
     // POST : [/Major/getTotalMajorScore]
     @PostMapping("/getTotalMajorScore")
     public Integer getTotalMajorScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        return majorService.getTotalMajorScore(majorDto);
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName()))
+            return majorService.getTotalMajorScore(majorDto);
+        else return 0;
     }
 
     // POST : [/Major/getTotalMajorScore]
-    @PostMapping("/getTotalCommonScore")
+        @PostMapping("/getTotalCommonScore")
     public Integer getTotalCommonScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        return majorService.getTotalCommonScore(majorDto);
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName()))
+            return majorService.getTotalCommonScore(majorDto);
+        else return 0;
     }
 
     // POST : [/Major/getTotalMajorScore]
     @PostMapping("/getTotalDesignatedScore")
     public Integer getTotalDesignatedScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        return majorService.getTotalDesignatedScore(majorDto);
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName()))
+            return majorService.getTotalDesignatedScore(majorDto);
+        else return 0;
     }
+
 
 }
