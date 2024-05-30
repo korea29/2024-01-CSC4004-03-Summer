@@ -10,14 +10,13 @@ const Home = () => {
   const [username, setUsername] = useState(""); // 사용자 이름 상태 추가
   const navigate = useNavigate();
 
-  // 예시로 로그인 후 사용자 이름 설정
-  useEffect(() => {
-    // 여기서는 로컬 스토리지에서 사용자 정보를 가져와서 설정하는 것으로 가정합니다.
-    const user = localStorage.getItem("username");
-    if (user) {
-      setUsername(user);
-    }
-  }, []);
+   // 컴포넌트가 마운트될 때 로컬 스토리지에서 사용자 정보를 가져와서 설정
+  //  useEffect(() => {
+  //   const user = localStorage.getItem("username");
+  //   if (user) {
+  //     setUsername(user);
+  //   }
+  // }, []);
 
   const gotoChat = () => {
     navigate("/chatting", { state: { message: inputValue } });
@@ -49,8 +48,12 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1 className="home-title">Hello, {username || "A-Ko"}!</h1>
-      {!username && (
+      <h1 className="home-title">Hello,A-Ko!</h1>
+      {/* {username ? (
+        <div className="auth-buttons">
+          <span className="auth-username" style={{ color: '#757575'}}>{username} </span>
+        </div>
+      ) : ( */}
         <div className="auth-buttons">
           <button className="auth-button" onClick={gotoLogin}>
             로그인 /
@@ -59,7 +62,7 @@ const Home = () => {
             회원가입
           </button>
         </div>
-      )}
+      {/* )} */}
       <img className="home-image" src={Ako_sit} alt="Home" />
       <div className="home-chat">
         <input

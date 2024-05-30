@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-
 import HeaderComponent from "./components/HeaderComponent";
 import PieChartComponent from "./components/PieChartComponent";
 import Curriculum from "./components/curriculum";
-
 import "../css/CreditScreen.css";
+import List from "./components/List";
 import {
   PieChartOutlined,
   ApartmentOutlined,
@@ -12,14 +11,14 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   QuestionCircleOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
-import { TinyColor } from "@ctrl/tinycolor";
-import { Layout, Menu, Button, FloatButton, Popover } from "antd";
+import { Layout, Menu, Button, FloatButton, Modal, Upload } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
 
-//학점 조회 차트 더미 데이터
+// 학점 조회 차트 더미 데이터
 const chartData = [
   {
     title: "졸업까지",
@@ -101,10 +100,10 @@ const curriculumDummyData = [
 ];
 
 const CreditScreen = () => {
-  const navigate = useNavigate(); // 다음 시간표 추천 네이게이션
-  const gotoTimeTable = () => {
-    navigate("/timetable");
-  };
+  const navigate = useNavigate(); // 다음 시간표 추천 네비게이션
+  // const gotoTimeTable = () => {
+  //   navigate("/timetable");
+  // };
 
   // 왼쪽 네비게이션 관련 함수-1
   const handleMenuClick = (e) => {
@@ -114,6 +113,7 @@ const CreditScreen = () => {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
+  
   // 왼쪽 네비게이션 관련 함수-2
   const [collapsed, setCollapsed] = useState(false);
 
@@ -129,6 +129,59 @@ const CreditScreen = () => {
   const closeModal = () => {
     setModalVisible(false);
   };
+
+   // 파일 선택 상태 관리
+   const [selectedFile, setSelectedFile] = useState(null);
+   
+  // 엑셀 파일 업로드 모달 상태 관리
+  const [uploadVisible, setUploadVisible] = useState(false);
+
+  const handleUploadMenuClick = () => {
+    setUploadVisible(true);
+  };
+
+  const handleUploadOk = () => {
+    setUploadVisible(false);
+  };
+
+  const handleUploadCancel = () => {
+    setUploadVisible(false);
+  };
+
+  // 파일 선택 시 호출되는 함수
+  const handleFileChange = (info) => {
+    const { file } = info;
+    setSelectedFile(file);
+  };
+
+//  const handleExcelInputChange = (e) => {
+//     const selectedFile = e.target.files[0];
+//     setFormData({ ...formData, excelFile: e.target.files[0] });
+//     setSelectedFileName(selectedFile.name);
+//   };
+
+
+  // 수강 과목 업로드
+  const handleSubmit =  async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile); // selectedFile는 사용자가 선택한 파일
+    
+      const response = await fetch("/excel/uploadF", { // api 연결
+        method: "POST",
+        body: formData,
+      });
+    
+      if (response.ok) {
+        // 서버로부터 성공적인 응답을 받았을 때의 처리
+      } else {
+        alert(`(서버)오류가 발생했습니다`);
+      }
+    } catch (error) {
+      alert(`(네트워크)오류가 발생했습니다`);
+    }
+  }
 
   return (
     <div>
@@ -162,7 +215,29 @@ const CreditScreen = () => {
             <Menu.Item key="2" icon={<ApartmentOutlined />}>
               교과목 이수 체계도
             </Menu.Item>
+            <Menu.Item key="3" icon={<UploadOutlined />} onClick={handleUploadMenuClick}>
+              수강과목 첨부
+            </Menu.Item>
           </Menu>
+          <Modal
+            title="수강과목 업로드"
+            visible={uploadVisible}
+            onOk={handleSubmit} //??
+            onCancel={handleUploadCancel}
+            footer={[
+              <Button key="back" style={{ borderColor: '#F9F0E7' , color: '#757575'}}onClick={handleUploadCancel}>
+                취소
+              </Button>,
+              <Button key="submit" type="primary" style={{ backgroundColor: '#F9F0E7', borderColor: 'none', color: '#757575'}} onClick={handleSubmit}>
+                확인
+              </Button>,
+            ]}
+          >
+            <Upload type="file" accept=".xls,.xlsx" onChange={handleFileChange}> {/* 파일 선택 시 호출되는 함수 연결 */}
+              <Button icon={<UploadOutlined />}>파일 선택</Button>
+            </Upload>
+            <div style={{ color: '#757575'}}> <br/> mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xls 다운로드</div>
+          </Modal>
         </Sider>
         <Button
           type="text"
@@ -222,12 +297,12 @@ const CreditScreen = () => {
       {modalVisible && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* <button className="modal-close-button" onClick={closeModal} style={{borderRadius: '50%', backgroundColor: '#F4E7DA', border: '1.5px solid #B7A08E', width: '40px', height: '40x', cursor: 'pointer'}}>X</button> */}
-            <iframe
+            {/* <iframe
               src="/timetable"
               title="TimeTable"
               className="modal-iframe"
-            ></iframe>
+            ></iframe> */}
+            <List />
           </div>
         </div>
       )}
@@ -236,3 +311,4 @@ const CreditScreen = () => {
 };
 
 export default CreditScreen;
+
