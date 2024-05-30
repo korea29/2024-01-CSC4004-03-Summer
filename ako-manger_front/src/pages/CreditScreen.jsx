@@ -125,10 +125,10 @@ const CreditScreen = () => {
     setModalVisible(true);
   };
 
-// 모달 닫기 함수
-const closeModal = () => {
-  setModalVisible(false);
-};
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <div>
@@ -136,7 +136,7 @@ const closeModal = () => {
         description="✏️ 다음 학기 시간표 추천해 줄게요"
         shape="square"
         className="custom-float-button"
-        onClick= {openModal} // 시간표 창 모달로 열기
+        onClick={openModal} // 시간표 창 모달로 열기
         style={{
           right: 50,
           fontSize: 100,
@@ -223,7 +223,11 @@ const closeModal = () => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             {/* <button className="modal-close-button" onClick={closeModal} style={{borderRadius: '50%', backgroundColor: '#F4E7DA', border: '1.5px solid #B7A08E', width: '40px', height: '40x', cursor: 'pointer'}}>X</button> */}
-            <iframe src="/timetable" title="TimeTable" className="modal-iframe"></iframe>
+            <iframe
+              src="/timetable"
+              title="TimeTable"
+              className="modal-iframe"
+            ></iframe>
           </div>
         </div>
       )}
