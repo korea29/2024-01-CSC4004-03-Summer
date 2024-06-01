@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import HeaderComponent from "./components/HeaderComponent";
 import PieChartComponent from "./components/PieChartComponent";
 import Curriculum from "./components/curriculum";
+
 import "../css/CreditScreen.css";
 import List from "./components/List";
 import {
@@ -15,7 +18,6 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, Button, FloatButton, Modal, Upload } from "antd";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const { Sider } = Layout;
 
