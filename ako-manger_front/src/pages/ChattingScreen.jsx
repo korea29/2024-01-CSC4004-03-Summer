@@ -25,22 +25,6 @@ const ChattingScreen = () => {
     }
   }, [initialMessage]);
 
-  const fetchData = async () => {
-    try {
-      // 로그인 요청
-      const response = await axios.post("http://localhost:8080/login", {
-        studentId: "1122", // 사용자가 입력한 학번
-        password: "1122", // 사용자가 입력한 비밀번호
-      });
-
-      // 응답 처리
-      console.log("로그인 완료:", response.data);
-    } catch (error) {
-      // 오류 처리
-      console.error("로그인 오류:", error);
-    }
-  };
-
   const addNewChat = async (chat) => {
     const updatedChatHistory = [...chatHistory, { user: chat }];
     setChatHistory(updatedChatHistory);
@@ -48,10 +32,20 @@ const ChattingScreen = () => {
     setInputValue("");
 
     try {
-      const response = await axios.post("http://localhost:8080/chat/ask", {
-        Username: "User",
-        UserInput: chat,
-      });
+      const token = localStorage.getItem("authToken"); // 토큰 가져오기
+      const response = await axios.post(
+        "http://localhost:8080/chat/ask",
+        {
+          Username: "username",
+          Userinput: chat,
+        },
+        {
+          headers: {
+            Authorization: `${token}`, // 요청 헤더에 토큰 추가
+          },
+        }
+      );
+      console.log("응답 데이터:", response.data);
 
       const reply = response.data;
 

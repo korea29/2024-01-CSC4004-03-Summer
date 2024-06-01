@@ -23,11 +23,16 @@ const LoginScreen = () => {
       });
 
       if (response.ok) {
-        // const data = await response.json();
-        // const token = data.token; // 서버에서 반환된 토큰
-        // document.cookie = `token=${token};path=/`; // 쿠키에 토큰 저장
-        console.log("로그인 성공!");
-        navigate("/");
+        const authHeader = response.headers.get("Authorization");
+        if (authHeader) {
+          // 토큰 저장
+          localStorage.setItem("authToken", authHeader);
+          console.log("로그인 성공!");
+          // 필요한 경우 다른 페이지로 이동
+          navigate("/");
+        } else {
+          console.error("Authorization 헤더가 없습니다.");
+        }
       } else {
         console.error("로그인 실패");
         alert("아이디 또는 비밀번호가 올바르지 않습니다.");

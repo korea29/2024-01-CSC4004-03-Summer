@@ -53,6 +53,7 @@ public class MajorController {
         }
     }
 
+    // 졸업 기준 총 학점
     // POST : [/Major/getTotalScore]
     @PostMapping("/getTotalScore")
     public Integer getTotalScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
@@ -68,6 +69,7 @@ public class MajorController {
         }
     }
 
+    // 졸업 기준 총 전공 학점
     // POST : [/Major/getTotalMajorScore]
     @PostMapping("/getTotalMajorScore")
     public Integer getTotalMajorScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
@@ -80,7 +82,8 @@ public class MajorController {
         else return 0;
     }
 
-    // POST : [/Major/getTotalMajorScore]
+    // 졸업 기준 총 일반 교양 학점
+    // POST : [/Major/getTotalCommonScore]
         @PostMapping("/getTotalCommonScore")
     public Integer getTotalCommonScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
         String authorization= request.getHeader("Authorization");
@@ -92,7 +95,8 @@ public class MajorController {
         else return 0;
     }
 
-    // POST : [/Major/getTotalMajorScore]
+    // // 졸업 기준 지정 교양 학점
+    // POST : [/Major/getTotalDesignatedScore]
     @PostMapping("/getTotalDesignatedScore")
     public Integer getTotalDesignatedScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
         String authorization= request.getHeader("Authorization");
