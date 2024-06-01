@@ -26,7 +26,6 @@ const SignUpScreen = () => {
     password: password || "", // 비밀번호
   });
 
-  // const inputFileRef = useRef(null); 엑셀 업로드
   const inputFileRef_2 = useRef(null);
 
   const handleFileInputChange = (e) => {
