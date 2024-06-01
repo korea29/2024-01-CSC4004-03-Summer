@@ -1,7 +1,6 @@
 package com.dgu_csc.akomanager_back.controller;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.dgu_csc.akomanager_back.dto.ChatRequest;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +17,7 @@ public class ChatbotController {
     private final String ChatbotLogFormat = LocalDate.now() + " " + LocalTime.now() + "\t";
     private static final Logger logger = LoggerFactory.getLogger(ChatbotController.class);
 
-    @Getter
-    @Setter
-    public static class ChatRequest {private String Username, UserInput ;}
-
-    // POST : /chat/ask (POSTMAN FORMAT : Username, UserInput)
+    // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
     public String askChatbot(ChatRequest chatRequest) throws Exception{
         String username = chatRequest.getUsername();
@@ -39,11 +34,11 @@ public class ChatbotController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(process.getOutputStream()));
 
-            File chatLog = new File(DefaultPath + "resources/MyLog3.txt");
-            FileWriter chatLogWriter = new FileWriter(chatLog, true);  // 챗봇 로그 기록을 위하여 추가한 FileWriter
-
-            chatLogWriter.write(ChatbotLogFormat + username + " : " + userInput + "\n");
-            chatLogWriter.flush();
+//            File chatLog = new File(DefaultPath + "resources/MyLog3.txt");
+//            FileWriter chatLogWriter = new FileWriter(chatLog, true);  // 챗봇 로그 기록을 위하여 추가한 FileWriter
+//
+//            chatLogWriter.write(ChatbotLogFormat + username + " : " + userInput + "\n");
+//            chatLogWriter.flush();
             writer.println(username);
             writer.println(userInput);
             writer.flush();
@@ -52,16 +47,16 @@ public class ChatbotController {
 
             if (userInput.equals("대화종료")) {
                 response = "또 만날 기회를 기다리고 있을게요! ❤️";
-                chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
+                //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             } else {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     responseBuilder.append(line).append("\n");
                 }
                 response = responseBuilder.toString().trim();
-                chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
+                //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             }
-            chatLogWriter.close();
+            //chatLogWriter.close();
             return response;
         } catch (IOException e) {
             response = "Error processing chat: " + e.getMessage();

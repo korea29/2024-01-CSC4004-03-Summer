@@ -6,4 +6,4 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChatRequest {private String Username, UserInput ;}
+public class ChatRequest {String Username; String UserInput ;}
