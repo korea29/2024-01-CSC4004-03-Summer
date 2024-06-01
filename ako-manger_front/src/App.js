@@ -23,10 +23,6 @@ const addUser = async (userData) => {
 
 function App() {
   return (
-    // <div className="App">
-    //   {/* 아래 괄호에 보고 싶은 페이지 이름으로 바꾸면 그 페이지를 볼 수 있습니다. */}
-    //   <HeaderComponent></HeaderComponent>
-    // </div>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
