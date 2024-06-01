@@ -259,12 +259,6 @@ const SignUpScreen = () => {
           {selectedFileName && (
             <div className="file-upload-message">
               {selectedFileName}
-              <button
-                className="attach-file-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  inputFileRef.current.click();
-                }}
               >
                 첨부하기
               </button>
