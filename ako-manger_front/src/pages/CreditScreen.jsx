@@ -132,8 +132,6 @@ const CreditScreen = () => {
 
   const navigate = useNavigate(); // 다음 시간표 추천 네비게이션
   // const gotoTimeTable = () => {
-  //   navigate("/timetable");
-  // };
 
   // 왼쪽 네비게이션 관련 함수-1
   const handleMenuClick = (e) => {
