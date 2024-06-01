@@ -255,30 +255,7 @@ const SignUpScreen = () => {
           value={formData.date_of_birth}
           onChange={handleStudentBirthChange}
         />
-        {/* <div className="file-upload-container">
-          {selectedFileName && (
-            <div className="file-upload-message">
-              {selectedFileName}
-              <button
-                className="attach-file-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  inputFileRef.current.click();
-                }}
-              >
-                첨부하기
-              </button>
-              <input
-                type="file"
-                accept=".xls,.xlsx"
-                ref={inputFileRef}
-                style={{ display: "none" }}
-                onChange={handleExcelInputChange}
-              />
-            </div>
-          )}
-        </div>
-        <div style={{ position: "relative" }}>
+        {/*
           <div
             className="help"
             onMouseEnter={handleMouseEnter}
