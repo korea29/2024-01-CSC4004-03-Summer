@@ -14,8 +14,8 @@ import java.time.*;
 public class ChatbotController {
 
     private final String DefaultPath = System.getProperty("user.dir") + "/ako-manager_back/src/main/";
-    private final String ChatbotLogFormat = LocalDate.now() + " " + LocalTime.now() + "\t";
-    private static final Logger logger = LoggerFactory.getLogger(ChatbotController.class);
+//    private final String ChatbotLogFormat = LocalDate.now() + " " + LocalTime.now() + "\t";
+//    private static final Logger logger = LoggerFactory.getLogger(ChatbotController.class);
 
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
