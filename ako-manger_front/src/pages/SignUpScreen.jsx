@@ -36,7 +36,6 @@ const SignUpScreen = () => {
   //   const selectedFile = e.target.files[0];
   //   setFormData({ ...formData, excelFile: e.target.files[0] });
   //   setSelectedFileName(selectedFile.name);
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
