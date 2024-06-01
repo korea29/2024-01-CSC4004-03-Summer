@@ -19,12 +19,12 @@ public class ChatbotController {
 
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
-    public String askChatbot(ChatRequest chatRequest) throws Exception{
+    public String askChatbot(ChatRequest chatRequest) throws Exception {
         String username = chatRequest.getUsername();
         String userInput = chatRequest.getUserInput();
         String response;
         try {
-            updateLogs();
+//            updateLogs();
             String pythonScriptPath = DefaultPath + "Python/ChatbotCode.py";
             String[] command = {"python3", pythonScriptPath};
 
@@ -64,22 +64,23 @@ public class ChatbotController {
 
         return response;
     }
+}
 
     // 로그에 3개의 대화 내용만 보이게 하는 기능
-    private void updateLogs() {
-        try {
-            for (int i = 2; i < 4; i++) {
-                File upper = new File(DefaultPath + "resources/MyLog" + i + ".txt");
-                File lower = new File(DefaultPath + "resources/MyLog" + (i - 1) + ".txt");
-                if (upper.exists()) {
-                    boolean success = upper.renameTo(lower);
-                    if (!success) {System.out.println("Cannot move data to previous log"); }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("error message : ", e);
-        }
-    }
-}
+//    private void updateLogs() {
+//        try {
+//            for (int i = 2; i < 4; i++) {
+//                File upper = new File(DefaultPath + "resources/MyLog" + i + ".txt");
+//                File lower = new File(DefaultPath + "resources/MyLog" + (i - 1) + ".txt");
+//                if (upper.exists()) {
+//                    boolean success = upper.renameTo(lower);
+//                    if (!success) {System.out.println("Cannot move data to previous log"); }
+//                }
+//            }
+//        } catch (Exception e) {
+//            logger.error("error message : ", e);
+//        }
+//    }
+//}
 
 
