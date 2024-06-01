@@ -37,11 +37,11 @@ const ChattingScreen = () => {
         "http://localhost:8080/chat/ask",
         {
           Username: "username",
-          Userinput: chat,
+          UserInput: chat,
         },
         {
           headers: {
-            Authorization: `${token}`, // 요청 헤더에 토큰 추가
+            Authorization: token, // Bearer를 포함한 토큰
           },
         }
       );
