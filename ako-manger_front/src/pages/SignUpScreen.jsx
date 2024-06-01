@@ -262,11 +262,7 @@ const SignUpScreen = () => {
               >
                 첨부하기
               </button>
-              <input
-                type="file"
-                accept=".xls,.xlsx"
-                ref={inputFileRef}
-                style={{ display: "none" }}
+              
                 onChange={handleExcelInputChange}
               />
             </div>
