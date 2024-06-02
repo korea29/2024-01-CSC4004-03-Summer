@@ -19,6 +19,8 @@ import "../css/CreditScreen.css";
 
 const { Sider } = Layout;
 
+// 각 value값을 subject, subjectfinished로 바꾸기
+
 const chartData = [
   { title: "졸업까지", value: 55, totalValue: 150, color: "#F1BB79" },
   { title: "전공", value: 30, totalValue: 80, color: "#867060" },
@@ -67,8 +69,10 @@ const CreditScreen = () => {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  // 1. 학점 조회 api 연결 예시(반드시 헤더 토큰도 같이 전송해야합니다!)
   const sendMajorInfoToServer = async () => {
     try {
+      // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
       const majorDto = { majorName: "컴퓨터공학과", year: "2020" };
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -106,6 +110,10 @@ const CreditScreen = () => {
   const handleUploadOk = () => setUploadVisible(false);
   const handleUploadCancel = () => setUploadVisible(false);
 
+  // 2. 엑셀 파일 전송 코드
+  //아래와 같이 헤더까지 같이 보내서 file 양식의 문제인데, 확인 방법은
+  // 개발자 도구 -> 네트워크-> 왼쪽하단의 이름을 보면 지금까지 전송 내용 자세히 볼 수 있습니다!
+  //그 중 페이로드 확인하시면 될 것 같아요!
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
