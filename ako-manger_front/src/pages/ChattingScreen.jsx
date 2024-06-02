@@ -32,16 +32,18 @@ const ChattingScreen = () => {
     setInputValue("");
 
     try {
+      const formData = new FormData();
+      formData.append("username", "username");
+      formData.append("userInput", chat);
+
       const token = localStorage.getItem("authToken"); // 토큰 가져오기
       const response = await axios.post(
         "http://localhost:8080/chat/ask",
-        {
-          Username: "username",
-          Userinput: chat,
-        },
+        formData,
         {
           headers: {
-            Authorization: `${token}`, // 요청 헤더에 토큰 추가
+            Authorization: token, // Bearer를 포함한 토큰
+            "Content-Type": "multipart/form-data", // 폼 데이터 형식 지정
           },
         }
       );

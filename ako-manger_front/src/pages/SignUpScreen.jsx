@@ -11,16 +11,6 @@ const SignUpScreen = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showUploadText, setShowUploadText] = useState(false);
-  // const [selectedFileName, setSelectedFileName] = useState("수강과목 첨부(.xls)*");
-  // const [messageVisible, setMessageVisible] = useState(false);
-
-  // const handleMouseEnter = () => {
-  //   setMessageVisible(true);
-  // };
-
-  // const handleMouseLeave = () => {
-  //   setMessageVisible(false);
-  // };
 
   const [formData, setFormData] = useState({
     university: "", // 대학교
@@ -36,18 +26,11 @@ const SignUpScreen = () => {
     password: password || "", // 비밀번호
   });
 
-  // const inputFileRef = useRef(null); 엑셀 업로드
   const inputFileRef_2 = useRef(null);
 
   const handleFileInputChange = (e) => {
     setFormData({ ...formData, profileImage: e.target.files[0] });
   };
-
-  // const handleExcelInputChange = (e) => {
-  //   const selectedFile = e.target.files[0];
-  //   setFormData({ ...formData, excelFile: e.target.files[0] });
-  //   setSelectedFileName(selectedFile.name);
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +77,14 @@ const SignUpScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.university || !formData.studentId || !formData.name || !formData.major || !formData.college || !formData.date_of_birth ) {
+    if (
+      !formData.university ||
+      !formData.studentId ||
+      !formData.name ||
+      !formData.major ||
+      !formData.college ||
+      !formData.date_of_birth
+    ) {
       alert(`모든 필수 입력란을 작성해주세요.`);
       return;
     }
@@ -154,14 +144,23 @@ const SignUpScreen = () => {
           onMouseLeave={() => setShowUploadText(false)}
           onClick={() => inputFileRef_2.current.click()}
         >
-          {showUploadText && <div className="upload-text-overlay">사진업로드하기</div>}
+          {showUploadText && (
+            <div className="upload-text-overlay">사진업로드하기</div>
+          )}
           {formData.profileImage ? (
-            <img src={URL.createObjectURL(formData.profileImage)} alt="Profile" className="profile-image" />
+            <img
+              src={URL.createObjectURL(formData.profileImage)}
+              alt="Profile"
+              className="profile-image"
+            />
           ) : (
             <img src={profileImage} alt="Profile" className="profile-image" />
           )}
         </div>
-        <div className="profile-text" onClick={() => inputFileRef_2.current.click()}>
+        <div
+          className="profile-text"
+          onClick={() => inputFileRef_2.current.click()}
+        >
           Profile
         </div>
         <input
@@ -256,30 +255,7 @@ const SignUpScreen = () => {
           value={formData.date_of_birth}
           onChange={handleStudentBirthChange}
         />
-        {/* <div className="file-upload-container">
-          {selectedFileName && (
-            <div className="file-upload-message">
-              {selectedFileName}
-              <button
-                className="attach-file-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  inputFileRef.current.click();
-                }}
-              >
-                첨부하기
-              </button>
-              <input
-                type="file"
-                accept=".xls,.xlsx"
-                ref={inputFileRef}
-                style={{ display: "none" }}
-                onChange={handleExcelInputChange}
-              />
-            </div>
-          )}
-        </div>
-        <div style={{ position: "relative" }}>
+        {/*
           <div
             className="help"
             onMouseEnter={handleMouseEnter}
