@@ -110,7 +110,6 @@ const CreditScreen = () => {
   const handleUploadOk = () => setUploadVisible(false);
   const handleUploadCancel = () => setUploadVisible(false);
 
-  // 2. 엑셀 파일 전송 코드
   //아래와 같이 헤더까지 같이 보내서 file 양식의 문제인데, 확인 방법은
   // 개발자 도구 -> 네트워크-> 왼쪽하단의 이름을 보면 지금까지 전송 내용 자세히 볼 수 있습니다!
   //그 중 페이로드 확인하시면 될 것 같아요!
