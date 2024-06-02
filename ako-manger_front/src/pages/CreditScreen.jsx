@@ -1,77 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Layout, Menu, Button, FloatButton, Modal, Upload } from "antd";
+import { useNavigate } from "react-router-dom";
+import {
+  PieChartOutlined,
+  ApartmentOutlined,
+  UploadOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from "@ant-design/icons";
 
 import HeaderComponent from "./components/HeaderComponent";
 import PieChartComponent from "./components/PieChartComponent";
 import Curriculum from "./components/curriculum";
+import List from "./components/List";
 
 import "../css/CreditScreen.css";
-import List from "./components/List";
-import {
-  PieChartOutlined,
-  ApartmentOutlined,
-  CarryOutOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  QuestionCircleOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, FloatButton, Modal, Upload } from "antd";
-import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
 
-// 학점 조회 차트 더미 데이터
+// 각 value값을 subject, subjectfinished로 바꾸기
+
 const chartData = [
-  {
-    title: "졸업까지",
-    value: 55,
-    totalValue: 150,
-    color: "#F1BB79",
-  },
-  {
-    title: "전공",
-    value: 30,
-    totalValue: 80,
-    color: "#867060",
-  },
+  { title: "졸업까지", value: 55, totalValue: 150, color: "#F1BB79" },
+  { title: "전공", value: 30, totalValue: 80, color: "#867060" },
   {
     title: "공통 교양",
     value: 20,
     totalValue: 50,
     color: "rgba(230, 170, 15, 0.56)",
   },
-  {
-    title: "일반 교양",
-    value: 5,
-    totalValue: 20,
-    color: "#B3C278",
-  },
+  { title: "일반 교양", value: 5, totalValue: 20, color: "#B3C278" },
 ];
 
-// 필수 과목 이수 체계도 더미 데이터
 const curriculumDummyData = [
-  {
-    grade: 1,
-    semester: 1,
-    sbj: "계산적 사고법",
-    prev: null,
-    major: true,
-  },
-  {
-    grade: 1,
-    semester: 2,
-    sbj: "어드벤처 디자인",
-    prev: null,
-    major: true,
-  },
-  {
-    grade: 1,
-    semester: 2,
-    sbj: "이산수학",
-    prev: null,
-    major: false,
-  },
+  { grade: 1, semester: 1, sbj: "계산적 사고법", prev: null, major: true },
+  { grade: 1, semester: 2, sbj: "어드벤처 디자인", prev: null, major: true },
+  { grade: 1, semester: 2, sbj: "이산수학", prev: null, major: false },
   {
     grade: 2,
     semester: 1,
@@ -79,13 +44,7 @@ const curriculumDummyData = [
     prev: "프로그래밍 기초",
     major: true,
   },
-  {
-    grade: 2,
-    semester: 1,
-    sbj: "컴퓨터 구성",
-    prev: "이산수학",
-    major: false,
-  },
+  { grade: 2, semester: 1, sbj: "컴퓨터 구성", prev: "이산수학", major: false },
   {
     grade: 2,
     semester: 2,
@@ -103,38 +62,39 @@ const curriculumDummyData = [
 ];
 
 const CreditScreen = () => {
+  const navigate = useNavigate();
+
+  const [collapsed, setCollapsed] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  // 1. 학점 조회 api 연결 예시(반드시 헤더 토큰도 같이 전송해야합니다!)
   const sendMajorInfoToServer = async () => {
     try {
-      const majorDto = {
-        majorName: "컴퓨터공학과",
-        year: "2020",
-      };
-
+      // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
+      const majorDto = { majorName: "컴퓨터공학과", year: "2020" };
       const token = localStorage.getItem("authToken");
-
       const response = await axios.post(
         "http://localhost:8080/Major/getTotalMajorScore",
         majorDto,
         {
           headers: {
             Authorization: token,
-            "Content-Type": "application/json", // 데이터 형식 지정
+            "Content-Type": "application/json",
           },
         }
       );
-
       console.log("응답 데이터:", response.data);
     } catch (error) {
       console.error("에러 발생:", error);
     }
   };
 
-  // 함수 호출
-  sendMajorInfoToServer();
+  useEffect(() => {
+    sendMajorInfoToServer();
+  }, []);
 
-  const navigate = useNavigate();
-
-  // 왼쪽 네비게이션 관련 함수-1
   const handleMenuClick = (e) => {
     const sectionId = `part-${e.key}`;
     const section = document.getElementById(sectionId);
@@ -143,72 +103,39 @@ const CreditScreen = () => {
     }
   };
 
-  // 왼쪽 네비게이션 관련 함수-2
-  const [collapsed, setCollapsed] = useState(false);
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
 
-  // 모달 상태 관리 - TimeTable
-  const [modalVisible, setModalVisible] = useState(false);
+  const handleFileChange = (info) => setSelectedFile(info.file);
+  const handleUploadOk = () => setUploadVisible(false);
+  const handleUploadCancel = () => setUploadVisible(false);
 
-  // 모달 열기 함수
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  // 모달 닫기 함수
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
-  // 파일 선택 상태 관리
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  // 엑셀 파일 업로드 모달 상태 관리
-  const [uploadVisible, setUploadVisible] = useState(false);
-
-  const handleUploadMenuClick = () => {
-    setUploadVisible(true);
-  };
-
-  const handleUploadOk = () => {
-    setUploadVisible(false);
-  };
-
-  const handleUploadCancel = () => {
-    setUploadVisible(false);
-  };
-
-  // 파일 선택 시 호출되는 함수
-  const handleFileChange = (info) => {
-    const { file } = info;
-    setSelectedFile(file);
-  };
-
-  //  const handleExcelInputChange = (e) => {
-  //     const selectedFile = e.target.files[0];
-  //     setFormData({ ...formData, excelFile: e.target.files[0] });
-  //     setSelectedFileName(selectedFile.name);
-  //   };
-
-  // 수강 과목 업로드
+  // 2. 엑셀 파일 전송 코드
+  //아래와 같이 헤더까지 같이 보내서 file 양식의 문제인데, 확인 방법은
+  // 개발자 도구 -> 네트워크-> 왼쪽하단의 이름을 보면 지금까지 전송 내용 자세히 볼 수 있습니다!
+  //그 중 페이로드 확인하시면 될 것 같아요!
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("file", selectedFile); // selectedFile는 사용자가 선택한 파일
+      formData.append("file", selectedFile);
+      const token = localStorage.getItem("authToken");
 
-      const response = await fetch("/excel/uploadF", {
-        // api 연결
+      const response = await fetch("http://localhost:8080/excel/uploadF", {
         method: "POST",
+        headers: {
+          Authorization: token,
+        },
         body: formData,
       });
 
-      if (response.ok) {
-        // 서버로부터 성공적인 응답을 받았을 때의 처리
+      if (response.status === 200) {
+        alert("파일 업로드 성공");
       } else {
-        alert(`(서버)오류가 발생했습니다`);
+        alert("서버 오류가 발생했습니다");
       }
     } catch (error) {
-      alert(`(네트워크)오류가 발생했습니다`);
+      alert("네트워크 오류가 발생했습니다");
     }
   };
 
@@ -218,7 +145,7 @@ const CreditScreen = () => {
         description="✏️ 다음 학기 시간표 추천해 줄게요"
         shape="square"
         className="custom-float-button"
-        onClick={openModal} // 시간표 창 모달로 열기
+        onClick={openModal}
         style={{
           right: 50,
           fontSize: 100,
@@ -247,7 +174,7 @@ const CreditScreen = () => {
             <Menu.Item
               key="3"
               icon={<UploadOutlined />}
-              onClick={handleUploadMenuClick}
+              onClick={() => setUploadVisible(true)}
             >
               수강과목 첨부
             </Menu.Item>
@@ -255,7 +182,7 @@ const CreditScreen = () => {
           <Modal
             title="수강과목 업로드"
             visible={uploadVisible}
-            onOk={handleSubmit} //??
+            onOk={handleSubmit}
             onCancel={handleUploadCancel}
             footer={[
               <Button
@@ -268,11 +195,7 @@ const CreditScreen = () => {
               <Button
                 key="submit"
                 type="primary"
-                style={{
-                  backgroundColor: "#F9F0E7",
-                  borderColor: "none",
-                  color: "#757575",
-                }}
+                style={{ backgroundColor: "#F9F0E7", color: "#757575" }}
                 onClick={handleSubmit}
               >
                 확인
@@ -280,12 +203,9 @@ const CreditScreen = () => {
             ]}
           >
             <Upload type="file" accept=".xls,.xlsx" onChange={handleFileChange}>
-              {" "}
-              {/* 파일 선택 시 호출되는 함수 연결 */}
               <Button icon={<UploadOutlined />}>파일 선택</Button>
             </Upload>
             <div style={{ color: "#757575" }}>
-              {" "}
               <br /> mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xls
               다운로드
             </div>
@@ -295,23 +215,13 @@ const CreditScreen = () => {
           type="text"
           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           onClick={() => setCollapsed(!collapsed)}
-          style={{
-            fontSize: "16px",
-            width: 64,
-            height: 64,
-          }}
+          style={{ fontSize: "16px", width: 64, height: 64 }}
         />
         <div className="item-container">
           <h2
             id="part-1"
             className="curriculum-title"
-            style={{
-              marginBottom: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
+            style={{ marginBottom: "50px", textAlign: "center" }}
           >
             이수 학점 조회
           </h2>
@@ -321,7 +231,7 @@ const CreditScreen = () => {
                 <p className="chart-title">{dataItem.title}</p>
                 <div className="chart-content">
                   <PieChartComponent data={dataItem} />
-                  <p className="chart-credits">총{dataItem.totalValue}학점</p>
+                  <p className="chart-credits">총 {dataItem.totalValue} 학점</p>
                 </div>
               </div>
             ))}
@@ -331,10 +241,7 @@ const CreditScreen = () => {
               className="curriculum-title"
               style={{
                 marginBottom: "50px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
+                textAlign: "center",
                 marginTop: "25px",
               }}
             >
@@ -349,11 +256,6 @@ const CreditScreen = () => {
       {modalVisible && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* <iframe
-              src="/timetable"
-              title="TimeTable"
-              className="modal-iframe"
-            ></iframe> */}
             <List />
           </div>
         </div>
