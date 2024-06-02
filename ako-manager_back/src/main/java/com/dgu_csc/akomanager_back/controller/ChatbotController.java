@@ -46,27 +46,23 @@ public class ChatbotController {
             StringBuilder responseBuilder = new StringBuilder();
 
             if (userInput.equals("대화종료")) {
-                response = "또 만날 기회를 기다리고 있을게요! ❤️";
+                return "또 만날 기회를 기다리고 있을게요! ❤️";
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             } else {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line).append("\n");
-                }
-                response = responseBuilder.toString().trim();
+                return reader.readLine();
+
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
+                //chatLogWriter.close();
+
             }
-            //chatLogWriter.close();
-            return response;
         } catch (IOException e) {
             response = "Error processing chat: " + e.getMessage();
         }
-
         return response;
     }
 }
 
-    // 로그에 3개의 대화 내용만 보이게 하는 기능
+// 로그에 3개의 대화 내용만 보이게 하는 기능
 //    private void updateLogs() {
 //        try {
 //            for (int i = 2; i < 4; i++) {
