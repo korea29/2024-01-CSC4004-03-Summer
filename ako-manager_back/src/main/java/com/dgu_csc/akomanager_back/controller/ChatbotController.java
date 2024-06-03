@@ -1,7 +1,6 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.ChatRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -20,9 +19,10 @@ public class ChatbotController {
 
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
-    public ResponseEntity<String> askChatbot( ChatRequest chatRequest) throws Exception {
+    public String askChatbot(ChatRequest chatRequest) throws Exception {
         String username = chatRequest.getUsername();
         String userInput = chatRequest.getUserInput();
+        String response;
         try {
 //            updateLogs();
             String pythonScriptPath = DefaultPath + "Python/ChatbotCode.py";
@@ -43,24 +43,30 @@ public class ChatbotController {
             writer.println(userInput);
             writer.flush();
 
+            StringBuilder responseBuilder = new StringBuilder();
+
             if (userInput.equals("대화종료")) {
-                return ResponseEntity.status(409).body("또 만날 기회를 기다리고 있을게요! ❤️");
+                response = "또 만날 기회를 기다리고 있을게요! ❤️";
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             } else {
-                return ResponseEntity.ok().body(reader.readLine());
-
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line).append("\n");
+                }
+                response = responseBuilder.toString().trim();
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
-                //chatLogWriter.close();
-
             }
+            //chatLogWriter.close();
+            return response;
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            response = "Error processing chat: " + e.getMessage();
         }
 
+        return response;
     }
 }
 
-// 로그에 3개의 대화 내용만 보이게 하는 기능
+    // 로그에 3개의 대화 내용만 보이게 하는 기능
 //    private void updateLogs() {
 //        try {
 //            for (int i = 2; i < 4; i++) {
