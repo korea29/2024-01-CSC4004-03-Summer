@@ -32,11 +32,9 @@ public class MajorController {
 
     // POST : [/Major/add] 과목 추가
     @PostMapping("/add")
-    public ResponseEntity<String> addMajor(@RequestBody Major major, HttpServletRequest request1) {
+    public ResponseEntity<String> addMajor(@RequestBody Major major, HttpServletRequest request) {
         try {
-            String authorization= request1.getHeader("Authorization");
-            String token = authorization.split(" ")[1];
-            String studentId = jwtUtil.getUsername(token);
+            String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
             Optional<User> masteruser = userService.findByStudentId(studentId);
 
             // 권한 확인 후 충족시만 저장
@@ -57,9 +55,7 @@ public class MajorController {
     // POST : [/Major/getTotalScore]
     @PostMapping("/getTotalScore")
     public Integer getTotalScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalScore(majorDto);
@@ -73,9 +69,7 @@ public class MajorController {
     // POST : [/Major/getTotalMajorScore]
     @PostMapping("/getTotalMajorScore")
     public Integer getTotalMajorScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalMajorScore(majorDto);
@@ -86,27 +80,41 @@ public class MajorController {
     // POST : [/Major/getTotalCommonScore]
         @PostMapping("/getTotalCommonScore")
     public Integer getTotalCommonScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
-        Optional<User> user = userService.findByStudentId(studentId);
+            String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+            Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalCommonScore(majorDto);
         else return 0;
     }
 
-    // // 졸업 기준 지정 교양 학점
+    // 졸업 기준 지정 교양 학점
     // POST : [/Major/getTotalDesignatedScore]
     @PostMapping("/getTotalDesignatedScore")
     public Integer getTotalDesignatedScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalDesignatedScore(majorDto);
         else return 0;
     }
 
+    // 졸업 기준 남는 일반 학점 (ex. 총 학점 - 전공,지정,일반 = 남는 학점 ) 2022까지 입학생 적용
+    // POST : [/Major/getTotalExtraScore]
+    @PostMapping("/getTotalExtraScore")
+    public Integer getTotalExtraScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName())) {
+            int extra = majorService.getTotalScore(majorDto); // 총 학점 저장 후
+            // 각각을 빼줌
+            extra -= majorService.getTotalMajorScore(majorDto);
+            extra -= majorService.getTotalDesignatedScore(majorDto);
+            extra -= majorService.getTotalCommonScore(majorDto);
+
+            // 0보다 클 때만 반환
+            return Math.max(extra, 0);
+        }
+        else return 0;
+    }
 
 }

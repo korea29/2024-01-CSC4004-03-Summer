@@ -1,6 +1,7 @@
 package com.dgu_csc.akomanager_back.jwt;
 
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class JWTUtil {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
+    // JWT 안에 username 에 대한 정보 반환 -> User 의 studentId와 같은 항목
     public String getUsername(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
@@ -32,6 +34,13 @@ public class JWTUtil {
     public Boolean isExpired(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+    }
+
+    // HttpServletRequest request 에서 토큰 파싱 함수
+    public String getToken(HttpServletRequest request) {
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        return token;
     }
 
 

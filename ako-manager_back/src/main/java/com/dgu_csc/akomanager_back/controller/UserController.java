@@ -24,18 +24,7 @@ public class UserController {
     @Autowired
     private final UserService userService;
     @Autowired
-    private OrderedFormContentFilter formContentFilter;
-    @Autowired
     private JWTUtil jwtUtil;
-
-//    private String extractToken(HttpServletRequest request) {
-//        String header = request.getHeader("Authorization");
-//        if (header != null && header.startsWith("Bearer ")) {
-//            return header.substring(7);
-//        }
-//        return null;
-//    }
-
 
     // POST :  [/User/add] 유저 추가 (학번 중복 확인)
     @PostMapping("/add")
@@ -50,10 +39,8 @@ public class UserController {
 
     // POST : [/User/getAll] / 마스터 비밀번호를 body로 포함해서 요청하고, 권한 (role=11) 확인될 시, 정보 반환
     @PostMapping("/getAll")
-    public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest request, HttpServletRequest request1) {
-        String authorization= request1.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+    public ResponseEntity<List<User>> getAllUsers(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> masteruser = userService.findByStudentId(studentId);
         if( masteruser.isEmpty() ) {
             System.out.println("마스터 유저에 저장 안됨");
@@ -62,7 +49,7 @@ public class UserController {
         else {
             try {
                 if(masteruser.get().getRole().equals("11")){
-                    List<User> Users = userService.getAllUsers(request.getPassword());
+                    List<User> Users = userService.getAllUsers(passwordRequest.getPassword());
                     return ResponseEntity.ok(Users);
                 }
                 else {
@@ -76,10 +63,11 @@ public class UserController {
     }
 
 
-    // POST : [/User/{studentId}/get] url의 studentId와 body의 유저 개인의 password 정보로 유저 정보 반환
-    @PostMapping("/{studentId}/get")
-    public ResponseEntity<User> getUserByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
-            Optional<User> user = userService.searchUser(studentId, request.getPassword());
+    // POST : [/User/get] url의 studentId와 body의 유저 개인의 password 정보로 유저 정보 반환
+    @PostMapping("/get")
+    public ResponseEntity<User> getUserByStudentId(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
+            String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+            Optional<User> user = userService.searchUser(studentId, passwordRequest.getPassword());
             return user.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -93,6 +81,7 @@ public class UserController {
     }
 
     // 유저 정보 삭제
+    // DELETE : [/User/{studentId}/delete] url의 studentId와 body의 유저 개인 비밀번호나 마스터 비밀번호로 유저 정보 삭제
     @DeleteMapping("/{studentId}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable String studentId, @RequestBody PasswordRequest request) {
         boolean isDeleted = userService.deleteUser(studentId, request.getPassword());
