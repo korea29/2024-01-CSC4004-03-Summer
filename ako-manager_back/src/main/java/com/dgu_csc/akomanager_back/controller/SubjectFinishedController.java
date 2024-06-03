@@ -50,4 +50,11 @@ public class SubjectFinishedController {
         return subjectFinishedService.getUserTotalMajorScore(studentId);
     }
 
+    // GET : [/SubjectFinished/getUserTotalMajorScore] 지금 까지 들은 총 전공 학점
+    @GetMapping("/getUserTotalCommonScore")
+    public int getUserTotalCommonScore(HttpServletRequest request) {
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+        return subjectFinishedService.getUserTotalCommonScore(studentId);
+    }
+
 }

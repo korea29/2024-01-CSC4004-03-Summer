@@ -68,8 +68,10 @@ public class UserController {
     public ResponseEntity<User> getUserByStudentId(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
             String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
             Optional<User> user = userService.searchUser(studentId, passwordRequest.getPassword());
-            return user.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+            if(user.isPresent())
+                return ResponseEntity.ok(user.get());
+            else
+                return ResponseEntity.status(403).build();
     }
 
     // 유저 정보 수정 (modify) / PUT : url에 아이디, body에 수정할 정보(/add 와 같이 ) 입력

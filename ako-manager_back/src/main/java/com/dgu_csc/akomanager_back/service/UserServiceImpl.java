@@ -1,5 +1,6 @@
 package com.dgu_csc.akomanager_back.service;
 
+import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final JWTUtil jwtUtil;
 
     // POST : [/User/getAll] 을 위한 master 비밀번호
     private static final String MASTER_PASSWORD = "SUMMER";
@@ -46,7 +48,13 @@ public class UserServiceImpl implements UserService {
     // POST : [/User/{studentId}/get] url의 studentId와 body의 password 정보로 유저 정보 반환
     @Override
     public Optional<User> searchUser(String studentId, String password) {
-        return userRepository.findByStudentId(studentId).filter(user -> user.getPassword().equals(password));
+        Optional<User> user = userRepository.findByStudentId(studentId);
+        if(bCryptPasswordEncoder.matches(password, user.get().getPassword())) {
+            user.get().setPassword(password);
+            return user;
+        }
+        else
+            return null;
     }
 
     // PUT : [/User/{studentId}/update] url의 studentId와 body의 password 정보로 유저 정보 수정

@@ -103,6 +103,12 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
         return totalMajorScore;
     }
 
+    @Override
+    public int getUserTotalCommonScore(String studentId) {
+        return 0;
+    }
+
+
     // TODO : 총 성적 평균
 
     // TODO : 총 전공 평균

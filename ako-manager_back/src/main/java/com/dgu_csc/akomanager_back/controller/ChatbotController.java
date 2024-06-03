@@ -1,15 +1,28 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.ChatRequest;
+import com.dgu_csc.akomanager_back.dto.ChatRespone;
+import com.dgu_csc.akomanager_back.jwt.JWTUtil;
+import com.dgu_csc.akomanager_back.model.ChatBot;
+import com.dgu_csc.akomanager_back.model.User;
+import com.dgu_csc.akomanager_back.service.ChatBotService;
+import com.dgu_csc.akomanager_back.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.sql.Time;
+import java.time.Instant;
 //import java.time.*;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping( "/chat")
 public class ChatbotController {
 
@@ -17,14 +30,23 @@ public class ChatbotController {
 //    private final String ChatbotLogFormat = LocalDate.now() + " " + LocalTime.now() + "\t";
 //    private static final Logger logger = LoggerFactory.getLogger(ChatbotController.class);
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private ChatBotService chatBotService;
+
+    @Autowired
+    private UserService userService;
+
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
-    public String askChatbot(ChatRequest chatRequest) throws Exception {
+    public String askChatbot(@RequestBody ChatRequest chatRequest) throws Exception {
         String username = chatRequest.getUsername();
         String userInput = chatRequest.getUserInput();
         String response;
+
         try {
-//            updateLogs();
             String pythonScriptPath = DefaultPath + "Python/ChatbotCode.py";
             String[] command = {"python3", pythonScriptPath};
 
@@ -34,29 +56,24 @@ public class ChatbotController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(process.getOutputStream()));
 
-//            File chatLog = new File(DefaultPath + "resources/MyLog3.txt");
-//            FileWriter chatLogWriter = new FileWriter(chatLog, true);  // 챗봇 로그 기록을 위하여 추가한 FileWriter
-//
-//            chatLogWriter.write(ChatbotLogFormat + username + " : " + userInput + "\n");
-//            chatLogWriter.flush();
-            writer.println(username);
-            writer.println(userInput);
+            writer.write(username + "\n");
+            writer.write(userInput + "\n");
             writer.flush();
 
             StringBuilder responseBuilder = new StringBuilder();
 
             if (userInput.equals("대화종료")) {
                 response = "또 만날 기회를 기다리고 있을게요! ❤️";
-                //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             } else {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     responseBuilder.append(line).append("\n");
+
                 }
                 response = responseBuilder.toString().trim();
-                //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
+                System.out.println(response);
             }
-            //chatLogWriter.close();
+            System.out.println(response);
             return response;
         } catch (IOException e) {
             response = "Error processing chat: " + e.getMessage();
@@ -64,9 +81,73 @@ public class ChatbotController {
 
         return response;
     }
+
+    @PostMapping("/ask2")
+    public ResponseEntity<ChatRespone> ask2Bot(@RequestBody ChatRequest chatRequest, HttpServletRequest request) {
+        String username = jwtUtil.getUsername(jwtUtil.getToken(request));
+        String userInput = chatRequest.getUserInput();
+        String response;
+
+        Instant time = Instant.now();
+
+        ChatBot chatBot = new ChatBot();
+        chatBot.setCstudentId(userService.findByStudentId(username).get());
+        chatBot.setUserinput(userInput);
+        chatBot.setTimelog(time);
+
+        ChatRespone chatRespone = new ChatRespone();
+        chatRespone.setStudentId(username);
+        chatRespone.setUserinput(userInput);
+        chatRespone.setTimelog(time);
+
+        try {
+            String pythonScriptPath = DefaultPath + "Python/ChatbotCode.py";
+            String[] command = {"python3", pythonScriptPath};
+
+            ProcessBuilder pb = new ProcessBuilder(command);
+            Process process = pb.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(process.getOutputStream()));
+
+            writer.write(username + "\n");
+            writer.write(userInput + "\n");
+            writer.flush();
+
+            StringBuilder responseBuilder = new StringBuilder();
+
+            if (userInput.equals("대화종료")) {
+                response = "또 만날 기회를 기다리고 있을게요! ❤️";
+            } else {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line).append("\n");
+                }
+                response = responseBuilder.toString().trim();
+            }
+
+            chatBot.setBotinput(response);
+            chatRespone.setBotoutput(response);
+            chatBotService.saveLog(chatBot);
+
+            return ResponseEntity.ok(chatRespone);
+        } catch (IOException e) {
+            response = "Error processing chat: " + e.getMessage();
+            chatBot.setBotinput(response);
+            chatRespone.setBotoutput(response);
+            chatBotService.saveLog(chatBot);
+            return ResponseEntity.status(500).body(chatRespone);
+        }
+    }
 }
 
-    // 로그에 3개의 대화 내용만 보이게 하는 기능
+
+
+
+
+
+
+////     로그에 3개의 대화 내용만 보이게 하는 기능
 //    private void updateLogs() {
 //        try {
 //            for (int i = 2; i < 4; i++) {

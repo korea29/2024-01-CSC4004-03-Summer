@@ -5,22 +5,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-
 public class ChatBot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 질문자의 이름
-    @Column(name = "name", nullable = false, length = 10)
-    private String name;
+    // 질문내용
+    @Column(name = "userinput")
+    private String userinput;
 
-    // 질문내
-    @Column(name = "UserInput")
-    private String userInput;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cstudent_id", nullable = false, referencedColumnName = "student_id")
+    private User cstudentId;
+
+    @Column(name = "botinput", length = 4000)
+    private String botinput;
+
+    @Column(name = "timelog", nullable = false)
+    private Instant timelog;
+
 }
 
