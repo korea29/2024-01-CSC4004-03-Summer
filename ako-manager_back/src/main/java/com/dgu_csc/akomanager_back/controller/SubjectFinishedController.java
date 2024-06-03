@@ -18,6 +18,7 @@ public class SubjectFinishedController {
     @Autowired
     private final SubjectFinishedService subjectFinishedService;
 
+    // POST : [/SubjectFinished/{studentId}/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
     @PostMapping("/{studentId}/get")
     public ResponseEntity<List<SubjectFinished>> getSubjectsByStudentId(@PathVariable String studentId, @RequestBody PasswordRequest request) {
         try {

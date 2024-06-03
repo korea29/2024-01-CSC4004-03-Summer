@@ -95,7 +95,7 @@ public class MajorController {
         else return 0;
     }
 
-    // // 졸업 기준 지정 교양 학점
+    // 졸업 기준 지정 교양 학점
     // POST : [/Major/getTotalDesignatedScore]
     @PostMapping("/getTotalDesignatedScore")
     public Integer getTotalDesignatedScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
@@ -108,5 +108,25 @@ public class MajorController {
         else return 0;
     }
 
+    // 졸업 기준 남는 일반 학점 (ex. 총 학점 - 전공,지정,일반 = 남는 학점 ) 2022까지 입학생 적용
+    // POST : [/Major/getTotalExtraScore]
+    @PostMapping("/getTotalExtraScore")
+    public Integer getTotalExtraScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
+        String authorization= request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String studentId = jwtUtil.getUsername(token);
+        Optional<User> user = userService.findByStudentId(studentId);
+        if(user.get().getMajor().equals(majorDto.getMajorName())) {
+            int extra = majorService.getTotalScore(majorDto); // 총 학점 저장 후
+            // 각각을 빼줌
+            extra -= majorService.getTotalMajorScore(majorDto);
+            extra -= majorService.getTotalDesignatedScore(majorDto);
+            extra -= majorService.getTotalCommonScore(majorDto);
+
+            // 0보다 클 때만 반환
+            return Math.max(extra, 0);
+        }
+        else return 0;
+    }
 
 }
