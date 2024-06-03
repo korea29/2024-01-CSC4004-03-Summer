@@ -17,4 +17,6 @@ public interface SubjectFinishedService {
     // 총 들은 전공 학점 계산
     public int getUserTotalMajorScore(String studentId);
 
+    public int getUserTotalCommonScore(String studentId);
+
 }
