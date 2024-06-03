@@ -29,7 +29,7 @@ const List = () => {
       <br />
       <ul style={{ fontSize:'14px', lineHeight: '1.8'}}>
         {courses.map((course, index) => (
-          <div key={index}>- {course}</div>
+          <div key={index} style={{ textAlign: 'left' }}>- {course}</div>
         ))}
       </ul>
     </div>

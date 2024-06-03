@@ -106,7 +106,7 @@ const CreditScreen = () => {
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
-  const handleFileChange = (info) => setSelectedFile(info.file);
+  const handleFileChange = (info) => setSelectedFile(info.file.originFileObj);
   const handleUploadOk = () => setUploadVisible(false);
   const handleUploadCancel = () => setUploadVisible(false);
 
