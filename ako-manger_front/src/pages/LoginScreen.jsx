@@ -28,6 +28,8 @@ const LoginScreen = () => {
           // 토큰 저장
           localStorage.setItem("authToken", authHeader);
           console.log("로그인 성공!");
+          // 사용자 이름도 저장
+        localStorage.setItem("username", username);
           // 필요한 경우 다른 페이지로 이동
           navigate("/");
         } else {
