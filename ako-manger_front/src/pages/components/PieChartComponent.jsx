@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { PieChart } from "react-minimal-pie-chart";
+import List from "./List";
 
 // 총 학점에 비례해서 차트의 크기를 다르게 설정하는 함수
 
@@ -24,8 +25,20 @@ const PieChartComponent = ({ data }) => {
     width: chartSize,
     height: chartSize,
   };
+  // 모달 상태 관리
+  const [modalVisible, setModalVisible] = useState(false);
+  // 모달 열기 함수
+  const openModal = () => {
+    setModalVisible(true);
+  };
+    // 모달 닫기 함수
+    const closeModal = (e) => {
+      e.stopPropagation(); // 이벤트 버블링 차단
+      setModalVisible(false);
+    };
 
   return (
+    <div onClick={openModal}>
     <PieChart
       data={[data]}
       reveal={(data.value / data.totalValue) * 100}
@@ -35,6 +48,14 @@ const PieChartComponent = ({ data }) => {
       label={(labelRenderProps) => labelRenderProps.dataEntry.value + "학점"}
       style={chartStyles}
     />
+    {modalVisible && (
+        <div className="modal-overlay" onClick={closeModal} style={{zIndex:999}}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <List />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
