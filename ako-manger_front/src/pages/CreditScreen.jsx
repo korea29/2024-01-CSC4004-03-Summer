@@ -20,17 +20,16 @@ import "../css/CreditScreen.css";
 const { Sider } = Layout;
 
 // 각 value값을 subject, subjectfinished로 바꾸기
-
 const chartData = [
-  { title: "졸업까지", value: 55, totalValue: 150, color: "#F1BB79" },
-  { title: "전공", value: 30, totalValue: 80, color: "#867060" },
+  { title: "졸업까지", subjectfinished: 55, subject: 150, color: "#F1BB79" },
+  { title: "전공", subjectfinished: 30, subject: 80, color: "#867060" },
   {
     title: "공통 교양",
-    value: 20,
-    totalValue: 50,
+    subjectfinished: 20,
+    subject: 50,
     color: "rgba(230, 170, 15, 0.56)",
   },
-  { title: "일반 교양", value: 5, totalValue: 20, color: "#B3C278" },
+  { title: "일반 교양", subjectfinished: 5, subject: 20, color: "#B3C278" },
 ];
 
 const curriculumDummyData = [
@@ -69,7 +68,7 @@ const CreditScreen = () => {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // 1. 학점 조회 api 연결 예시(반드시 헤더 토큰도 같이 전송해야합니다!)
+  // 1. 학점 조회 api 연결 예시(반드시 헤더 토큰도 같이 전송해야합니다!) // 졸업 기준 총 전공 학점
   const sendMajorInfoToServer = async () => {
     try {
       // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
@@ -85,7 +84,7 @@ const CreditScreen = () => {
           },
         }
       );
-      console.log("응답 데이터:", response.data);
+      console.log("총 전공 학점 응답 데이터:", response.data);
     } catch (error) {
       console.error("에러 발생:", error);
     }
@@ -94,6 +93,88 @@ const CreditScreen = () => {
   useEffect(() => {
     sendMajorInfoToServer();
   }, []);
+
+  // 졸업 기준 총 일반 교양 학점
+  const sendCommonInfoToServer = async () => {
+    try {
+      // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
+      const majorDto = { majorName: "컴퓨터공학과", year: "2020" };
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        "http://localhost:8080/Major/getTotalCommonScore",
+        majorDto,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("총 일반 교양 학점 응답 데이터:", response.data);
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
+  };
+
+  useEffect(() => {
+    sendCommonInfoToServer();
+  }, []);
+
+
+ //졸업 기준 지정 교양 학점
+ const sendDesignatedInfoToServer = async () => {
+  try {
+    // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
+    const majorDto = { majorName: "컴퓨터공학과", year: "2020" };
+    const token = localStorage.getItem("authToken");
+    const response = await axios.post(
+      "http://localhost:8080/Major/getTotalDesignatedScore",
+      majorDto,
+      {
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("지정 교양 학점 응답 데이터:", response.data);
+  } catch (error) {
+    console.error("에러 발생:", error);
+  }
+};
+
+useEffect(() => {
+  sendDesignatedInfoToServer();
+}, []);
+
+
+ // 졸업 기준 총 학점
+ const sendInfoToServer = async () => {
+  try {
+    // 1. 로그인 화면에서 로그인 후 토큰만 저장 하는 것이 아닌, user의 전공, 년도를 함께 받아 와서 값 넣기
+    const majorDto = { majorName: "컴퓨터공학과", year: "2020" };
+    const token = localStorage.getItem("authToken");
+    const response = await axios.post(
+      "http://localhost:8080/Major/getTotalScore",
+      majorDto,
+      {
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("총 학점 응답 데이터:", response.data);
+  } catch (error) {
+    console.error("에러 발생:", error);
+  }
+};
+
+useEffect(() => {
+  sendInfoToServer();
+}, []);
+
+
 
   const handleMenuClick = (e) => {
     const sectionId = `part-${e.key}`;
@@ -106,8 +187,13 @@ const CreditScreen = () => {
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
-  const handleFileChange = (info) => setSelectedFile(info.file);
-  const handleUploadOk = () => setUploadVisible(false);
+  const handleFileChange = (info) => {
+    if (info.fileList.length > 0) {
+      setSelectedFile(info.fileList[0].originFileObj);
+    } else {
+      setSelectedFile(null);
+    }
+  };
   const handleUploadCancel = () => setUploadVisible(false);
 
   // 2. 엑셀 파일 전송 코드
@@ -231,7 +317,7 @@ const CreditScreen = () => {
                 <p className="chart-title">{dataItem.title}</p>
                 <div className="chart-content">
                   <PieChartComponent data={dataItem} />
-                  <p className="chart-credits">총 {dataItem.totalValue} 학점</p>
+                  <p className="chart-credits">총 {dataItem.subject} 학점</p>
                 </div>
               </div>
             ))}

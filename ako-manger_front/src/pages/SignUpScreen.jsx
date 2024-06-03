@@ -44,19 +44,19 @@ const SignUpScreen = () => {
     }
   };
 
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
-      setFormData({ ...formData, name: value });
-    }
-  };
+  // const handleNameChange = (e) => {
+  //   const value = e.target.value;
+  //   if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
+  //     setFormData({ ...formData, name: value });
+  //   }
+  // };
 
-  const handleMajorChange = (e) => {
-    const value = e.target.value;
-    if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
-      setFormData({ ...formData, major: value });
-    }
-  };
+  // const handleMajorChange = (e) => {
+  //   const value = e.target.value;
+  //   if (/^[a-zA-Z가-힣\s]*$/.test(value) || value === "") {
+  //     setFormData({ ...formData, major: value });
+  //   }
+  // };
 
   const handleSecondMajorChange = (e) => {
     const value = e.target.value;
@@ -114,7 +114,7 @@ const SignUpScreen = () => {
   };
 
   const nameInputRef = useRef(null);
-  const majorInputRef = useRef(null);
+  // const majorInputRef = useRef(null);
   const minorInputRef = useRef(null);
 
   useEffect(() => {
@@ -123,11 +123,11 @@ const SignUpScreen = () => {
     }
   }, [formData.name]);
 
-  useEffect(() => {
-    if (majorInputRef.current) {
-      majorInputRef.current.value = formData.major;
-    }
-  }, [formData.major]);
+  // useEffect(() => {
+  //   if (majorInputRef.current) {
+  //     majorInputRef.current.value = formData.major;
+  //   }
+  // }, [formData.major]);
 
   useEffect(() => {
     if (minorInputRef.current) {
@@ -231,14 +231,27 @@ const SignUpScreen = () => {
           <option value="사범대학">사범대학</option>
           <option value="예술대학">예술대학</option>
         </select>
-        <input
+        <select
+          className="select-input"
+          name="major"
+          value={formData.major}
+          onChange={handleChange}
+        >
+          <option value="">전공*</option>
+          <option value="불교대학">컴퓨터공학과</option>
+          <option value="불교대학">멀티미디어소프트웨어공학과</option>
+          <option value="불교대학">인공지능과</option>
+          <option value="불교대학">데이터사이언스과</option>
+          <option value="불교대학">엔터테인먼트테크놀로지과</option>
+        </select>
+        {/* <input
           className="form-input"
           type="text"
           name="major"
           placeholder="전공*"
           ref={majorInputRef}
           onChange={(e) => handleChange(e)}
-        />
+        /> */}
         <input
           className="form-input"
           type="text"

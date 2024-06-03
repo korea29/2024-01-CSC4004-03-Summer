@@ -11,11 +11,19 @@ const Home = () => {
   const navigate = useNavigate();
 
   // 컴포넌트가 마운트될 때 로컬 스토리지에서 사용자 정보를 가져와서 설정
-  //  useEffect(() => {
-  //   const user = localStorage.getItem("username");
-  //   if (user) {
-  //     setUsername(user);
-  //   }
+  useEffect(() => {
+    const user = localStorage.getItem("username");
+    if (user) {
+      setUsername(user);
+    }
+  }, []);
+
+  const logout = () => {
+    // 로그아웃 시 로컬 스토리지에서 사용자 정보를 제거하고 홈 화면으로 이동
+    localStorage.removeItem("username");
+    setUsername("");
+    navigate("/login");
+  };
 
   const gotoChat = () => {
     navigate("/chatting", { state: { message: inputValue } });
@@ -48,18 +56,24 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 className="home-title">Hello,A-Ko!</h1>
-      {/* {username ? (
-        <div className="auth-buttons">
-          <span className="auth-username" style={{ color: '#757575'}}>{username} </span>
-        </div>
-      ) : ( */}
       <div className="auth-buttons">
-        <button className="auth-button" onClick={gotoLogin}>
-          로그인 /
-        </button>
-        <button className="auth-button" onClick={gotoSignUp}>
-          회원가입
-        </button>
+      {username ? (
+           <div className="auth-buttons">
+           <span className="auth-username" style={{ color: '#757575'}}>{username} </span>
+           <button className="auth-button" onClick={logout}>
+             로그아웃
+           </button>
+         </div>
+        ) : (
+          <>
+            <button className="auth-button" onClick={gotoLogin}>
+              로그인 /
+            </button>
+            <button className="auth-button" onClick={gotoSignUp}>
+              회원가입
+            </button>
+          </>
+        )}
       </div>
       {/* )} */}
       <img className="home-image" src={Ako_sit} alt="Home" />
