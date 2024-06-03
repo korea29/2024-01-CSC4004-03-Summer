@@ -31,7 +31,7 @@ public class ExcelUploadController {
     @Autowired
     private JWTUtil jwtUtil;
 
-
+    // POST : [/excel/uploadS]
     @PostMapping("/uploadS")
     public ResponseEntity<String> uploadExcelFileSubject(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -101,6 +101,7 @@ public class ExcelUploadController {
     }
 
     // 이수가 끝난 과목에 대한 엑셀 파일 업로드
+    // POST : [/excel/uploadF]
     @PostMapping("/uploadF")
     public ResponseEntity<String> uploadExcelFileSubjectFinished(@RequestParam("file") MultipartFile file,
                                                                  @RequestHeader("Authorization") String authHeader) throws IOException {
@@ -130,6 +131,11 @@ public class ExcelUploadController {
                             break;
                         case 2:
                             subjectFinished.setFinishedS(cell.toString());
+                            break;
+                        case 5:
+                            String subjectNum = cell.toString();
+                            subjectNum = subjectNum.substring(0, Math.min(subjectNum.length(), 3));
+                            subjectFinished.setSubjectNum(subjectNum);
                             break;
                         case 7:
                             subjectFinished.setSfSubjectname(cell.toString());

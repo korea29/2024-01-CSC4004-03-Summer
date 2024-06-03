@@ -32,11 +32,9 @@ public class MajorController {
 
     // POST : [/Major/add] 과목 추가
     @PostMapping("/add")
-    public ResponseEntity<String> addMajor(@RequestBody Major major, HttpServletRequest request1) {
+    public ResponseEntity<String> addMajor(@RequestBody Major major, HttpServletRequest request) {
         try {
-            String authorization= request1.getHeader("Authorization");
-            String token = authorization.split(" ")[1];
-            String studentId = jwtUtil.getUsername(token);
+            String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
             Optional<User> masteruser = userService.findByStudentId(studentId);
 
             // 권한 확인 후 충족시만 저장
@@ -57,9 +55,7 @@ public class MajorController {
     // POST : [/Major/getTotalScore]
     @PostMapping("/getTotalScore")
     public Integer getTotalScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalScore(majorDto);
@@ -73,9 +69,7 @@ public class MajorController {
     // POST : [/Major/getTotalMajorScore]
     @PostMapping("/getTotalMajorScore")
     public Integer getTotalMajorScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalMajorScore(majorDto);
@@ -86,10 +80,8 @@ public class MajorController {
     // POST : [/Major/getTotalCommonScore]
         @PostMapping("/getTotalCommonScore")
     public Integer getTotalCommonScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
-        Optional<User> user = userService.findByStudentId(studentId);
+            String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+            Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalCommonScore(majorDto);
         else return 0;
@@ -99,9 +91,7 @@ public class MajorController {
     // POST : [/Major/getTotalDesignatedScore]
     @PostMapping("/getTotalDesignatedScore")
     public Integer getTotalDesignatedScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName()))
             return majorService.getTotalDesignatedScore(majorDto);
@@ -112,9 +102,7 @@ public class MajorController {
     // POST : [/Major/getTotalExtraScore]
     @PostMapping("/getTotalExtraScore")
     public Integer getTotalExtraScore(@RequestBody MajorDto majorDto, HttpServletRequest request) {
-        String authorization= request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         Optional<User> user = userService.findByStudentId(studentId);
         if(user.get().getMajor().equals(majorDto.getMajorName())) {
             int extra = majorService.getTotalScore(majorDto); // 총 학점 저장 후

@@ -47,4 +47,8 @@ public class SubjectFinished {
     @Column(name = "grade", nullable = false, length = 3)
     private String grade;
 
+    // 학수번호 앞에 3개
+    @Column(name = "subject_num", nullable = false, length = 3)
+    private String subjectNum;
+
 }

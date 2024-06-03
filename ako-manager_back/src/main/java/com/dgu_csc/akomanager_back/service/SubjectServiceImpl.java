@@ -58,7 +58,6 @@ public class SubjectServiceImpl implements SubjectService {
         if (!subject.getSubjectNum().equals(subjectNum)) {
             return Optional.empty(); // Return empty if the subjectNum does not match
         }
-
         subject.setSubjectNum(updateSubject.getSubjectNum());
         subject.setSubjectName(updateSubject.getSubjectName());
         subject.setEstablishedGrade(updateSubject.getEstablishedGrade());
