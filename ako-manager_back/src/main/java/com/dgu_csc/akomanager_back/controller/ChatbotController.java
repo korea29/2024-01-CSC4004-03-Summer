@@ -1,6 +1,7 @@
 package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.ChatRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -19,10 +20,9 @@ public class ChatbotController {
 
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
-    public String askChatbot(ChatRequest chatRequest) throws Exception {
+    public ResponseEntity<String> askChatbot( ChatRequest chatRequest) throws Exception {
         String username = chatRequest.getUsername();
         String userInput = chatRequest.getUserInput();
-        String response;
         try {
 //            updateLogs();
             String pythonScriptPath = DefaultPath + "Python/ChatbotCode.py";
@@ -43,22 +43,20 @@ public class ChatbotController {
             writer.println(userInput);
             writer.flush();
 
-            StringBuilder responseBuilder = new StringBuilder();
-
             if (userInput.equals("대화종료")) {
-                return "또 만날 기회를 기다리고 있을게요! ❤️";
+                return ResponseEntity.status(409).body("또 만날 기회를 기다리고 있을게요! ❤️");
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
             } else {
-                return reader.readLine();
+                return ResponseEntity.ok().body(reader.readLine());
 
                 //chatLogWriter.write(ChatbotLogFormat + "아코 멘토 : " + response + "\n");
                 //chatLogWriter.close();
 
             }
         } catch (IOException e) {
-            response = "Error processing chat: " + e.getMessage();
+            return ResponseEntity.status(500).body(e.getMessage());
         }
-        return response;
+
     }
 }
 
