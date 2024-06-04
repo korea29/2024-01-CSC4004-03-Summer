@@ -22,7 +22,7 @@ const Home = () => {
     // 로그아웃 시 로컬 스토리지에서 사용자 정보를 제거하고 홈 화면으로 이동
     localStorage.removeItem("username");
     setUsername("");
-    navigate("/login");
+    navigate("/");
   };
 
   const gotoChat = () => {
