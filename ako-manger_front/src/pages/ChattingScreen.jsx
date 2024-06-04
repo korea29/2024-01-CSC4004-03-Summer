@@ -28,33 +28,33 @@ const ChattingScreen = () => {
   const addNewChat = async (chat) => {
     const updatedChatHistory = [...chatHistory, { user: chat }];
     setChatHistory(updatedChatHistory);
-
     setInputValue("");
 
     try {
-      const formData = new FormData();
-      formData.append("username", "username");
-      formData.append("userInput", chat);
+      const formData = {
+        username: "kk",
+        userInput: chat,
+      };
 
       const token = localStorage.getItem("authToken"); // 토큰 가져오기
       const response = await axios.post(
-        "http://localhost:8080/chat/ask",
+        "http://localhost:8080/chat/ask2",
         formData,
         {
           headers: {
             Authorization: token, // Bearer를 포함한 토큰
-            "Content-Type": "multipart/form-data", // 폼 데이터 형식 지정
+            "Content-Type": "application/json", // 폼 데이터 형식 지정
           },
         }
       );
-      console.log("응답 데이터:", response.data);
 
+      console.log("응답 데이터:", response.data);
       const reply = response.data;
 
-      setChatHistory((prevChatHistory) => {
-        const newChatHistory = [...prevChatHistory, { bot: reply }];
-        return newChatHistory;
-      });
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        { bot: reply },
+      ]);
     } catch (error) {
       console.error("Error fetching chat reply:", error);
       if (error.response && error.response.status === 403) {
@@ -69,12 +69,19 @@ const ChattingScreen = () => {
     if (chatHistory.length > 0) {
       setChatSessions([...chatSessions, chatHistory]);
       setChatHistory([]);
+      setSelectedSessionIndex(chatSessions.length); // Select the new session
     }
   };
 
   const selectChatSession = (index) => {
     setSelectedSessionIndex(index);
     setChatHistory(chatSessions[index]);
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim()) {
+      addNewChat(inputValue);
+    }
   };
 
   return (
@@ -101,7 +108,10 @@ const ChattingScreen = () => {
             renderItem={(item, index) => (
               <List.Item
                 onClick={() => selectChatSession(index)}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: selectedSessionIndex === index ? "#f0f0f0" : "transparent",
+                }}
               >
                 {chatSessions[index][0]?.user || item}
               </List.Item>
@@ -135,11 +145,7 @@ const ChattingScreen = () => {
                     src={sendButtonImage}
                     alt="Send"
                     style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      if (inputValue.trim()) {
-                        addNewChat(inputValue);
-                      }
-                    }}
+                    onClick={handleSendMessage}
                   />
                 </div>
               </div>
