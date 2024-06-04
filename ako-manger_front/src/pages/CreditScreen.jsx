@@ -288,11 +288,11 @@ useEffect(() => {
               </Button>,
             ]}
           >
-            <Upload type="file" accept=".xls,.xlsx" onChange={handleFileChange}>
+            <Upload  beforeUpload={() => false} type="file" accept=".xls,.xlsx" onChange={handleFileChange}> {/* 자동 업로드 금지 */}
               <Button icon={<UploadOutlined />}>파일 선택</Button>
             </Upload>
             <div style={{ color: "#757575" }}>
-              <br /> mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xls
+              <br /> mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xlsx
               다운로드
             </div>
           </Modal>
