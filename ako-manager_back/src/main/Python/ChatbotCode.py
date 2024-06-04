@@ -1,10 +1,8 @@
 import sys  # 자바 flush 함수를 이용하여 데이터를 받기 위한 라이브러리
-import openai
+# import openai
 
-username = sys.stdin.readline().strip()  # 자바에서 flush 받아서 이름 사용
-
-openai.api_key = " " # 여기에 api key 입력하면 됩니다.
-
+username = sys.stdin.readline().strip()# 자바에서 flush 받아서 이름 사용
+# openai.api_key = "" # 여기에 api key 입력하면 됩니다.
 
 def calculate_match_score(rule_words, request):
     match_score = -1
@@ -24,15 +22,15 @@ def chat(request):
             best_match_score = current_score
             best_response = chat_response[idx]
 
-    if best_match_score == -1:
-        response = openai.chat.completions.create(
-            messages=[
-                {"role": "user",
-                 "content": request}
-            ],
-            model="gpt-3.5-turbo",
-        )
-        best_response = response.choices[0].message.content
+    # if best_match_score == -1:
+    #     response = openai.chat.completions.create(
+    #         messages=[
+    #             {"role": "user",
+    #              "content": request}
+    #         ],
+    #         model="gpt-3.5-turbo",
+    #     )
+    #     best_response = response.choices[0].message.content
 
     return best_response
 
