@@ -2,10 +2,12 @@ package com.dgu_csc.akomanager_back.controller;
 
 import com.dgu_csc.akomanager_back.dto.ChatRequest;
 import com.dgu_csc.akomanager_back.dto.ChatRespone;
+import com.dgu_csc.akomanager_back.dto.MajorDto;
 import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.ChatBot;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.ChatBotService;
+import com.dgu_csc.akomanager_back.service.MajorService;
 import com.dgu_csc.akomanager_back.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,9 @@ public class ChatbotController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MajorService majorService;
 
     // POST : (/chat/ask) (POSTMAN FORMAT : Username, UserInput)
     @PostMapping("/ask")
@@ -125,6 +130,14 @@ public class ChatbotController {
                 }
                 response = responseBuilder.toString().trim();
             }
+            if(response.contains("님이 다니시는 전공의 이수체계도를 가지고 왔어요")) {
+                MajorDto majorDto = new MajorDto();
+                majorDto.setMajorName(chatBot.getCstudentId().getMajor());
+                String enterYear = username.substring(0, Math.min(username.length(), 4));
+                majorDto.setYear(enterYear);
+                response += " : 졸업 기준 학점은 [ " + majorService.getTotalScore(majorDto) + " ] 입니다.";
+            }
+
 
             chatBot.setBotinput(response);
             chatRespone.setBotoutput(response);
