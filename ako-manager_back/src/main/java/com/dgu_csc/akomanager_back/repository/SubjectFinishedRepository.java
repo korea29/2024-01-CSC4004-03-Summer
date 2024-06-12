@@ -1,6 +1,5 @@
 package com.dgu_csc.akomanager_back.repository;
 
-import com.dgu_csc.akomanager_back.model.Subject;
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
 import com.dgu_csc.akomanager_back.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
