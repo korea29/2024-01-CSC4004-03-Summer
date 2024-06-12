@@ -24,7 +24,7 @@ public class SubjectFinishedController {
     private JWTUtil jwtUtil;
 
     // TODO : 수정 필요
-    // POST : [/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
+    // POST : [/SubjectFinished/get] url의 studentId와 body의 password 정보로 해당 유저의 들은 과목 정보 출력
     @PostMapping("/get")
     public ResponseEntity<List<SubjectFinished>> getSubjectsByStudentId(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
         try {

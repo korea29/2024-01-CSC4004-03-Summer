@@ -1,14 +1,11 @@
 package com.dgu_csc.akomanager_back.service;
 
 import com.dgu_csc.akomanager_back.model.Major;
-import com.dgu_csc.akomanager_back.model.Subject;
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.repository.MajorRepository;
 import com.dgu_csc.akomanager_back.repository.SubjectFinishedRepository;
-import com.dgu_csc.akomanager_back.repository.SubjectRepository;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,6 +98,7 @@ public class SubjectFinishedServiceImpl implements SubjectFinishedService{
         return totalMajorScore;
     }
 
+    // TODO : 이수한 총 일반교양 학점 수
     @Override
     public int getUserTotalCommonScore(String studentId) {
         return 0;
