@@ -18,7 +18,7 @@ import List from "./components/List";
 import "../css/CreditScreen.css";
 
 const { Sider } = Layout;
-
+// 업데이트
 // 각 value값을 subject, subjectfinished로 바꾸기
 const chartData = [
   { title: "졸업까지", subjectfinished: 55, subject: 150, color: "#F1BB79" },
@@ -292,7 +292,7 @@ useEffect(() => {
               <Button icon={<UploadOutlined />}>파일 선택</Button>
             </Upload>
             <div style={{ color: "#757575" }}>
-              <br /> mdrims - 졸업 대상자 관리 - 취득학점확인서 조회'에서 .xlsx
+              <br /> 'mdrims - 성적 - 전체성적관리 - 전체 성적 조회'에서 .xlsx
               다운로드
             </div>
           </Modal>
