@@ -3,10 +3,13 @@ package com.dgu_csc.akomanager_back.controller;
 import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.Subject;
 import com.dgu_csc.akomanager_back.model.SubjectFinished;
+import com.dgu_csc.akomanager_back.model.SubjectNow;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.SubjectFinishedService;
+import com.dgu_csc.akomanager_back.service.SubjectNowService;
 import com.dgu_csc.akomanager_back.service.SubjectService;
 import com.dgu_csc.akomanager_back.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/excel")
@@ -26,6 +31,8 @@ public class ExcelUploadController {
     private SubjectService subjectService;
     @Autowired
     private SubjectFinishedService subjectFinishedService;
+    @Autowired
+    private SubjectNowService subjectNowService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -104,13 +111,12 @@ public class ExcelUploadController {
     // POST : [/excel/uploadF]
     @PostMapping("/uploadF")
     public ResponseEntity<String> uploadExcelFileSubjectFinished(@RequestParam("file") MultipartFile file,
-                                                                 @RequestHeader("Authorization") String authHeader) throws IOException {
+                                                                 HttpServletRequest request) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Uploaded file is empty");
         }
 
-        String token = authHeader.substring(7); // Remove "Bearer " prefix
-        String studentId = jwtUtil.getUsername(token);
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
         User user = userService.findByStudentId(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + studentId));
 
@@ -168,5 +174,106 @@ public class ExcelUploadController {
         return ResponseEntity.ok("SubjectFinished records added successfully");
     }
 
+    // 이수가 끝난 과목에 대한 엑셀 파일 업로드
+    // POST : [/excel/uploadN]
+    @PostMapping("/uploadN")
+    public ResponseEntity<String> uploadExcelFileSubjectNow(@RequestParam("file") MultipartFile file,
+                                                                 HttpServletRequest request) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
+
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+        User user = userService.findByStudentId(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + studentId));
+
+        // TODO :
+        List<SubjectNow> SubjectNowlist = new ArrayList<SubjectNow>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) { // Skip header row
+                    continue;
+                }
+                SubjectNow subjectNow = new SubjectNow();
+                subjectNow.setSnStudent(user); // Set the User object
+
+                for (Cell cell : row) {
+                    switch (cell.getColumnIndex()) {
+                        case 4:
+                            subjectNow.setSnSubjectName(cell.toString());
+                            break;
+                        case 6:
+                            String temp = cell.toString();
+                            Map<String, List<String>> parsedSchedule = parseSchedule(temp);
+                            String daytemp = "";
+                            String timetemp = "";
+                            for (String day : parsedSchedule.keySet()) {
+                                daytemp += day + " ";
+                                timetemp += parsedSchedule.get(day) + " ";
+                            }
+                            subjectNow.setDateInfo(daytemp);
+                            subjectNow.setTimeInfo(timetemp);
+                            break;
+
+                        case 7:
+                            String classroom = cell.toString();
+                            classroom = extractString(classroom);
+                            subjectNow.setClassroom(classroom);
+                            break;
+
+                    }
+                }
+                SubjectNowlist.add(subjectNow);
+            }
+        }
+
+        for (SubjectNow sn : SubjectNowlist) {
+            try {
+                subjectNowService.saveSubjectNow(sn);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(409).body(e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok("SubjectNow records added successfully");
+    }
+
+    // 시간, 요일 파싱 (hash)
+    public static Map<String, List<String>> parseSchedule(String schedule) {
+        Map<String, List<String>> parsedSchedule = new HashMap<>();
+
+        if (schedule.isEmpty()) {
+            return parsedSchedule; // 빈 문자열인 경우 그대로 반환
+        }
+
+        String[] entries = schedule.split(",");
+        for (String entry : entries) {
+            String[] parts = entry.split("-");
+            String day = parts[0].substring(0, 1); // 첫 번째 글자는 요일
+            String timeRange = parts[0].substring(1); // 나머지는 시간 범위
+
+            List<String> times = parsedSchedule.getOrDefault(day, new ArrayList<>());
+            times.add(timeRange);
+            parsedSchedule.put(day, times);
+        }
+
+        return parsedSchedule;
+    }
+
+    // 강의실 파싱
+    public static String extractString(String input) {
+        int startIndex = input.indexOf("(") + 1;
+        if (startIndex == 0) {
+            return "";
+        }
+
+        int endIndex = startIndex;
+        while (endIndex < input.length() && input.charAt(endIndex) != ' ' && input.charAt(endIndex) != '(') {
+            endIndex++;
+        }
+
+        return input.substring(startIndex, endIndex);
+    }
 
 }
