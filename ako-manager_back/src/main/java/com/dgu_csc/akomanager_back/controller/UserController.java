@@ -1,8 +1,10 @@
 package com.dgu_csc.akomanager_back.controller;
 
+import com.dgu_csc.akomanager_back.dto.MajorDto;
 import com.dgu_csc.akomanager_back.dto.PasswordRequest;
 import com.dgu_csc.akomanager_back.dto.UpdateUserRequest;
 import com.dgu_csc.akomanager_back.jwt.JWTUtil;
+import com.dgu_csc.akomanager_back.model.Major;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.service.UserService;
 
@@ -94,6 +96,13 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // TODO : 각 유저의 majorDto 설정 반환해줌 => 프론트에서 연도별 전공 졸업 요건 정보 request에 보낼 때 필요하다.
+    @GetMapping("/getMajorDto")
+    public ResponseEntity<MajorDto> getMajorDto(HttpServletRequest request) {
+        String studentId = jwtUtil.getUsername(jwtUtil.getToken(request));
+        return ResponseEntity.ok(userService.getMajorDto(studentId).get());
     }
 
 }

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.dgu_csc</groupId>
 	<artifactId>ako-manager_back</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+<!--	<version>0.0.1-SNAPSHOT</version>-->
 	<name>ako-manager_back</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -115,6 +115,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/api &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.theokanning.openai-gpt3-java</groupId>-->
+<!--			<artifactId>api</artifactId>-->
+<!--			<version>0.18.2</version>-->
+<!--		</dependency>-->
+
 
 
 	</dependencies>

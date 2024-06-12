@@ -1,8 +1,10 @@
 package com.dgu_csc.akomanager_back.service;
 
+import com.dgu_csc.akomanager_back.dto.MajorDto;
 import com.dgu_csc.akomanager_back.jwt.JWTUtil;
 import com.dgu_csc.akomanager_back.model.User;
 import com.dgu_csc.akomanager_back.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -97,6 +99,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByStudentId(String studentid) {
         return userRepository.findByStudentId(studentid);
+    }
+
+    // TODO : 유저 정보로 학과, 입학 연도 파싱 후 MajorDto 로 반환
+    @Override
+    public Optional<MajorDto> getMajorDto(String studentId) {
+        String enterYear = studentId.substring(0, Math.min(studentId.length(), 4));
+
+        return Optional.empty();
     }
 
 

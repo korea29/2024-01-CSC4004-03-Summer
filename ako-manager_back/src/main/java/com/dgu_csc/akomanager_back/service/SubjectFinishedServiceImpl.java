@@ -21,9 +21,7 @@ import java.util.Optional;
 public class SubjectFinishedServiceImpl implements SubjectFinishedService{
     private static final String MASTER_PASSWORD = "SUMMER";
     private final SubjectFinishedRepository subjectFinishedRepository;
-    private final UserServiceImpl userServiceImpl;
     private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
     private final MajorRepository majorRepository;
 
     // POST :  [/SubjectFinished/add] 들은 과목 추가 (학수번호 중복 확인)
