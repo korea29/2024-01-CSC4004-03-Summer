@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/excel")
@@ -276,4 +278,37 @@ public class ExcelUploadController {
         return input.substring(startIndex, endIndex);
     }
 
+    // 요일+시간에서 시간 파싱 (List<String>으로 반환하는 것에 주의)
+    public static List<String> convertToTimeRanges(String input) {
+        List<String> timeRanges = new ArrayList<>();
+        List<Double> numbers = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\d+\\.\\d+");
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            numbers.add(Double.parseDouble(matcher.group()));
+        }
+
+        for (int i = 0; i < numbers.size(); i += 2) {
+            String startTime = convertToTime(numbers.get(i));
+            String endTime = convertToTime(numbers.get(i + 1));
+            timeRanges.add(startTime + "~" + endTime);
+        }
+
+        return timeRanges;
+    }
+
+    public static String convertToTime(double num) {
+        // 기준 시간 설정
+        int baseHour = 8;
+        int baseMinute = 0;
+
+        // 입력된 숫자에 따라 시간과 분 계산
+        int totalMinutes = (int)(num * 60);
+        int hours = baseHour + totalMinutes / 60;
+        int minutes = baseMinute + totalMinutes % 60;
+
+        // 시간과 분을 포맷팅하여 반환
+        return String.format("%02d:%02d", hours, minutes);
+    }
 }
