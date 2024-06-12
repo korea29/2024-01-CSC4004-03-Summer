@@ -3,7 +3,7 @@ import openai
 
 username = sys.stdin.readline().strip()  # getting username from first flushed data
 
-openai.api_key = ""
+openai.api_key = " "
 # paste your ChatGPT Openai api key between the double quotation mark
 
 
@@ -50,8 +50,8 @@ chat_rules = [['안녕', '반가워'],
               ['지금까지', '학점', '들었어', '내역', '전에', '전체'],
               ['지금까지', '학점', '들었어', '내역', '교양', '전에'],
               ['지금까지', '학점', '들었어', '내역', '전공', '전에'],
-              ['전공', '더', '최소', '필수', '부족'],
-              ['교양', '더', '최소', '필수', '부족'],
+              ['전공', '더', '최소', '필수', '부족', '남은'],
+              ['교양', '더', '최소', '필수', '부족', '남은'],
               ['전공', '총', '학점'],
               ['교양', '총', '학점']]
 

@@ -203,7 +203,7 @@ public class ChatbotController {
                 // 9번 : 교양 중 들은 학점 정보만 요구하는 경우
                 case "9" : {
                     response = username + "님은 교양 [" + subjectFinishedServiceImpl.getUserTotalCommonScore(chatResponse.getStudentId()) +
-                            "학점을 이수했습니다";
+                            "]학점을 이수했습니다";
                     break;
                 }
                 //10번 : 전공 중 들은 학점 정보만 요구하는 경우
