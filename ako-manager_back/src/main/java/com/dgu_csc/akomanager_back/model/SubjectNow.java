@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// 현제 시간표를 통해 듣는 강의 저장
 @NoArgsConstructor
 @Getter
 @Setter
@@ -15,18 +14,25 @@ public class SubjectNow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sn_subjectnum", nullable = false, referencedColumnName = "subject_num")
-    private Subject snSubjectnum;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sn_studentid", nullable = false, referencedColumnName = "student_id")
-    private User snStudentid;
-
-    @Column(name = "grade", nullable = false)
-    private Integer grade;
-
-    @Column(name = "classroom", nullable = false, length = 100)
+    // 강의실
+    @Column(name = "classroom", length = 100)
     private String classroom;
+
+    // 요일 정보
+    @Column(name = "date_info", length = 20)
+    private String dateInfo;
+
+    // 시간 정보 (요일과 쌍 맞추어야 한다)
+    @Column(name = "time_info", length = 20)
+    private String timeInfo;
+
+    // 유저 정보
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sn_student_id", nullable = false, referencedColumnName = "student_id")
+    private User snStudent;
+
+    // 과목 이름 정보
+    @Column(name = "sn_subject_name", nullable = false, length = 100)
+    private String snSubjectName;
 
 }

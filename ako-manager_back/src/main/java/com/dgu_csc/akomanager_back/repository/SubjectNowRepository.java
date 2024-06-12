@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SubjectNowRepository extends JpaRepository<SubjectNow, Long> {
-    List<SubjectNow> findBySnStudentid(User users);
+    List<SubjectNow> findBySnStudent(User snStudent);
 }
